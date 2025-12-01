@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -29,6 +29,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
     t.string "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "story_id", null: false
+    t.index ["story_id"], name: "index_characters_on_story_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -37,6 +39,15 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["story_id"], name: "index_chats_on_story_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "story_id", null: false
+    t.bigint "profile_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["profile_id"], name: "index_likes_on_profile_id"
+    t.index ["story_id"], name: "index_likes_on_story_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -96,6 +107,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
     t.string "details"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "story_id", null: false
+    t.index ["story_id"], name: "index_universes_on_story_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -112,7 +125,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
 
   add_foreign_key "bookmarks", "profiles"
   add_foreign_key "bookmarks", "stories"
+  add_foreign_key "characters", "stories"
   add_foreign_key "chats", "stories"
+  add_foreign_key "likes", "profiles"
+  add_foreign_key "likes", "stories"
   add_foreign_key "messages", "chats"
   add_foreign_key "profiles", "users"
   add_foreign_key "stories", "characters"
@@ -122,4 +138,5 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_140839) do
   add_foreign_key "story_characters", "stories"
   add_foreign_key "story_universes", "stories"
   add_foreign_key "story_universes", "universes"
+  add_foreign_key "universes", "stories"
 end
