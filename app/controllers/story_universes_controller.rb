@@ -1,0 +1,2 @@
+class StoryUniversesController < ApplicationController
+end

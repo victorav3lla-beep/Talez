@@ -1,0 +1,2 @@
+class StoryCharactersController < ApplicationController
+end
