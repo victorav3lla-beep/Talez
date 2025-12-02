@@ -1,11 +1,19 @@
-<h1>Welcome, <%= current_user.name %> </h1>
+<h1>Welcome, <%= current_user.email.split("@").first %>!</h1>
 <hr>
-<% @user.profiles.each do |profile| %>
-  <% <ul>
+<h2>Who's creating?</h2>
+<ul>
+  <% @profiles.each do |profile| %>
+    <li>
+      <a href="<%= profile_path(profile) %>">
+        <img src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
+      </a>
+      <p><%= profile.username %></p>
+    </li>
+  <% end %>
   <li>
-  <a href="#{profile_path(@user)}">
-  <img src="#{profile.avatar_url}" alt="#{profile.nickname} + avatar"></a>
-  <p> profile.nickname </p>
+    <a href="<%= new_profile_path %>">
+      <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width=160px>
+    </a>
+    <p>Add profile</p>
   </li>
-  </ul> %>
-<% end %>
+</ul>
