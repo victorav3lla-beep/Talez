@@ -1,0 +1,11 @@
+<h1>Welcome, <%= current_user.name %> </h1>
+<hr>
+<% @user.profiles.each do |profile| %>
+  <% <ul>
+  <li>
+  <a href="#{profile_path(@user)}">
+  <img src="#{profile.avatar_url}" alt="#{profile.nickname} + avatar"></a>
+  <p> profile.nickname </p>
+  </li>
+  </ul> %>
+<% end %>
