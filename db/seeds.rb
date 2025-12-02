@@ -272,8 +272,6 @@ story1 = Story.create!(
   content: "Sparkle woke up in the Enchanted Forest and decided to make new friends. She flew through the trees, leaving a trail of rainbow dust...",
   public: true,
   status: "published",
-  character_id: default_char1.id,
-  universe_id: default_univ1.id,
   likes_count: 0
 )
 
@@ -283,10 +281,18 @@ story2 = Story.create!(
   content: "When dark clouds covered the Thunder Stadium, Thunder Knight knew something was wrong. He grabbed his electric sword and ran to help...",
   public: true,
   status: "published",
-  character_id: custom_char2.id,
-  universe_id: custom_univ2.id,
   likes_count: 0
 )
+
+# Associate characters and universes via join tables (many-to-many)
+# Story 1: Single character and universe
+StoryCharacter.create!(story: story1, character: default_char1)
+StoryUniverse.create!(story: story1, universe: default_univ1)
+
+# Story 2: Multiple characters and universes (demonstrates many-to-many power)
+StoryCharacter.create!(story: story2, character: custom_char2)
+StoryCharacter.create!(story: story2, character: default_char3)  # Add dragon friend
+StoryUniverse.create!(story: story2, universe: custom_univ2)
 
 all_stories = [story1, story2]
 puts "Created #{Story.count} stories"
@@ -340,6 +346,8 @@ puts "    - Public:         #{Story.where(public: true).count}"
 puts "    - Private:        #{Story.where(public: false).count}"
 puts "    - Published:      #{Story.where(status: 'published').count}"
 puts "    - Drafts:         #{Story.where(status: 'draft').count}"
+puts "  Story-Character links: #{StoryCharacter.count}"
+puts "  Story-Universe links:  #{StoryUniverse.count}"
 puts "  Likes:              #{Like.count}"
 puts "  Bookmarks:          #{Bookmark.count}"
 puts "\nLogin Credentials:"

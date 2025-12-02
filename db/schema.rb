@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_02_115018) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_02_120704) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,13 +77,9 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_115018) do
     t.bigint "profile_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "character_id", null: false
-    t.bigint "universe_id", null: false
     t.string "status", default: "draft", null: false
     t.integer "likes_count", default: 0, null: false
-    t.index ["character_id"], name: "index_stories_on_character_id"
     t.index ["profile_id"], name: "index_stories_on_profile_id"
-    t.index ["universe_id"], name: "index_stories_on_universe_id"
   end
 
   create_table "story_characters", force: :cascade do |t|
@@ -135,9 +131,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_02_115018) do
   add_foreign_key "likes", "stories"
   add_foreign_key "messages", "chats"
   add_foreign_key "profiles", "users"
-  add_foreign_key "stories", "characters"
   add_foreign_key "stories", "profiles"
-  add_foreign_key "stories", "universes"
   add_foreign_key "story_characters", "characters"
   add_foreign_key "story_characters", "stories"
   add_foreign_key "story_universes", "stories"
