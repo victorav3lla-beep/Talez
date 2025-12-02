@@ -1,0 +1,27 @@
+<ul>
+  <% @profiles.each do |profile| %>
+    <li>
+      <%# We use button_to to trigger the 'select' action %>
+      <%= button_to select_profile_path(profile), method: :post, class: "profile-btn", style: "background: none; border: none; cursor: pointer;" do %>
+
+        <%# Display custom avatar OR fallback to Netflix default %>
+        <% if profile.avatar_url.present? %>
+          <img src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar" width="150">
+        <% else %>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar" width="150">
+        <% end %>
+
+        <p><%= profile.username %></p>
+        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
+      <% end %>
+    </li>
+  <% end %>
+
+  <li>
+    <%# Link to create a new profile (using his nested route) %>
+    <a href="<%= new_user_profile_path(current_user) %>">
+      <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width="150">
+    </a>
+    <p>Add profile</p>
+  </li>
+</ul>

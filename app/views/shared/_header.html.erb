@@ -1,0 +1,59 @@
+<header class="top-header">
+  <!-- Search Bar -->
+  <div class="search-wrapper">
+    <form class="search-form" action="<%= stories_path %>" method="get">
+      <input
+        type="text"
+        name="query"
+        class="search-input"
+        placeholder="Your old stories..."
+        value="<%= params[:query] %>"
+      />
+      <button type="submit" class="search-btn">
+        <span class="search-icon">🔍</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Right Actions -->
+  <div class="header-actions">
+    <!-- Notifications -->
+    <button class="icon-btn notifications-btn" title="Notifications">
+      <span class="icon">🔔</span>
+      <span class="badge-dot"></span>
+    </button>
+
+    <!-- Profile Dropdown -->
+    <div class="profile-dropdown" data-controller="dropdown">
+      <button class="profile-trigger" data-action="click->dropdown#toggle">
+        <% if profile.avatar_url.present? %>
+          <%= image_tag profile.avatar_url, alt: profile.name, class: 'avatar-img' %>
+        <% else %>
+          <div class="avatar-placeholder">
+            <%= profile.name.first.upcase %>
+          </div>
+        <% end %>
+        <span class="profile-name"><%= profile.name %></span>
+        <span class="dropdown-arrow">▼</span>
+      </button>
+
+      <div class="dropdown-menu" data-dropdown-target="menu">
+        <div class="dropdown-header">
+          <strong><%= profile.name %></strong>
+          <span class="profile-age"><%= profile.age %> years old</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <%= link_to profiles_path, class: 'dropdown-item' do %>
+          <span class="dropdown-icon">👤</span>
+          Change Profile
+        <% end %>
+        <% if profile %>
+          <%= link_to edit_profile_path(profile), class: 'dropdown-item' do %>
+            <span class="dropdown-icon">⚙️</span>
+            Edit Profile
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</header>

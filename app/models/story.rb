@@ -1,8 +1,16 @@
 class Story < ApplicationRecord
   belongs_to :profile
   has_many :chats
-  has_many :story_characters
-  has_one :story_universes
-  has_many :likes
+
+  # Many-to-many relationships
+  has_many :story_characters, dependent: :destroy
+  has_many :characters, through: :story_characters
+
+  has_many :story_universes, dependent: :destroy
+  has_many :universes, through: :story_universes
+
+  has_many :likes, dependent: :destroy
   has_many :liked_by_profiles, through: :likes, source: :profile
+
+  has_many :bookmarks, dependent: :destroy
 end
