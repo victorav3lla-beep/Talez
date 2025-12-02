@@ -1,0 +1,10 @@
+<div class=container id="new_profile_container">
+  <h1>Add a Profile</h1>
+  <%= simple_form_for [@user, @profile] do |f| %>
+    <%= f.input :name, label: false, required: true, placeholder: "Name" %>
+    <%= f.input :age, label: false, required: true, placeholder: "Age" %>
+    <%= f.input :username, label: false, required: true, placeholder: "Username" %>
+    <%= f.button :submit, 'Continue', class: 'btn btn-primary' %>
+    <%= link_to "Cancel", profiles_path, class: "btn btn-danger " %>
+  <% end %>
+</div>

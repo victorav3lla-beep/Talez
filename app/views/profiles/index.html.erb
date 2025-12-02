@@ -4,15 +4,22 @@
 <ul>
   <% @profiles.each do |profile| %>
     <li>
-      <a href="<%= profile_path(profile) %>">
-        <img src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
-      </a>
-      <p><%= profile.username %></p>
+      <% if profile.avatar_url.present? %>
+        <a href="<%= profile_path(profile) %>">
+          <img src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
+        </a>
+        <p><%= profile.username %></p>
+      <% else %>
+        <a href="<%= profile_path(profile) %>">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="<%= profile.username %> avatar" width=150px>
+        </a>
+        <p><%= profile.username %></p>
+      <% end %>
     </li>
   <% end %>
   <li>
-    <a href="<%= new_profile_path %>">
-      <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width=160px>
+    <a href="<%= new_user_profile_path(current_user) %>">
+      <img src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width=150px>
     </a>
     <p>Add profile</p>
   </li>
