@@ -1,9 +1,6 @@
-# TALEZ Seeds - Simplified Netflix-style Structure
+# TALEZ Seeds - Netflix-style Structure
 # Run with: rails db:seed
 # Reset with: rails db:reset
-
-# NOTE: Current schema has circular dependencies (Characters/Universes belong_to Story,
-# and Story belongs_to Character/Universe). This seeds file includes workarounds.
 
 puts "Cleaning up existing data..."
 Message.destroy_all
@@ -19,7 +16,7 @@ Profile.destroy_all
 User.destroy_all
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# USERS (Netflix-style: Kid accounts + Guest)
+# USERS (Netflix-style: 3 kid accounts + 1 guest)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 puts "Creating user accounts..."
@@ -51,7 +48,7 @@ guest_user = User.create!(
 puts "Created #{User.count} users"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# PROFILES (3 per user - Netflix-style)
+# PROFILES (3 per user)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 puts "Creating profiles..."
@@ -148,188 +145,147 @@ all_profiles = [lily_profile1, lily_profile2, lily_profile3,
 puts "Created #{Profile.count} profiles"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# DEFAULT CHARACTERS (3 only + ability to create custom)
+# DEFAULT CHARACTERS (Global TALEZ characters - profile_id is NULL)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-puts "Creating default characters..."
-
-# Workaround for circular dependency: create temp story first
-temp_story = Story.create!(
-  profile: lily_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
-)
+puts "Creating default TALEZ characters..."
 
 default_char1 = Character.create!(
   name: "Sparkle the Fairy",
-  details: "A kind fairy with rainbow wings who spreads joy wherever she goes",
-  image: "https://placehold.co/300x400/f39c12/white?text=Sparkle+Fairy",
-  story: temp_story
+  description: "A kind fairy with rainbow wings who spreads joy wherever she goes",
+  image_url: "https://placehold.co/300x400/f39c12/white?text=Sparkle+Fairy",
+  profile_id: nil,
+  is_custom: false
 )
 
 default_char2 = Character.create!(
   name: "Captain Stella",
-  details: "A brave superhero who can fly through the stars and helps friends",
-  image: "https://placehold.co/300x400/e74c3c/white?text=Captain+Stella",
-  story: temp_story
+  description: "A brave superhero who can fly through the stars and helps friends",
+  image_url: "https://placehold.co/300x400/e74c3c/white?text=Captain+Stella",
+  profile_id: nil,
+  is_custom: false
 )
 
 default_char3 = Character.create!(
   name: "Blaze the Dragon",
-  details: "A gentle dragon who loves telling stories by the campfire",
-  image: "https://placehold.co/300x400/d35400/white?text=Blaze+Dragon",
-  story: temp_story
+  description: "A gentle dragon who loves telling stories by the campfire",
+  image_url: "https://placehold.co/300x400/d35400/white?text=Blaze+Dragon",
+  profile_id: nil,
+  is_custom: false
 )
-
-temp_story.destroy!
 
 default_characters = [default_char1, default_char2, default_char3]
 puts "Created #{default_characters.count} default characters"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# DEFAULT UNIVERSES (3 only + ability to create custom)
+# DEFAULT UNIVERSES (Global TALEZ universes - profile_id is NULL)
 # ═══════════════════════════════════════════════════════════════════════════════
 
-puts "Creating default universes..."
-
-temp_story = Story.create!(
-  profile: lily_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
-)
+puts "Creating default TALEZ universes..."
 
 default_univ1 = Universe.create!(
   name: "Enchanted Forest",
-  details: "A magical woodland with talking animals and glowing mushrooms",
-  image: "https://placehold.co/400x300/27ae60/white?text=Enchanted+Forest",
-  story: temp_story
+  description: "A magical woodland with talking animals and glowing mushrooms",
+  image_url: "https://placehold.co/400x300/27ae60/white?text=Enchanted+Forest",
+  profile_id: nil,
+  is_custom: false
 )
 
 default_univ2 = Universe.create!(
   name: "Space Station Alpha",
-  details: "A floating home among the stars with zero gravity rooms",
-  image: "https://placehold.co/400x300/3498db/white?text=Space+Station",
-  story: temp_story
+  description: "A floating home among the stars with zero gravity rooms",
+  image_url: "https://placehold.co/400x300/3498db/white?text=Space+Station",
+  profile_id: nil,
+  is_custom: false
 )
 
 default_univ3 = Universe.create!(
   name: "Dragonstone Castle",
-  details: "A medieval fortress with tall towers and secret passages",
-  image: "https://placehold.co/400x300/7f8c8d/white?text=Castle",
-  story: temp_story
+  description: "A medieval fortress with tall towers and secret passages",
+  image_url: "https://placehold.co/400x300/7f8c8d/white?text=Castle",
+  profile_id: nil,
+  is_custom: false
 )
-
-temp_story.destroy!
 
 default_universes = [default_univ1, default_univ2, default_univ3]
 puts "Created #{default_universes.count} default universes"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CUSTOM CHARACTERS (2 total - created by kids)
+# CUSTOM CHARACTERS (Created by kids - linked to profiles)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 puts "Creating custom characters..."
 
-temp_story1 = Story.create!(
-  profile: lily_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
-)
-
 custom_char1 = Character.create!(
   name: "Glitter Unicorn",
-  details: "A unicorn that leaves glitter trails and loves cupcakes",
-  image: "https://placehold.co/300x400/ff6b9d/white?text=Glitter+Unicorn",
-  story: temp_story1
-)
-
-temp_story1.destroy!
-
-temp_story2 = Story.create!(
-  profile: max_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
+  description: "A unicorn that leaves glitter trails and loves cupcakes",
+  image_url: "https://placehold.co/300x400/ff6b9d/white?text=Glitter+Unicorn",
+  profile_id: lily_profile1.id,
+  is_custom: true
 )
 
 custom_char2 = Character.create!(
   name: "Thunder Knight",
-  details: "A warrior with lightning powers and electric armor",
-  image: "https://placehold.co/300x400/4b6584/white?text=Thunder+Knight",
-  story: temp_story2
+  description: "A warrior with lightning powers and electric armor",
+  image_url: "https://placehold.co/300x400/4b6584/white?text=Thunder+Knight",
+  profile_id: max_profile1.id,
+  is_custom: true
 )
-
-temp_story2.destroy!
 
 custom_characters = [custom_char1, custom_char2]
 puts "Created #{custom_characters.count} custom characters"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# CUSTOM UNIVERSES (2 total - created by kids)
+# CUSTOM UNIVERSES (Created by kids - linked to profiles)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 puts "Creating custom universes..."
 
-temp_story1 = Story.create!(
-  profile: lily_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
-)
-
 custom_univ1 = Universe.create!(
   name: "Rainbow Valley",
-  details: "A magical valley where everything is colorful and flowers sing",
-  image: "https://placehold.co/400x300/fd79a8/white?text=Rainbow+Valley",
-  story: temp_story1
-)
-
-temp_story1.destroy!
-
-temp_story2 = Story.create!(
-  profile: max_profile1,
-  title: "Temp",
-  content: "Temp",
-  public: false
+  description: "A magical valley where everything is colorful and flowers sing",
+  image_url: "https://placehold.co/400x300/fd79a8/white?text=Rainbow+Valley",
+  profile_id: lily_profile1.id,
+  is_custom: true
 )
 
 custom_univ2 = Universe.create!(
   name: "Thunder Stadium",
-  details: "A massive sports arena where legendary games are played",
-  image: "https://placehold.co/400x300/0984e3/white?text=Thunder+Stadium",
-  story: temp_story2
+  description: "A massive sports arena where legendary games are played",
+  image_url: "https://placehold.co/400x300/0984e3/white?text=Thunder+Stadium",
+  profile_id: max_profile1.id,
+  is_custom: true
 )
-
-temp_story2.destroy!
 
 custom_universes = [custom_univ1, custom_univ2]
 puts "Created #{custom_universes.count} custom universes"
 
 # ═══════════════════════════════════════════════════════════════════════════════
-# STORIES (2 total)
+# STORIES (Using existing characters and universes)
 # ═══════════════════════════════════════════════════════════════════════════════
 
 puts "Creating stories..."
 
 story1 = Story.create!(
-  profile: lily_profile1,
+  profile_id: lily_profile1.id,
   title: "The Sparkle Fairy's First Day",
   content: "Sparkle woke up in the Enchanted Forest and decided to make new friends. She flew through the trees, leaving a trail of rainbow dust...",
   public: true,
-  character: default_char1,
-  universes: default_univ1
+  status: "published",
+  character_id: default_char1.id,
+  universe_id: default_univ1.id,
+  likes_count: 0
 )
 
 story2 = Story.create!(
-  profile: max_profile1,
+  profile_id: max_profile1.id,
   title: "Thunder Knight Saves the Day",
   content: "When dark clouds covered the Thunder Stadium, Thunder Knight knew something was wrong. He grabbed his electric sword and ran to help...",
   public: true,
-  character: custom_char2,
-  universes: custom_univ2
+  status: "published",
+  character_id: custom_char2.id,
+  universe_id: custom_univ2.id,
+  likes_count: 0
 )
 
 all_stories = [story1, story2]
@@ -343,18 +299,22 @@ puts "Creating likes and bookmarks..."
 
 # Story 1 gets likes from some profiles
 [max_profile1, sophie_profile1, guest_profile].each do |profile|
-  Like.create!(story: story1, profile: profile)
+  Like.create!(story_id: story1.id, profile_id: profile.id)
 end
 
 # Story 2 gets likes from different profiles
 [lily_profile1, sophie_profile2, max_profile2].each do |profile|
-  Like.create!(story: story2, profile: profile)
+  Like.create!(story_id: story2.id, profile_id: profile.id)
 end
 
+# Update likes_count on stories
+story1.update!(likes_count: story1.likes.count)
+story2.update!(likes_count: story2.likes.count)
+
 # Add bookmarks (subset of likes)
-Bookmark.create!(story: story1, profile: max_profile1)
-Bookmark.create!(story: story1, profile: guest_profile)
-Bookmark.create!(story: story2, profile: lily_profile1)
+Bookmark.create!(story_id: story1.id, profile_id: max_profile1.id)
+Bookmark.create!(story_id: story1.id, profile_id: guest_profile.id)
+Bookmark.create!(story_id: story2.id, profile_id: lily_profile1.id)
 
 puts "Created #{Like.count} likes"
 puts "Created #{Bookmark.count} bookmarks"
@@ -370,14 +330,16 @@ puts "\nSummary:"
 puts "  Users:              #{User.count} (3 kids + 1 guest)"
 puts "  Profiles:           #{Profile.count} (3 per user)"
 puts "  Characters:         #{Character.count}"
-puts "    - Default:        #{default_characters.count}"
-puts "    - Custom:         #{custom_characters.count}"
+puts "    - Default:        #{Character.where(is_custom: false).count}"
+puts "    - Custom:         #{Character.where(is_custom: true).count}"
 puts "  Universes:          #{Universe.count}"
-puts "    - Default:        #{default_universes.count}"
-puts "    - Custom:         #{custom_universes.count}"
+puts "    - Default:        #{Universe.where(is_custom: false).count}"
+puts "    - Custom:         #{Universe.where(is_custom: true).count}"
 puts "  Stories:            #{Story.count}"
 puts "    - Public:         #{Story.where(public: true).count}"
 puts "    - Private:        #{Story.where(public: false).count}"
+puts "    - Published:      #{Story.where(status: 'published').count}"
+puts "    - Drafts:         #{Story.where(status: 'draft').count}"
 puts "  Likes:              #{Like.count}"
 puts "  Bookmarks:          #{Bookmark.count}"
 puts "\nLogin Credentials:"

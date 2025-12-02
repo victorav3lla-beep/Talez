@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_02_115018) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -25,12 +25,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
 
   create_table "characters", force: :cascade do |t|
     t.string "name"
-    t.string "image"
-    t.string "details"
+    t.string "image_url"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "story_id", null: false
-    t.index ["story_id"], name: "index_characters_on_story_id"
+    t.bigint "profile_id"
+    t.boolean "is_custom", default: false, null: false
+    t.index ["profile_id"], name: "index_characters_on_profile_id"
   end
 
   create_table "chats", force: :cascade do |t|
@@ -77,10 +78,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "character_id", null: false
-    t.bigint "universes_id", null: false
+    t.bigint "universe_id", null: false
+    t.string "status", default: "draft", null: false
+    t.integer "likes_count", default: 0, null: false
     t.index ["character_id"], name: "index_stories_on_character_id"
     t.index ["profile_id"], name: "index_stories_on_profile_id"
-    t.index ["universes_id"], name: "index_stories_on_universes_id"
+    t.index ["universe_id"], name: "index_stories_on_universe_id"
   end
 
   create_table "story_characters", force: :cascade do |t|
@@ -103,12 +106,13 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
 
   create_table "universes", force: :cascade do |t|
     t.string "name"
-    t.string "image"
-    t.string "details"
+    t.string "image_url"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "story_id", null: false
-    t.index ["story_id"], name: "index_universes_on_story_id"
+    t.bigint "profile_id"
+    t.boolean "is_custom", default: false, null: false
+    t.index ["profile_id"], name: "index_universes_on_profile_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -125,7 +129,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
 
   add_foreign_key "bookmarks", "profiles"
   add_foreign_key "bookmarks", "stories"
-  add_foreign_key "characters", "stories"
+  add_foreign_key "characters", "profiles"
   add_foreign_key "chats", "stories"
   add_foreign_key "likes", "profiles"
   add_foreign_key "likes", "stories"
@@ -133,10 +137,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_01_155417) do
   add_foreign_key "profiles", "users"
   add_foreign_key "stories", "characters"
   add_foreign_key "stories", "profiles"
-  add_foreign_key "stories", "universes", column: "universes_id"
+  add_foreign_key "stories", "universes"
   add_foreign_key "story_characters", "characters"
   add_foreign_key "story_characters", "stories"
   add_foreign_key "story_universes", "stories"
   add_foreign_key "story_universes", "universes"
-  add_foreign_key "universes", "stories"
+  add_foreign_key "universes", "profiles"
 end
