@@ -1,0 +1,64 @@
+<div class="story-card" data-controller="story-card">
+  <!-- Image (first AI-generated image from chat) -->
+  <div class="card-img-wrapper">
+    <% first_image = story.chats.first&.messages&.where.not(image_url: nil)&.first&.image_url %>
+    <%= image_tag first_image || 'https://via.placeholder.com/300x400?text=Story', class: 'card-img', alt: story.title %>
+
+    <!-- Overlay Actions (visible on hover) -->
+    <div class="card-actions-overlay">
+      <%= link_to story_path(story), class: 'btn-icon btn-view', title: 'View Story' do %>
+        <span class="icon">👁️</span>
+      <% end %>
+
+      <%= button_to story_path(story), method: :delete,
+          data: { confirm: 'Are you sure you want to delete this story?' },
+          class: 'btn-icon btn-delete',
+          title: 'Delete Story' do %>
+        <span class="icon">🗑️</span>
+      <% end %>
+
+      <%= button_to story_path(story), method: :patch,
+          params: { story: { public: !story.public } },
+          class: 'btn-icon btn-share',
+          title: story.public? ? 'Make Private' : 'Make Public' do %>
+        <span class="icon">🔗</span>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Card Body -->
+  <div class="card-body">
+    <h5 class="story-title"><%= story.title || 'Untitled Story' %></h5>
+
+    <div class="story-meta">
+      <!-- Character Info -->
+      <% if story.characters.any? %>
+        <div class="character-info">
+          <% first_char = story.characters.first %>
+          <% if first_char.image_url.present? %>
+            <%= image_tag first_char.image_url, class: 'avatar-xs', alt: first_char.name %>
+          <% else %>
+            <span class="avatar-xs-placeholder"><%= first_char.name.first.upcase %></span>
+          <% end %>
+          <span class="character-name"><%= first_char.name %></span>
+        </div>
+      <% end %>
+
+      <!-- Universe Info -->
+      <% if story.universes.any? %>
+        <span class="universe-name">
+          <span class="universe-icon">🌍</span>
+          <%= story.universes.first.name %>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- Card Footer -->
+    <div class="story-footer">
+      <span class="badge <%= story.public? ? 'badge-success' : 'badge-secondary' %>">
+        <%= story.public? ? 'Public' : 'Draft' %>
+      </span>
+      <span class="date"><%= story.created_at.strftime('%d %b %Y') %></span>
+    </div>
+  </div>
+</div>
