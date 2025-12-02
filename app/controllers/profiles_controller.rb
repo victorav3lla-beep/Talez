@@ -1,14 +1,18 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
 
-  # @user = current_user
   def index
-    @profiles = Profile.all
-    # @profiles = @user.profiles
+    @profiles = current_user.profiles
   end
 
   def show
     @profile = Profile.find(params[:id])
+  end
+
+  def select
+    profile = Profile.find(params[:id])
+    session[:current_profile_id] = profile.id
+    redirect_to dashboard_path, notice: "Let's go, #{profile.username}!"
   end
 
   def new
@@ -19,16 +23,15 @@ class ProfilesController < ApplicationController
   def create
     @profile = current_user.profiles.new(profile_params)
     if @profile.save
-      redirect_to profile_path(@profile), notice: "Profile was successfully created! WOOOOO!!🎉🎉"
+      redirect_to profiles_path, notice: "Profile created! 🎉"
     else
       render :new, status: :unprocessable_entity
     end
   end
 
-
   private
 
   def profile_params
-    params.require(:profile).permit(:name, :age, :username)
+    params.require(:profile).permit(:name, :age, :username, :avatar_url) 
   end
 end
