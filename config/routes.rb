@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  get 'home/index'
   devise_for :users
-  root to: "pages#home"
+  root to: "home#index"
+  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Nested resources for profile creation (Team mate's logic)
   resources :users, only: [] do

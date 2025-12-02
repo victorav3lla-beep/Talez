@@ -6,4 +6,7 @@ const application = Application.start()
 application.debug = false
 window.Stimulus   = application
 
+import ThemeToggleController from "./theme_toggle_controller"
+application.register("theme-toggle", ThemeToggleController)
+
 export { application }
