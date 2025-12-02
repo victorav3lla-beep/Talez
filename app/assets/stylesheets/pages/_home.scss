@@ -1,1 +1,63 @@
-// Specific CSS for your home-page
+/* Root colors and transitions */
+body {
+  --primary-color: #3b73cc; /* Blue */
+  --secondary-color: #e9680c; /* Orange */
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  font-family: "Comic Sans MS", sans-serif;
+  transition: background-color 0.5s, color 0.5s;
+  margin: 0;
+  padding: 0;
+}
+
+.landing-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 80px);
+  text-align: center;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+/* Forest theme */
+.scheme-forest {
+  --primary-color: #14B8A6; /* Teal */
+  --secondary-color: #FB7185; /* Coral */
+}
+
+/* Buttons */
+.landing-button {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  margin: 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.landing-button:hover {
+  transform: scale(1.1);
+}
+
+/* Theme toggle */
+#toggle-scheme {
+  margin-top: 2rem;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 2px solid var(--secondary-color);
+  background: transparent;
+  color: var(--secondary-color);
+  transition: all 0.3s;
+}
+
+#toggle-scheme:hover {
+  background-color: var(--secondary-color);
+  color: white;
+}

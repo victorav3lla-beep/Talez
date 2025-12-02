@@ -1,0 +1,15 @@
+<div class="landing-page">
+  <header>
+    <h1>Welcome to Talez!</h1>
+    <p>Create magical stories with AI!</p>
+  </header>
+
+  <div class="buttons">
+    <%= link_to "Sign Up", new_user_registration_path, class: "landing-button" %>
+    <%= link_to "Log In", new_user_session_path, class: "landing-button" %>
+  </div>
+
+  <div class="theme-toggle">
+    <button id="toggle-scheme" data-controller="theme-toggle">Switch Theme</button>
+  </div>
+</div>
