@@ -9,11 +9,13 @@
           <img src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
         </a>
         <p><%= profile.username %></p>
+        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% else %>
         <a href="<%= profile_path(profile) %>">
           <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="<%= profile.username %> avatar" width=150px>
         </a>
         <p><%= profile.username %></p>
+        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% end %>
     </li>
   <% end %>

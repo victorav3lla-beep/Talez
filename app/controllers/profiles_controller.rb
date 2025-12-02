@@ -25,6 +25,12 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def destroy
+    @profile = Profile.find(params[:id])
+    @profile.destroy
+    redirect_to profiles_path, status: :see_other
+  end
+
 
   private
 
