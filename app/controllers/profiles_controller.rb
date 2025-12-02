@@ -4,6 +4,7 @@ class ProfilesController < ApplicationController
   @user = current_user
   def index
     @profiles = Profile.all(@user)
+    @profiles = @user.profiles
   end
 
   def show
