@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     resources :profiles, only: [:new, :create]
   end
 
+  resources :profiles, only: [ :index, :show, :destroy ]
   # Standard profile routes + Selection action
   resources :profiles, only: [:index, :show, :edit, :update] do
     member do

@@ -12,6 +12,7 @@
         <% end %>
 
         <p><%= profile.username %></p>
+        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% end %>
     </li>
   <% end %>
