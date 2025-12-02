@@ -1,0 +1,41 @@
+<aside class="sidebar">
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <%= link_to dashboard_path, class: 'logo-link' do %>
+      <h1 class="logo-text">TALEZ</h1>
+    <% end %>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="sidebar-nav">
+    <%= link_to dashboard_path, class: "nav-item #{active == 'dashboard' ? 'active' : ''}" do %>
+      <span class="nav-icon">📊</span>
+      <span class="nav-label">Dashboard</span>
+    <% end %>
+
+    <%= link_to stories_path, class: "nav-item #{active == 'stories' ? 'active' : ''}" do %>
+      <span class="nav-icon">📖</span>
+      <span class="nav-label">My Stories</span>
+    <% end %>
+
+    <%= link_to '#', class: "nav-item #{active == 'favourites' ? 'active' : ''}" do %>
+      <span class="nav-icon">⭐</span>
+      <span class="nav-label">Favourites</span>
+    <% end %>
+
+    <% if current_profile %>
+      <%= link_to edit_profile_path(current_profile), class: "nav-item #{active == 'settings' ? 'active' : ''}" do %>
+        <span class="nav-icon">⚙️</span>
+        <span class="nav-label">Settings</span>
+      <% end %>
+    <% end %>
+  </nav>
+
+  <!-- Logout -->
+  <div class="sidebar-footer">
+    <%= link_to destroy_user_session_path, method: :delete, class: "nav-item logout-item" do %>
+      <span class="nav-icon">🚪</span>
+      <span class="nav-label">Log out</span>
+    <% end %>
+  </div>
+</aside>

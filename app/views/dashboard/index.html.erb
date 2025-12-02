@@ -1,0 +1,70 @@
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <%= render 'shared/sidebar', active: 'dashboard' %>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Header -->
+    <%= render 'shared/header', profile: @profile %>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="start-story-card">
+        <h1>START YOUR STORY</h1>
+        <div class="hero-illustration">
+          <%= image_tag 'hero-kid-dog.png', alt: 'Start your adventure', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300?text=Start+Your+Story'" %>
+        </div>
+        <%= link_to 'Create New Story', characters_path, class: 'btn btn-primary btn-lg btn-create-story' %>
+      </div>
+
+      <!-- Continue Reading (if story in progress) -->
+      <% if @continue_reading %>
+        <div class="continue-reading-card">
+          <h3>Continue Reading</h3>
+          <div class="story-thumb-wrapper">
+            <% first_image = @continue_reading.chats.first&.messages&.where.not(image_url: nil)&.first&.image_url %>
+            <%= image_tag first_image || 'https://via.placeholder.com/200x250?text=Story', class: 'story-thumb' %>
+          </div>
+          <p class="story-title"><%= @continue_reading.title || 'Untitled Story' %></p>
+          <%= link_to 'Continue', story_path(@continue_reading), class: 'btn btn-sm btn-aqua' %>
+        </div>
+      <% end %>
+    </section>
+
+    <!-- My Favorite Stories -->
+    <% if @bookmarked_stories.any? %>
+      <section class="favorite-stories">
+        <h2>My favorite stories</h2>
+        <div class="stories-scroll">
+          <% @bookmarked_stories.each do |story| %>
+            <%= render 'story_card', story: story %>
+          <% end %>
+        </div>
+      </section>
+    <% end %>
+
+    <!-- All My Stories -->
+    <section class="my-stories">
+      <div class="stories-header">
+        <h2>All My Stories</h2>
+      </div>
+
+      <% if @my_stories.any? %>
+        <div class="stories-grid">
+          <% @my_stories.each do |story| %>
+            <%= render 'story_card', story: story %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state">
+          <div class="empty-state-content">
+            <div class="empty-state-icon">📖</div>
+            <h3>No stories yet!</h3>
+            <p>Start creating your first amazing story</p>
+            <%= link_to 'Create New Story', characters_path, class: 'btn btn-primary' %>
+          </div>
+        </div>
+      <% end %>
+    </section>
+  </div>
+</div>
