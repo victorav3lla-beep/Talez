@@ -3,4 +3,5 @@ class Universe < ApplicationRecord
 
   has_many :story_universes, dependent: :destroy
   has_many :stories, through: :story_universes
+
 end
