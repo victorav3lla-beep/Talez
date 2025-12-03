@@ -4,7 +4,8 @@ class UniversesController < ApplicationController
 
   def index
     @default_universes = Universe.where(profile_id: nil)
-    @custom_universes = @selected_profile ? @selected_profile.universes : []
+    @custom_universes = current_profile ? current_profile.universes : []
+    @all_universes = current_profile.universes
   end
 
   def new
