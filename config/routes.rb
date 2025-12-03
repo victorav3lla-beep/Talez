@@ -20,8 +20,16 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#index'
 
   # Game resources
-  resources :characters, only: [:index, :show, :new, :create]
-  resources :universes, only: [:index, :show, :new, :create]
+  resources :characters, only: [:index, :show, :new, :create] do
+    collection do
+      post :select
+    end
+  end
+  resources :universes, only: [:index, :show, :new, :create] do
+    collection do
+      post :select
+    end
+  end
 
   resources :stories do
     resources :chats, only: [:create, :show]
