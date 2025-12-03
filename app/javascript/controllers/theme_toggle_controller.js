@@ -1,12 +1,24 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  connect() {
-    const button = document.getElementById("toggle-scheme")
-    if (!button) return
+  toggle(event) {
+    if (event.target.type === "checkbox") {
+      if (event.target.checked) {
+        document.body.classList.add("scheme-forest")
+      } else {
+        document.body.classList.remove("scheme-forest")
+      }
+      return
+    }
 
-    button.addEventListener("click", () => {
-      document.body.classList.toggle("scheme-forest")
-    })
+    document.body.classList.toggle("scheme-forest")
+  }
+
+  connect() {
+    if (this.element.tagName === "BUTTON") {
+      this.element.addEventListener("click", () => {
+        document.body.classList.toggle("scheme-forest")
+      })
+    }
   }
 }
