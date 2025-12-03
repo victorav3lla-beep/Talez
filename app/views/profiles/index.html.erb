@@ -1,4 +1,5 @@
 <div id="profile-selector">
+
   <% @profiles.each do |profile| %>
       <%= button_to select_profile_path(profile), method: :post, class: "profile-btn", style: "background: none; border: none; cursor: pointer;" do %>
 
@@ -12,8 +13,10 @@
       <% end %>
   <% end %>
 
+  <div class="mb-4 pb-2">
     <a href="<%= new_user_profile_path(current_user) %>">
       <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width="150">
       <p>Add profile</p>
     </a>
+  </div>
 </div>
