@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   root to: "pages#home"
 
-  # Nested resources for profile creation (Team mate's logic)
+  # Nested resources for profile creation
   resources :users, only: [] do
     resources :profiles, only: [:new, :create]
   end
@@ -10,11 +10,10 @@ Rails.application.routes.draw do
   # Standard profile routes + Selection action
   resources :profiles, only: [:index, :show, :edit, :update] do
     member do
-      post :select  # 👈 Essential route for session handling
+      post :select
     end
   end
 
-  # 👇 DASHBOARD ROUTES
   get 'dashboard', to: 'dashboard#index'
 
   # Game resources
