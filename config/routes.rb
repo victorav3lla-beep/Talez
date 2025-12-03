@@ -1,36 +1,43 @@
 Rails.application.routes.draw do
-  get 'home/index'
-  devise_for :users
+  # 1. Marketing / Public
   root to: "home#index"
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  get 'home/index'
 
-  # Nested resources for profile creation
+  # 2. Authentication
+  devise_for :users
+
+  # 3. Profiles Management
+  # Nested route for creating a profile linked to a user (Le Wagon style)
   resources :users, only: [] do
     resources :profiles, only: [:new, :create]
   end
 
-  resources :profiles, only: [ :index, :show, :destroy ]
-  # Standard profile routes + Selection action
-  resources :profiles, only: [:index, :show, :edit, :update] do
+  # Standard routes for managing profiles + Selection logic
+  # I merged your two 'resources :profiles' blocks here:
+  resources :profiles, only: [:index, :show, :edit, :update, :destroy] do
     member do
-      post :select
+      post :select # Creates: POST /profiles/:id/select
     end
   end
 
+  # 4. Dashboard
   get 'dashboard', to: 'dashboard#index'
 
-  # Game resources
+  # 5. Game Flow (Story Creation)
+  # We use 'collection' for select because we submit a form with a hidden ID
   resources :characters, only: [:index, :show, :new, :create] do
     collection do
-      post :select
-    end
-  end
-  resources :universes, only: [:index, :show, :new, :create] do
-    collection do
-      post :select
+      post :select # Creates: POST /characters/select
     end
   end
 
+  resources :universes, only: [:index, :show, :new, :create] do
+    collection do
+      post :select # Creates: POST /universes/select
+    end
+  end
+
+  # 6. Playing the Story
   resources :stories do
     resources :chats, only: [:create, :show]
     member do
@@ -41,6 +48,6 @@ Rails.application.routes.draw do
 
   resources :bookmarks, only: [:create, :destroy]
 
-  # Health check
+  # 7. System
   get "up" => "rails/health#show", as: :rails_health_check
 end

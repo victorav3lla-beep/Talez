@@ -4,7 +4,8 @@ class CharactersController < ApplicationController
 
   def index
     @default_characters = Character.where(profile_id: nil)
-    @custom_characters = @selected_profile ? @selected_profile.characters : []
+    @custom_characters = current_profile ? current_profile.characters : []
+    @all_characters = current_profile.characters
   end
 
   def new
@@ -12,7 +13,7 @@ class CharactersController < ApplicationController
   end
 
   def create
-    @character = @selected_profile.characters.build(character_params)
+    @character = current_profile.characters.build(character_params)
     @character.is_custom = true
 
     if @character.save
