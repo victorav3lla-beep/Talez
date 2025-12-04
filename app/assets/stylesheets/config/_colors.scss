@@ -1,6 +1,21 @@
-// Define variables for your color scheme
+// ==========================================================
+// TALEZ Color Palette - Sunset Dreams
+// ==========================================================
 
-// For example:
+// Primary Colors
+$primary-coral: #FF6B6B;        // Coral Red - Primary CTAs, active states
+$secondary-teal: #4ECDC4;       // Teal - Secondary actions, accents
+$accent-yellow: #FFE66D;        // Sunny Yellow - Highlights, badges
+
+// Background Colors
+$bg-light-gray: #F7F7F7;        // Light Gray - Main background
+$bg-white: #FFFFFF;             // White - Card backgrounds
+
+// Text Colors
+$text-dark: #2C3E50;            // Dark Blue-Gray - Primary text
+$text-muted: #95A5A6;           // Muted Gray - Secondary text
+
+// Legacy Colors (keep for compatibility)
 $red: #FD1015;
 $blue: #0D6EFD;
 $yellow: #FFC65A;

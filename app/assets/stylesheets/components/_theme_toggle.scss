@@ -70,12 +70,12 @@ body.dashboard-index {
   }
 }
 
-// CHARACTERS PAGE - Top-left corner
+// CHARACTERS PAGE - Top-right corner
 body.characters-index {
   .theme-switch-wrapper {
     position: fixed;
     top: 2rem;
-    left: 2rem;
+    right: 2rem;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.9);
     padding: 0.75rem 1rem;
@@ -84,7 +84,7 @@ body.characters-index {
 
     @media (max-width: 768px) {
       top: 1rem;
-      left: 1rem;
+      right: 1rem;
       padding: 0.5rem 0.75rem;
     }
   }
@@ -94,12 +94,12 @@ body.characters-index {
   }
 }
 
-// UNIVERSES PAGE - Top-left corner
+// UNIVERSES PAGE - Top-right corner
 body.universes-index {
   .theme-switch-wrapper {
     position: fixed;
     top: 2rem;
-    left: 2rem;
+    right: 2rem;
     z-index: 1000;
     background: rgba(255, 255, 255, 0.9);
     padding: 0.75rem 1rem;
@@ -108,7 +108,7 @@ body.universes-index {
 
     @media (max-width: 768px) {
       top: 1rem;
-      left: 1rem;
+      right: 1rem;
       padding: 0.5rem 0.75rem;
     }
   }
