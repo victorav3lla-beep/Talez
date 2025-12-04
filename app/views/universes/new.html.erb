@@ -1,76 +1,128 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card shadow-sm border-0">
-        <div class="card-body p-4 p-md-5">
-          <div class="text-center mb-4">
-            <i class="bi bi-globe-americas mb-3" style="font-size: 3rem; color: #FF6B6B;"></i>
-            <h1 class="h2 fw-bold mb-3" style="color: #FF6B6B;">Create your own universe</h1>
-            <p class="text-muted">Design a unique world for your story</p>
-          </div>
-
-          <%= simple_form_for @universe do |f| %>
-            <%= f.error_notification %>
-            <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
-            <div class="form-inputs">
-              <%= f.input :name,
-                          label: "Universe Name",
-                          required: true,
-                          input_html: { class: 'form-control-lg' },
-                          placeholder: "e.g., Enchanted Forest Kingdom" %>
-
-              <%= f.input :description,
-                          label: "What is this universe like?",
-                          required: true,
-                          as: :text,
-                          input_html: { rows: 4, class: 'form-control-lg' },
-                          hint: "Example: A magical forest where trees glow at night and animals can talk",
-                          placeholder: "Describe your universe..." %>
-            </div>
-
-            <div class="form-actions mt-4 d-grid gap-2">
-              <%= f.button :submit,
-                          "Create Universe",
-                          class: "btn btn-sunset btn-lg" %>
-              <%= link_to "Cancel",
-                          universes_path,
-                          class: "btn btn-outline-secondary btn-lg" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+<div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
+  <div class="prompt-card">
+    <div class="text-center mb-4">
+      <h1 class="prompt-title mb-2">Create your own universe</h1>
+      <p class="prompt-subtitle">Describe the world where the story happens</p>
     </div>
+
+    <%= simple_form_for @universe do |f| %>
+      <%= f.error_notification %>
+      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+      <div class="form-inputs">
+        <%= f.input :description,
+                    label: false,
+                    required: true,
+                    as: :text,
+                    input_html: {
+                      rows: 4,
+                      class: 'prompt-input',
+                      placeholder: 'Write your universe prompt here...'
+                    } %>
+      </div>
+
+      <div class="form-actions mt-3">
+        <%= f.button :submit,
+                    "Generate universe",
+                    class: "btn btn-sunset btn-lg w-100" %>
+      </div>
+    <% end %>
   </div>
 </div>
 
 <style>
+  body {
+    background-color: #000;
+    color: #fff;
+  }
+
+  .prompt-container {
+    padding: 2rem 1rem;
+  }
+
+  .prompt-card {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    border-radius: 24px;
+    padding: 3rem 2.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    max-width: 700px;
+    width: 100%;
+  }
+
+  .prompt-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .prompt-subtitle {
+    font-size: 1.1rem;
+    color: #999;
+    margin-bottom: 0;
+  }
+
+  .prompt-input {
+    background-color: #0a0a0a;
+    border: 2px solid #333;
+    border-radius: 20px;
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 1.25rem 1.5rem;
+    width: 100%;
+    resize: none;
+    transition: all 0.3s ease;
+  }
+
+  .prompt-input::placeholder {
+    color: #666;
+  }
+
+  .prompt-input:focus {
+    background-color: #111;
+    border-color: #FF6B6B;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+  }
+
   .btn-sunset {
     background-color: #FF6B6B;
-    border-color: #FF6B6B;
+    border: none;
     color: white;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
+    font-weight: 600;
+    font-size: 1.1rem;
+    padding: 1rem;
+    border-radius: 16px;
+    transition: all 0.3s ease;
   }
 
   .btn-sunset:hover {
     background-color: #FF5252;
-    border-color: #FF5252;
     color: white;
-    transform: scale(1.02);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
   }
 
-  .card {
-    background-color: #ffffff;
+  .btn-sunset:active {
+    transform: translateY(0);
   }
 
-  body {
-    background-color: #F7F7F7;
-  }
+  @media (max-width: 768px) {
+    .prompt-card {
+      padding: 2rem 1.5rem;
+    }
 
-  .form-control:focus,
-  .form-control-lg:focus {
-    border-color: #FF6B6B;
-    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
+    .prompt-title {
+      font-size: 1.5rem;
+    }
+
+    .prompt-subtitle {
+      font-size: 1rem;
+    }
+
+    .prompt-input {
+      font-size: 1rem;
+      padding: 1rem 1.25rem;
+    }
   }
 </style>
