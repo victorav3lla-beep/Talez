@@ -30,67 +30,76 @@ class CharactersController < ApplicationController
   #   # end
   # end
 
-def create
-  if character_params[:description].present?
-    llm = RubyLLM.chat
-    llm.with_instructions(SYSTEM_PROMPT)
+  def select
+    @characters = current_profile ? current_profile.characters : Character.where(profile_id: nil)
+    if params[:id].present?
+      session[:selected_character_id] = params[:id]
+      redirect_to universes_path
+    end
+  end
 
-    if character_params[:name].blank?
-      response = llm.chat(character_params[:description])
-      begin
-        character_data = JSON.parse(response)
-        character_name = character_data["name"]
-        character_description = character_data["description"]
-      rescue JSON::ParserError => e
-        redirect_to characters_path, alert: "AI error: #{e.message}"
-        return
+
+  def create
+    if character_params[:description].present?
+      llm = RubyLLM.chat
+      llm.with_instructions(SYSTEM_PROMPT)
+
+      if character_params[:name].blank?
+        response = llm.chat(character_params[:description])
+        begin
+          character_data = JSON.parse(response)
+          character_name = character_data["name"]
+          character_description = character_data["description"]
+        rescue JSON::ParserError => e
+          redirect_to characters_path, alert: "AI error: #{e.message}"
+          return
+        end
+      else
+        character_name = character_params[:name]
+        character_description = character_params[:description]
+      end
+
+      @character = @selected_profile.characters.new(
+        name: character_name,
+        description: character_description,
+        is_custom: true
+      )
+
+      image_prompt = "#{character_name}: #{character_description}"
+      image_service = AiImageService.new(image_prompt)
+      image_file = image_service.generate
+
+      if image_file
+        @character.image.attach(
+          io: image_file,
+          filename: "#{character_name.parameterize}.png",
+          content_type: 'image/png'
+        )
+      else
+        Rails.logger.warn("No image generated for #{character_name}")
+      end
+
+      if @character.save
+        redirect_to characters_path, notice: "Character '#{@character.name}' created with image!"
+      else
+        redirect_to characters_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
       end
     else
-      character_name = character_params[:name]
-      character_description = character_params[:description]
+      redirect_to characters_path, alert: "Please provide a description"
     end
+  end
 
-    @character = @selected_profile.characters.new(
-      name: character_name,
-      description: character_description,
-      is_custom: true
-    )
 
-    image_prompt = "#{character_name}: #{character_description}"
-    image_service = AiImageService.new(image_prompt)
-    image_file = image_service.generate
+  private
 
-    if image_file
-      @character.image.attach(
-        io: image_file,
-        filename: "#{character_name.parameterize}.png",
-        content_type: 'image/png'
-      )
-    else
-      Rails.logger.warn("No image generated for #{character_name}")
+  def load_selected_profile
+    @selected_profile = current_profile
+    unless @selected_profile
+      redirect_to profiles_path, alert: "Please select a profile first."
     end
+  end
 
-    if @character.save
-      redirect_to characters_path, notice: "Character '#{@character.name}' created with image!"
-    else
-      redirect_to characters_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
+    def character_params
+      params.require(:character).permit(:name, :description)
     end
-  else
-    redirect_to characters_path, alert: "Please provide a description"
   end
-end
-
-
-private
-
-def load_selected_profile
-  @selected_profile = current_profile
-  unless @selected_profile
-    redirect_to profiles_path, alert: "Please select a profile first."
-  end
-end
-
-  def character_params
-    params.require(:character).permit(:name, :description)
-  end
-end
