@@ -7,34 +7,161 @@
     <!-- Top Header -->
     <%= render 'shared/header', profile: @profile %>
 
-    <!-- Hero Section -->
-    <section class="hero-section">
-      <div class="start-story-card">
-        <h1>START YOUR STORY</h1>
-        <div class="hero-illustration">
-          <%= image_tag 'hero-kid-dog.png', alt: 'Start your adventure', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300?text=Start+Your+Story'" %>
-        </div>
-        <%= link_to 'Create New Story', characters_path, class: 'btn btn-primary btn-lg btn-create-story' %>
+    <!-- Hero Carousel Section -->
+    <section class="hero-carousel-section" data-controller="hero-carousel">
+      <!-- Progress Badge -->
+      <div class="progress-badge" data-hero-carousel-target="progressBadge">
+        <span class="progress-text">
+          You've created
+          <span class="progress-count" data-hero-carousel-target="storyCount">
+            <%= @my_stories.count %>
+          </span>
+          stories this week! 🌟
+        </span>
       </div>
 
-      <!-- Continue Reading (if story in progress) -->
-      <% if @continue_reading %>
+      <!-- Bootstrap Carousel -->
+      <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+        <!-- Carousel Indicators -->
+        <div class="carousel-indicators">
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        </div>
+
+        <!-- Carousel Inner -->
+        <div class="carousel-inner">
+          <!-- Slide 1: Adventure with Dog -->
+          <div class="carousel-item active">
+            <div class="carousel-content">
+              <div class="carousel-text">
+                <h1 class="carousel-title">Ready for an adventure?</h1>
+                <p class="carousel-subtitle">Create amazing stories with your favorite characters!</p>
+              </div>
+              <div class="carousel-image">
+                <div class="floating-character">
+                  <%= image_tag 'hero-kid-dog.png', alt: 'Kid with dog', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300?text=Adventure+Awaits'" %>
+                  <div class="sparkle sparkle-1"></div>
+                  <div class="sparkle sparkle-2"></div>
+                  <div class="sparkle sparkle-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 2: Wizard Magic -->
+          <div class="carousel-item">
+            <div class="carousel-content">
+              <div class="carousel-text">
+                <h1 class="carousel-title">Create magical stories!</h1>
+                <p class="carousel-subtitle">Cast spells and discover enchanted worlds!</p>
+              </div>
+              <div class="carousel-image">
+                <div class="floating-character">
+                  <img src="https://via.placeholder.com/400x300/9b59b6/ffffff?text=🧙+Magic+Time!" alt="Wizard casting spell" class="hero-img">
+                  <div class="sparkle sparkle-1"></div>
+                  <div class="sparkle sparkle-2"></div>
+                  <div class="sparkle sparkle-3"></div>
+                  <div class="sparkle sparkle-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 3: Space Adventure -->
+          <div class="carousel-item">
+            <div class="carousel-content">
+              <div class="carousel-text">
+                <h1 class="carousel-title">Explore new worlds!</h1>
+                <p class="carousel-subtitle">Blast off into space for epic adventures!</p>
+              </div>
+              <div class="carousel-image">
+                <div class="floating-character">
+                  <img src="https://via.placeholder.com/400x300/3498db/ffffff?text=🚀+Space+Explorer!" alt="Spaceship in space" class="hero-img">
+                  <div class="sparkle sparkle-1"></div>
+                  <div class="sparkle sparkle-2"></div>
+                  <div class="sparkle sparkle-3"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 4: Underwater -->
+          <div class="carousel-item">
+            <div class="carousel-content">
+              <div class="carousel-text">
+                <h1 class="carousel-title">Dive into imagination!</h1>
+                <p class="carousel-subtitle">Swim with sea creatures in underwater adventures!</p>
+              </div>
+              <div class="carousel-image">
+                <div class="floating-character">
+                  <img src="https://via.placeholder.com/400x300/1abc9c/ffffff?text=🐠+Under+the+Sea!" alt="Underwater scene" class="hero-img">
+                  <div class="sparkle sparkle-1"></div>
+                  <div class="sparkle sparkle-2"></div>
+                  <div class="sparkle sparkle-3"></div>
+                  <div class="sparkle sparkle-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carousel Controls -->
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true">
+            <i class="fas fa-chevron-left"></i>
+          </span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true">
+            <i class="fas fa-chevron-right"></i>
+          </span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+
+      <!-- Main CTA Button -->
+      <div class="hero-cta">
+        <%= link_to characters_path, class: 'btn-create-story-hero', data: { action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave" } do %>
+          <span class="btn-icon">
+            <i class="fas fa-plus-circle"></i>
+          </span>
+          <span class="btn-text">Create New Story</span>
+          <div class="btn-glow"></div>
+        <% end %>
+      </div>
+    </section>
+
+    <!-- Continue Reading Card (Separate) -->
+    <% if @continue_reading %>
+      <section class="continue-reading-section">
         <div class="continue-reading-card">
-          <h3>Continue Reading</h3>
+          <h3>
+            <i class="fas fa-book-reader"></i>
+            Continue Reading
+          </h3>
           <div class="story-thumb-wrapper">
             <% first_image = @continue_reading.chats.first&.messages&.where.not(image_url: nil)&.first&.image_url %>
             <%= image_tag first_image || 'https://via.placeholder.com/200x250?text=Story', class: 'story-thumb' %>
           </div>
           <p class="story-title"><%= @continue_reading.title || 'Untitled Story' %></p>
-          <%= link_to 'Continue', story_path(@continue_reading), class: 'btn btn-sm btn-aqua' %>
+          <%= link_to story_path(@continue_reading), class: 'btn btn-sm btn-aqua' do %>
+            <i class="fas fa-play"></i>
+            Continue
+          <% end %>
         </div>
-      <% end %>
-    </section>
+      </section>
+    <% end %>
 
     <!-- My Favorite Stories -->
     <% if @bookmarked_stories.any? %>
       <section class="favorite-stories">
-        <h2>My favorite stories</h2>
+        <h2>
+          <i class="fas fa-star"></i>
+          My favorite stories
+        </h2>
         <div class="stories-scroll">
           <% @bookmarked_stories.each do |story| %>
             <%= render 'story_card', story: story %>
@@ -46,7 +173,10 @@
     <!-- All My Stories -->
     <section class="my-stories">
       <div class="stories-header">
-        <h2>All My Stories</h2>
+        <h2>
+          <i class="fas fa-book"></i>
+          All My Stories
+        </h2>
       </div>
 
       <% if @my_stories.any? %>
@@ -61,7 +191,10 @@
             <div class="empty-state-icon">📖</div>
             <h3>No stories yet!</h3>
             <p>Start creating your first amazing story</p>
-            <%= link_to 'Create New Story', characters_path, class: 'btn btn-primary' %>
+            <%= link_to characters_path, class: 'btn btn-primary' do %>
+              <i class="fas fa-plus-circle"></i>
+              Create New Story
+            <% end %>
           </div>
         </div>
       <% end %>
