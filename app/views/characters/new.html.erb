@@ -1,76 +1,38 @@
-<div class="container py-5">
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-8 col-lg-6">
-      <div class="card shadow-sm border-0">
-        <div class="card-body p-4 p-md-5">
-          <div class="text-center mb-4">
-            <i class="bi bi-person-plus-fill mb-3" style="font-size: 3rem; color: #FF6B6B;"></i>
-            <h1 class="h2 fw-bold mb-3" style="color: #FF6B6B;">Create your own character</h1>
-            <p class="text-muted">Bring a unique hero to life with your imagination</p>
-          </div>
+<div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
+  <!-- Back Button -->
+  <div class="prompt-back-button">
+    <%= link_to characters_path, class: "btn-back" do %>
+      <i class="bi bi-arrow-left"></i> Back
+    <% end %>
+  </div>
 
-          <%= simple_form_for @character do |f| %>
-            <%= f.error_notification %>
-            <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
-            <div class="form-inputs">
-              <%= f.input :name,
-                          label: "Character Name",
-                          required: true,
-                          input_html: { class: 'form-control-lg' },
-                          placeholder: "e.g., Luna the Explorer" %>
-
-              <%= f.input :description,
-                          label: "Who is this character?",
-                          required: true,
-                          as: :text,
-                          input_html: { rows: 4, class: 'form-control-lg' },
-                          hint: "Example: A brave robot who loves butterflies",
-                          placeholder: "Describe your character..." %>
-            </div>
-
-            <div class="form-actions mt-4 d-grid gap-2">
-              <%= f.button :submit,
-                          "Create Character",
-                          class: "btn btn-sunset btn-lg" %>
-              <%= link_to "Cancel",
-                          characters_path,
-                          class: "btn btn-outline-secondary btn-lg" %>
-            </div>
-          <% end %>
-        </div>
-      </div>
+  <div class="prompt-card">
+    <div class="text-center mb-4">
+      <h1 class="prompt-title mb-2">Create your own character</h1>
+      <p class="prompt-subtitle">Describe the hero you want to play with</p>
     </div>
+
+    <%= simple_form_for @character do |f| %>
+      <%= f.error_notification %>
+      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+      <div class="form-inputs">
+        <%= f.input :description,
+                    label: false,
+                    required: true,
+                    as: :text,
+                    input_html: {
+                      rows: 4,
+                      class: 'prompt-input',
+                      placeholder: 'Write your character prompt here...'
+                    } %>
+      </div>
+
+      <div class="form-actions mt-3">
+        <%= f.button :submit,
+                    "Generate character",
+                    class: "btn btn-sunset btn-lg w-100" %>
+      </div>
+    <% end %>
   </div>
 </div>
-
-<style>
-  .btn-sunset {
-    background-color: #FF6B6B;
-    border-color: #FF6B6B;
-    color: white;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-  }
-
-  .btn-sunset:hover {
-    background-color: #FF5252;
-    border-color: #FF5252;
-    color: white;
-    transform: scale(1.02);
-  }
-
-  .card {
-    background-color: #ffffff;
-  }
-
-  body {
-    background-color: #F7F7F7;
-  }
-
-  .form-control:focus,
-  .form-control-lg:focus {
-    border-color: #FF6B6B;
-    box-shadow: 0 0 0 0.2rem rgba(255, 107, 107, 0.25);
-  }
-</style>
