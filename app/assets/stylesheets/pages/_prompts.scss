@@ -1,0 +1,132 @@
+// Character & Universe Prompt Creation Pages
+// Styles for characters/new and universes/new
+
+.prompt-container {
+  padding: 2rem 1rem;
+  position: relative;
+  background-color: #000;
+  color: #fff;
+}
+
+.prompt-back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    top: 1rem;
+    left: 1rem;
+  }
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: #FF6B6B;
+    color: #FF6B6B;
+    transform: translateX(-3px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+.prompt-card {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 700px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.prompt-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 0.5rem;
+
+  @media (max-width: 768px) {
+    font-size: 1.5rem;
+  }
+}
+
+.prompt-subtitle {
+  font-size: 1.1rem;
+  color: #999;
+  margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.prompt-input {
+  background-color: #0a0a0a;
+  border: 2px solid #333;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 1.25rem 1.5rem;
+  width: 100%;
+  resize: none;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: #666;
+  }
+
+  &:focus {
+    background-color: #111;
+    border-color: #FF6B6B;
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    padding: 1rem 1.25rem;
+  }
+}
+
+// Btn-sunset styles for prompt pages
+.prompt-card .btn-sunset {
+  background-color: #FF6B6B;
+  border: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+  padding: 1rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #FF5252;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}

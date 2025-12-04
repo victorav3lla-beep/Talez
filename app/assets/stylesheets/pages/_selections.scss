@@ -1,0 +1,74 @@
+// Character & Universe Selection Pages
+// Styles for characters/index and universes/index
+
+.hover-lift {
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(255, 107, 107, 0.25) !important;
+  }
+}
+
+.border-dashed {
+  border-style: dashed !important;
+}
+
+.btn-sunset {
+  background-color: #FF6B6B;
+  border-color: #FF6B6B;
+  color: white;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+
+  &:hover:not(:disabled) {
+    background-color: #FF5252;
+    border-color: #FF5252;
+    color: white;
+    transform: scale(1.02);
+  }
+
+  &:disabled {
+    background-color: #cccccc;
+    border-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
+
+.btn-outline-sunset {
+  border: 2px solid #FF6B6B;
+  color: #FF6B6B;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #FF6B6B;
+    border-color: #FF6B6B;
+    color: white;
+    transform: scale(1.02);
+  }
+}
+
+.character-card,
+.universe-card {
+  &.selected {
+    border: 4px solid #FF6B6B !important;
+    transform: scale(1.05);
+    box-shadow: 0 1rem 2rem rgba(255, 107, 107, 0.4) !important;
+  }
+}
+
+.continue-button-wrapper {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+
+  .btn {
+    min-width: 200px;
+    box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.3);
+  }
+}

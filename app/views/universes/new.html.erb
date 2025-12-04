@@ -1,4 +1,11 @@
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
+  <!-- Back Button -->
+  <div class="prompt-back-button">
+    <%= link_to universes_path, class: "btn-back" do %>
+      <i class="bi bi-arrow-left"></i> Back
+    <% end %>
+  </div>
+
   <div class="prompt-card">
     <div class="text-center mb-4">
       <h1 class="prompt-title mb-2">Create your own universe</h1>
@@ -29,100 +36,3 @@
     <% end %>
   </div>
 </div>
-
-<style>
-  body {
-    background-color: #000;
-    color: #fff;
-  }
-
-  .prompt-container {
-    padding: 2rem 1rem;
-  }
-
-  .prompt-card {
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-    border-radius: 24px;
-    padding: 3rem 2.5rem;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-    max-width: 700px;
-    width: 100%;
-  }
-
-  .prompt-title {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-    margin-bottom: 0.5rem;
-  }
-
-  .prompt-subtitle {
-    font-size: 1.1rem;
-    color: #999;
-    margin-bottom: 0;
-  }
-
-  .prompt-input {
-    background-color: #0a0a0a;
-    border: 2px solid #333;
-    border-radius: 20px;
-    color: #fff;
-    font-size: 1.1rem;
-    padding: 1.25rem 1.5rem;
-    width: 100%;
-    resize: none;
-    transition: all 0.3s ease;
-  }
-
-  .prompt-input::placeholder {
-    color: #666;
-  }
-
-  .prompt-input:focus {
-    background-color: #111;
-    border-color: #FF6B6B;
-    outline: none;
-    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
-  }
-
-  .btn-sunset {
-    background-color: #FF6B6B;
-    border: none;
-    color: white;
-    font-weight: 600;
-    font-size: 1.1rem;
-    padding: 1rem;
-    border-radius: 16px;
-    transition: all 0.3s ease;
-  }
-
-  .btn-sunset:hover {
-    background-color: #FF5252;
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
-  }
-
-  .btn-sunset:active {
-    transform: translateY(0);
-  }
-
-  @media (max-width: 768px) {
-    .prompt-card {
-      padding: 2rem 1.5rem;
-    }
-
-    .prompt-title {
-      font-size: 1.5rem;
-    }
-
-    .prompt-subtitle {
-      font-size: 1rem;
-    }
-
-    .prompt-input {
-      font-size: 1rem;
-      padding: 1rem 1.25rem;
-    }
-  }
-</style>

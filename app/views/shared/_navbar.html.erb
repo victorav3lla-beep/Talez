@@ -17,19 +17,6 @@
           <li class="nav-item"><%= link_to "Login", new_user_session_path, class: "nav-link" %></li>
         <% end %>
       </ul>
-
-      <div class="theme-switch-wrapper">
-        <div class="theme-switch">
-          <input
-            type="checkbox"
-            id="toggle-scheme"
-            data-controller="theme-toggle"
-            data-action="change->theme-toggle#toggle"
-          >
-          <label for="toggle-scheme" class="switch-label"></label>
-        </div>
-       <p class="theme-switch-label">Switch theme</p>
-      </div>
     </div>
   </div>
 </nav>
