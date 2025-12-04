@@ -6,11 +6,11 @@
         type="text"
         name="query"
         class="search-input"
-        placeholder="Your old stories..."
+        placeholder="Search your stories..."
         value="<%= params[:query] %>"
       />
-      <button type="submit" class="search-btn">
-        <span class="search-icon">🔍</span>
+      <button type="submit" class="search-btn" title="Search">
+        <i class="fas fa-search"></i>
       </button>
     </form>
   </div>
@@ -22,7 +22,7 @@
 
     <!-- Notifications -->
     <button class="icon-btn notifications-btn" title="Notifications">
-      <span class="icon">🔔</span>
+      <i class="fas fa-bell"></i>
       <span class="badge-dot"></span>
     </button>
 
@@ -37,7 +37,7 @@
           </div>
         <% end %>
         <span class="profile-name"><%= profile.name %></span>
-        <span class="dropdown-arrow">▼</span>
+        <i class="fas fa-chevron-down dropdown-arrow"></i>
       </button>
 
       <div class="dropdown-menu" data-dropdown-target="menu">
@@ -47,12 +47,12 @@
         </div>
         <div class="dropdown-divider"></div>
         <%= link_to profiles_path, class: 'dropdown-item' do %>
-          <span class="dropdown-icon">👤</span>
+          <i class="fas fa-user-circle dropdown-icon"></i>
           Change Profile
         <% end %>
         <% if profile %>
           <%= link_to edit_profile_path(profile), class: 'dropdown-item' do %>
-            <span class="dropdown-icon">⚙️</span>
+            <i class="fas fa-edit dropdown-icon"></i>
             Edit Profile
           <% end %>
         <% end %>

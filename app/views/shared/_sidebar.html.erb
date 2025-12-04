@@ -1,7 +1,7 @@
 <aside class="sidebar">
   <!-- Logo -->
   <div class="sidebar-logo">
-    <%= link_to dashboard_path, class: 'logo-link' do %>
+    <%= link_to dashboard_path, class: 'logo-link', title: 'TALEZ Dashboard' do %>
       <h1 class="logo-text">TALEZ</h1>
     <% end %>
   </div>
@@ -9,34 +9,43 @@
   <!-- Navigation Menu -->
   <nav class="sidebar-nav">
     <%= link_to dashboard_path, class: "nav-item #{active == 'dashboard' ? 'active' : ''}" do %>
-      <span class="nav-icon">📊</span>
+      <i class="fas fa-home nav-icon"></i>
       <span class="nav-label">Dashboard</span>
     <% end %>
 
-    <%= link_to stories_path, class: "nav-item #{active == 'stories' ? 'active' : ''}" do %>
-      <span class="nav-icon">📖</span>
-      <span class="nav-label">My Stories</span>
+    <%= link_to characters_path, class: "nav-item #{active == 'create' ? 'active' : ''}" do %>
+      <i class="fas fa-plus-circle nav-icon"></i>
+      <span class="nav-label">Create Story</span>
     <% end %>
 
-    <%= link_to '#', class: "nav-item #{active == 'favourites' ? 'active' : ''}" do %>
-      <span class="nav-icon">⭐</span>
-      <span class="nav-label">Favourites</span>
+    <%= link_to stories_path, class: "nav-item #{active == 'stories' ? 'active' : ''}" do %>
+      <i class="fas fa-book nav-icon"></i>
+      <span class="nav-label">Library</span>
+    <% end %>
+
+    <%= link_to '#', class: "nav-item #{active == 'bookmarks' ? 'active' : ''}" do %>
+      <i class="fas fa-bookmark nav-icon"></i>
+      <span class="nav-label">Bookmarks</span>
     <% end %>
 
     <% if current_profile %>
       <%= link_to edit_profile_path(current_profile), class: "nav-item #{active == 'settings' ? 'active' : ''}" do %>
-        <span class="nav-icon">⚙️</span>
+        <i class="fas fa-cog nav-icon"></i>
         <span class="nav-label">Settings</span>
       <% end %>
     <% end %>
   </nav>
 
-  <!-- Logout -->
+  <!-- Footer -->
   <div class="sidebar-footer">
     <%= link_to destroy_user_session_path, data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to log out?" }, class: "nav-item logout-item" do %>
-      <span class="nav-icon">🚪</span>
+      <i class="fas fa-sign-out-alt nav-icon"></i>
       <span class="nav-label">Log out</span>
     <% end %>
+
+    <%= link_to profiles_path, class: "btn-back-profiles" do %>
+      <i class="fas fa-users"></i>
+      Back to Profiles
+    <% end %>
   </div>
-  <%= link_to "Back to Profiles", profiles_path, class: "btn btn-danger" %>
 </aside>
