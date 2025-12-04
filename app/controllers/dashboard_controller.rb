@@ -4,8 +4,8 @@ class DashboardController < ApplicationController
 
   def index
     @profile = current_profile
-    
-    @my_stories = @profile.stories.includes(:character, :universe, :chat).order(updated_at: :desc)
+
+    @my_stories = @profile.stories.includes(:characters, :universes, :chats).order(updated_at: :desc)
 
     @bookmarked_stories = @profile.bookmarks.includes(story: [:characters, :universes, :chats]).map(&:story)
 

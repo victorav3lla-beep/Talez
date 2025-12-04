@@ -36,9 +36,9 @@ def create
     llm.with_instructions(SYSTEM_PROMPT)
 
     if character_params[:name].blank?
-      response = llm.chat(character_params[:description])
+      response = llm.ask(character_params[:description])
       begin
-        character_data = JSON.parse(response)
+        character_data = JSON.parse(response.content)
         character_name = character_data["name"]
         character_description = character_data["description"]
       rescue JSON::ParserError => e
@@ -71,6 +71,7 @@ def create
     end
 
     if @character.save
+      session[:selected_character_id] = @character.id
       redirect_to characters_path, notice: "Character '#{@character.name}' created with image!"
     else
       redirect_to characters_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
@@ -80,6 +81,11 @@ def create
   end
 end
 
+  def select
+    @character = Character.find(params[:id])
+    session[:selected_character_id] = @character.id
+    redirect_to universes_path, notice: "Character selected! Now choose your universe."
+  end
 
 private
 
