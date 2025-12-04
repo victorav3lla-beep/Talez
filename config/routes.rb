@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   end
 
   # 6. Playing the Story
-  resources :stories do
+  resources :stories, only: [:new, :create, :show ] do
     resources :chats, only: [:create, :show]
     member do
       post :bookmark
