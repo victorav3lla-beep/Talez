@@ -1,4 +1,11 @@
-<!-- Theme Toggle for Characters Page -->
+<!-- TALEZ Logo - Top Left -->
+<div class="page-logo">
+  <%= link_to dashboard_path, class: "logo-link" do %>
+    <h1 class="logo-text">TALEZ</h1>
+  <% end %>
+</div>
+
+<!-- Theme Toggle - Top Right -->
 <%= render 'shared/theme_toggle' %>
 
 <div class="container py-5" data-controller="selection">
