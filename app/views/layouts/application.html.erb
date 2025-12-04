@@ -10,7 +10,10 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body><%= render "shared/navbar" %>
+    <body class="<%= "#{controller_name}-#{action_name}" %>">
+    <% if current_page?(root_path) || controller_name == 'profiles' %>
+      <%= render "shared/navbar" %>
+    <% end %>
 <%= render "shared/flashes" %>
 
     <%= yield %>
