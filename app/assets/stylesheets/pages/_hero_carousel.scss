@@ -1,0 +1,595 @@
+// ==========================================================
+// TALEZ Hero Carousel - Playful & Kid-Friendly
+// ==========================================================
+
+@import '../config/colors';
+
+// ==========================================================
+// Keyframe Animations
+// ==========================================================
+
+// Floating animation for characters
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+// Sparkle twinkle animation
+@keyframes sparkle {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(180deg);
+  }
+}
+
+// Pulse glow for CTA button
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba($primary-coral, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba($primary-coral, 0.8);
+  }
+}
+
+// Shimmer effect for button glow
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Counter animation (number pop)
+@keyframes counter-pop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+// Fade in with slight scale
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ==========================================================
+// Hero Carousel Section
+// ==========================================================
+
+.hero-carousel-section {
+  position: relative;
+  padding: 32px;
+  background: linear-gradient(135deg, lighten($primary-coral, 32%) 0%, lighten($accent-yellow, 22%) 100%);
+  border-radius: 0 0 24px 24px;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+  }
+}
+
+// ==========================================================
+// Progress Badge
+// ==========================================================
+
+.progress-badge {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: white;
+  padding: 12px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+  animation: fadeInScale 0.5s ease 0.3s backwards;
+
+  @media (max-width: 768px) {
+    position: relative;
+    top: 0;
+    right: 0;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .progress-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-dark;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    @media (max-width: 768px) {
+      font-size: 13px;
+      justify-content: center;
+    }
+  }
+
+  .progress-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    background: $primary-coral;
+    color: white;
+    font-weight: 700;
+    font-size: 15px;
+    border-radius: 50%;
+    padding: 0 8px;
+    animation: counter-pop 0.6s ease;
+
+    &.animated {
+      animation: counter-pop 0.6s ease;
+    }
+  }
+}
+
+// ==========================================================
+// Bootstrap Carousel Customization
+// ==========================================================
+
+#heroCarousel {
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: white;
+
+  .carousel-inner {
+    border-radius: 20px;
+  }
+
+  .carousel-item {
+    min-height: 400px;
+    padding: 48px;
+
+    @media (max-width: 768px) {
+      min-height: 300px;
+      padding: 24px;
+    }
+  }
+
+  // Smooth fade transition
+  .carousel-item {
+    transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+  }
+
+  .carousel-item-next,
+  .carousel-item-prev,
+  .carousel-item.active {
+    display: flex;
+  }
+}
+
+// ==========================================================
+// Carousel Content Layout
+// ==========================================================
+
+.carousel-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+}
+
+.carousel-text {
+  flex: 1;
+  z-index: 2;
+
+  .carousel-title {
+    font-size: 48px;
+    font-weight: 900;
+    color: $primary-coral;
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 32px;
+    }
+  }
+
+  .carousel-subtitle {
+    font-size: 20px;
+    color: $text-dark;
+    font-weight: 500;
+    margin: 0;
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
+  }
+}
+
+.carousel-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+// ==========================================================
+// Floating Character Animation
+// ==========================================================
+
+.floating-character {
+  position: relative;
+  animation: float 4s ease-in-out infinite;
+  will-change: transform;
+
+  .hero-img {
+    max-width: 350px;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.15));
+
+    @media (max-width: 768px) {
+      max-width: 250px;
+    }
+  }
+}
+
+// ==========================================================
+// Sparkles Animation
+// ==========================================================
+
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, $accent-yellow 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 3s ease-in-out infinite;
+
+  &::before {
+    content: '✨';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+  }
+
+  // Position sparkles around character
+  &.sparkle-1 {
+    top: 10%;
+    left: 15%;
+    animation-delay: 0s;
+  }
+
+  &.sparkle-2 {
+    top: 20%;
+    right: 10%;
+    animation-delay: 1s;
+  }
+
+  &.sparkle-3 {
+    bottom: 25%;
+    left: 10%;
+    animation-delay: 2s;
+  }
+
+  &.sparkle-4 {
+    bottom: 15%;
+    right: 15%;
+    animation-delay: 1.5s;
+  }
+}
+
+// ==========================================================
+// Carousel Controls (Arrows)
+// ==========================================================
+
+.carousel-control-prev,
+.carousel-control-next {
+  width: 50px;
+  height: 50px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background-color: rgba($primary-coral, 0.9);
+  border-radius: 50%;
+
+  &:hover {
+    background-color: $primary-coral;
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    background: none;
+
+    i {
+      font-size: 24px;
+      color: white;
+    }
+  }
+}
+
+.carousel-control-prev {
+  left: 20px;
+}
+
+.carousel-control-next {
+  right: 20px;
+}
+
+// Show controls on hover
+#heroCarousel:hover {
+  .carousel-control-prev,
+  .carousel-control-next {
+    opacity: 1;
+  }
+}
+
+// ==========================================================
+// Carousel Indicators (Dots)
+// ==========================================================
+
+.carousel-indicators {
+  margin-bottom: 16px;
+
+  [data-bs-target] {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba($primary-coral, 0.4);
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    margin: 0 6px;
+
+    &.active {
+      width: 32px;
+      border-radius: 6px;
+      background-color: $primary-coral;
+    }
+
+    &:hover {
+      background-color: $primary-coral;
+      transform: scale(1.2);
+    }
+  }
+}
+
+// ==========================================================
+// Main CTA Button
+// ==========================================================
+
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
+  animation: fadeInScale 0.5s ease 0.5s backwards;
+
+  @media (max-width: 768px) {
+    margin-top: 24px;
+  }
+}
+
+.btn-create-story-hero {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 48px;
+  background: $primary-coral;
+  color: white;
+  font-size: 20px;
+  font-weight: 700;
+  border-radius: 50px;
+  text-decoration: none;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba($primary-coral, 0.4);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 18px;
+    padding: 16px 36px;
+  }
+
+  .btn-icon {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    transition: transform 0.3s ease;
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
+  }
+
+  .btn-text {
+    position: relative;
+    z-index: 2;
+  }
+
+  // Glow effect overlay
+  .btn-glow {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    transition: left 0.5s ease;
+  }
+
+  // Hover effects
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 32px rgba($primary-coral, 0.6);
+    animation: pulse-glow 2s ease-in-out infinite;
+
+    .btn-icon {
+      transform: rotate(90deg);
+    }
+
+    .btn-glow {
+      left: 100%;
+      animation: shimmer 1s ease-in-out;
+    }
+  }
+
+  // Active/click effect
+  &:active {
+    transform: scale(0.98);
+  }
+
+  // Focus state for accessibility
+  &:focus {
+    outline: 3px solid rgba($primary-coral, 0.5);
+    outline-offset: 4px;
+  }
+}
+
+// ==========================================================
+// Continue Reading Section (Separate)
+// ==========================================================
+
+.continue-reading-section {
+  padding: 32px;
+
+  @media (max-width: 768px) {
+    padding: 20px 16px;
+  }
+
+  .continue-reading-card {
+    background-color: white;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 320px;
+    margin: 0 auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: $text-dark;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      i {
+        color: $secondary-teal;
+      }
+    }
+
+    .story-thumb-wrapper {
+      margin-bottom: 16px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+      .story-thumb {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+    }
+
+    .story-title {
+      font-weight: 600;
+      color: $text-dark;
+      font-size: 15px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .btn-aqua {
+      width: 100%;
+      padding: 12px;
+      background-color: $secondary-teal;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+
+      &:hover {
+        background-color: darken($secondary-teal, 8%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba($secondary-teal, 0.3);
+      }
+    }
+  }
+}
+
+// ==========================================================
+// Performance Optimizations
+// ==========================================================
+
+// Use GPU acceleration for smooth animations
+.floating-character,
+.sparkle,
+.btn-create-story-hero,
+.carousel-item {
+  will-change: transform;
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .floating-character,
+  .sparkle,
+  .btn-create-story-hero,
+  .progress-count {
+    animation: none !important;
+    transition: none !important;
+  }
+}

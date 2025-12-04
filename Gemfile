@@ -75,3 +75,10 @@ group :test do
 end
 
 gem "ruby_llm", "~> 1.2.0"
+gem "ruby_llm", "~> 1.9"
+gem 'ruby-openai'
+
+gem "stability_sdk", "~> 0.1"
+
+
+gem "replicate", "~> 1.5"
