@@ -32,7 +32,7 @@
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></but          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
         </div>
 
         <!-- Carousel Inner -->
@@ -148,29 +148,6 @@
                   <div class="sparkle sparkle-2"></div>
                   <div class="sparkle sparkle-3"></div>
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Slide 5: Future City -->
-          <div class="carousel-item" data-cta-text="Build the Future">
-            <div class="carousel-content">
-              <div class="carousel-text">
-                <h1 class="carousel-title">Journey to a Future City!</h1>
-                <p class="carousel-subtitle">Design a world of tomorrow with flying cars and towering skyscrapers.</p>
-                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
-                  hero_carousel_target: "ctaButton",
-                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
-                } do %>
-                  <span class="btn-icon">
-                    <i class="fas fa-plus-circle"></i>
-                  </span>
-                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
-                  <div class="btn-glow"></div>
-                <% end %>
-              </div>
-              <div class="carousel-image">
-                <%= image_tag 'future_city.jpeg', alt: 'A futuristic city', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/1abc9c/ffffff?text=🏙️+Future+City'" %>
               </div>
             </div>
           </div>
