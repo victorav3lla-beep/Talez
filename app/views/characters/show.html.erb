@@ -1,0 +1,13 @@
+<div class="character-show-container text-center py-5">
+  <h1 class="mb-3"><%= @character.name || "Your Character" %></h1>
+  <p class="mb-4"><%= @character.description %></p>
+
+  <% if @character.image.attached? %>
+    <%= image_tag url_for(@character.image), class: "img-fluid rounded shadow mb-4", style: "max-height: 500px; object-fit: cover;" %>
+  <% end %>
+
+  <div class="d-flex justify-content-center gap-3">
+    <%= link_to "Try Again", new_character_path(description: @character.description), class: "btn btn-warning btn-lg" %>
+    <%= link_to "Continue", universes_path, class: "btn btn-success btn-lg" %>
+  </div>
+</div>

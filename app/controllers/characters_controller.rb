@@ -72,10 +72,11 @@ def create
 
     if @character.save
       session[:selected_character_id] = @character.id
-      redirect_to characters_path, notice: "Character '#{@character.name}' created with image!"
+      redirect_to character_path(@character), notice: "Character created!"
     else
-      redirect_to characters_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
+      redirect_to new_character_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
     end
+
   else
     redirect_to characters_path, alert: "Please provide a description"
   end
@@ -86,6 +87,16 @@ end
     session[:selected_character_id] = @character.id
     redirect_to universes_path, notice: "Character selected! Now choose your universe."
   end
+
+  def try_again
+    @character = Character.find(params[:id])
+    redirect_to new_character_path(description: @character.description)
+  end
+
+  def show
+    @character = Character.find(params[:id])
+  end
+
 
 private
 

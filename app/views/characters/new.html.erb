@@ -24,7 +24,8 @@
                     input_html: {
                       rows: 4,
                       class: 'prompt-input',
-                      placeholder: 'Write your character prompt here...'
+                      placeholder: 'Write your character prompt here...',
+                      value: params[:description] || @character&.description
                     } %>
       </div>
 
