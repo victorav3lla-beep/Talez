@@ -1,0 +1,662 @@
+// ==========================================================
+// TALEZ Dashboard Stats & Enhanced Story Cards
+// ==========================================================
+
+@import '../config/colors';
+
+// ==========================================================
+// Layout: Content with Sidebar
+// ==========================================================
+
+.content-with-sidebar {
+  display: flex;
+  gap: 32px;
+  padding: 32px;
+
+  @media (max-width: 1024px) {
+    flex-direction: column;
+    padding: 20px 16px;
+  }
+}
+
+.stories-section-main {
+  flex: 1;
+  min-width: 0; // Prevent flex item from overflowing
+}
+
+// ==========================================================
+// Stats Sidebar (Right)
+// ==========================================================
+
+.stats-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.stats-header {
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-dark;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+
+    .stats-icon {
+      font-size: 24px;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+}
+
+.stats-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @media (max-width: 1024px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.stat-card {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    border-color: rgba($primary-coral, 0.3);
+  }
+
+  @media (max-width: 1024px) {
+    flex: 1;
+    min-width: 150px;
+  }
+
+  .stat-emoji {
+    font-size: 48px;
+    margin-bottom: 12px;
+    animation: float-gentle 3s ease-in-out infinite;
+  }
+
+  .stat-number {
+    font-size: 36px;
+    font-weight: 900;
+    color: $primary-coral;
+    margin-bottom: 8px;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .stat-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-dark;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// Gentle float animation for emojis
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+// Achievement Badge
+.achievement-badge {
+  background: linear-gradient(135deg, lighten($accent-yellow, 15%) 0%, $accent-yellow 100%);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba($accent-yellow, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  animation: slideInRight 0.5s ease;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+  }
+
+  .badge-icon {
+    font-size: 36px;
+  }
+
+  .badge-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    strong {
+      font-size: 15px;
+      font-weight: 700;
+      color: darken($accent-yellow, 35%);
+    }
+
+    span {
+      font-size: 12px;
+      color: darken($accent-yellow, 25%);
+      font-weight: 500;
+    }
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+// ==========================================================
+// Enhanced Story Cards
+// ==========================================================
+
+.story-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+
+  // HOVER EFFECT: Lift card 8px + expand shadow
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-img-wrapper {
+    position: relative;
+    overflow: hidden;
+    height: 220px;
+    background: linear-gradient(135deg, lighten($primary-coral, 25%) 0%, lighten($secondary-teal, 25%) 100%);
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    // Image zoom on card hover
+    &:hover .card-img {
+      transform: scale(1.05);
+    }
+  }
+
+  // Status badge in top-right corner
+  .card-status-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 2;
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    .badge-public {
+      background: $secondary-teal;
+      color: white;
+    }
+
+    .badge-draft {
+      background: rgba(255, 255, 255, 0.95);
+      color: $text-dark;
+    }
+  }
+}
+
+.card-body-enhanced {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.story-title-enhanced {
+  font-size: 18px;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  min-height: 48px;
+}
+
+.story-meta-enhanced {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: $text-dark;
+
+  .meta-emoji {
+    font-size: 18px;
+  }
+
+  .meta-text {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// ==========================================================
+// Progress Bar (Animated on Load)
+// ==========================================================
+
+.progress-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.progress-bar-custom {
+  flex: 1;
+  height: 8px;
+  background: lighten($secondary-teal, 35%);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, $secondary-teal 0%, darken($secondary-teal, 10%) 100%);
+  border-radius: 10px;
+  transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: progressFill 1.5s ease-out;
+  position: relative;
+
+  // Shimmer effect
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 100%
+    );
+    animation: shimmer 2s infinite;
+  }
+}
+
+@keyframes progressFill {
+  from {
+    width: 0 !important;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+.progress-text {
+  font-size: 14px;
+  font-weight: 700;
+  color: $secondary-teal;
+  min-width: 40px;
+  text-align: right;
+}
+
+// ==========================================================
+// Timestamp
+// ==========================================================
+
+.story-timestamp {
+  font-size: 12px;
+  color: lighten($text-dark, 30%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  i {
+    color: lighten($text-dark, 40%);
+  }
+}
+
+// ==========================================================
+// Action Buttons at Bottom
+// ==========================================================
+
+.card-actions-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid lighten($text-dark, 60%);
+  margin-top: 4px;
+}
+
+.btn-continue {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: $primary-coral;
+  color: white;
+  font-size: 14px;
+  font-weight: 700;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+
+  // HOVER EFFECT: Scale 1.05x + color shift
+  &:hover {
+    background: darken($primary-coral, 8%);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba($primary-coral, 0.4);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  i {
+    font-size: 12px;
+  }
+}
+
+.action-icons {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: lighten($text-dark, 55%);
+  border: none;
+  border-radius: 10px;
+  color: $text-dark;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+
+  // HOVER EFFECT: Scale 1.05x + color change
+  &:hover {
+    transform: scale(1.05);
+  }
+
+  i {
+    font-size: 14px;
+  }
+}
+
+.btn-share-action:hover {
+  background: $secondary-teal;
+  color: white;
+}
+
+.btn-delete-action:hover {
+  background: #e74c3c;
+  color: white;
+}
+
+// ==========================================================
+// Stories Grid
+// ==========================================================
+
+.stories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ==========================================================
+// Enhanced Empty State
+// ==========================================================
+
+.empty-state-enhanced {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.empty-state-content-enhanced {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-state-icon-large {
+  font-size: 80px;
+  margin-bottom: 24px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+.empty-state-content-enhanced h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: $text-dark;
+  margin-bottom: 12px;
+}
+
+.empty-state-content-enhanced p {
+  font-size: 16px;
+  color: lighten($text-dark, 20%);
+  margin-bottom: 48px;
+}
+
+.empty-state-steps {
+  margin-top: 0;
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+}
+
+.step-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 120px;
+
+  .step-emoji {
+    font-size: 32px;
+  }
+
+  .step-text {
+    font-size: 14px;
+    font-weight: 600;
+    color: $text-dark;
+  }
+}
+
+// ==========================================================
+// Skeleton Loading State
+// ==========================================================
+
+.story-card-skeleton {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  .skeleton-img {
+    height: 220px;
+    background: linear-gradient(
+      90deg,
+      lighten($text-dark, 60%) 0%,
+      lighten($text-dark, 55%) 50%,
+      lighten($text-dark, 60%) 100%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+  }
+
+  .skeleton-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    .skeleton-line {
+      height: 16px;
+      border-radius: 8px;
+      background: linear-gradient(
+        90deg,
+        lighten($text-dark, 60%) 0%,
+        lighten($text-dark, 55%) 50%,
+        lighten($text-dark, 60%) 100%
+      );
+      background-size: 200% 100%;
+      animation: skeleton-loading 1.5s ease-in-out infinite;
+
+      &.title {
+        height: 20px;
+        width: 80%;
+      }
+
+      &.meta {
+        width: 60%;
+      }
+
+      &.progress {
+        height: 8px;
+        width: 100%;
+      }
+
+      &.action {
+        height: 36px;
+        width: 100%;
+        margin-top: 12px;
+      }
+    }
+  }
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+// ==========================================================
+// Performance & Accessibility
+// ==========================================================
+
+// Use GPU acceleration
+.story-card,
+.stat-card,
+.btn-continue,
+.btn-action {
+  will-change: transform;
+}
+
+// Reduce motion for accessibility
+@media (prefers-reduced-motion: reduce) {
+  .story-card,
+  .stat-card,
+  .btn-continue,
+  .btn-action,
+  .progress-fill,
+  .stat-emoji,
+  .empty-state-icon-large {
+    animation: none !important;
+    transition: none !important;
+  }
+}

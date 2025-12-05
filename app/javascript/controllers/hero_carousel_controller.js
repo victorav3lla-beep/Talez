@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus"
 // Hero Carousel Controller for TALEZ
 // Handles counter animations, button interactions, and enhanced carousel behavior
 export default class extends Controller {
-  static targets = ["storyCount", "progressBadge"]
+  static targets = ["storyCount", "progressBadge", "ctaButton", "ctaText"]
 
   connect() {
     // Animate counter on load
@@ -11,6 +11,9 @@ export default class extends Controller {
 
     // Optional: Track carousel slides for analytics
     this.setupCarouselTracking()
+
+    // Initialize CTA text for first slide
+    this.updateCTAText()
   }
 
   // Animate the story count number with a pop effect
@@ -68,7 +71,29 @@ export default class extends Controller {
       console.log(`Carousel slid to: ${event.to}`)
       // Add any post-slide animations or effects here
       this.addSlideEffects(event.to)
+      // Update CTA button text based on current slide
+      this.updateCTAText()
     })
+  }
+
+  // Update CTA button text based on active slide
+  updateCTAText() {
+    if (!this.hasCtaTextTarget) return
+
+    const activeSlide = document.querySelector('.carousel-item.active')
+    if (!activeSlide) return
+
+    const ctaText = activeSlide.dataset.ctaText || 'Create New Story'
+
+    // Fade out
+    this.ctaTextTarget.style.opacity = '0'
+
+    // Change text after fade out
+    setTimeout(() => {
+      this.ctaTextTarget.textContent = ctaText
+      // Fade in
+      this.ctaTextTarget.style.opacity = '1'
+    }, 150)
   }
 
   // Add special effects when slide changes

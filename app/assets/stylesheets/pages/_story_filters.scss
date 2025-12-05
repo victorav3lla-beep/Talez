@@ -1,0 +1,424 @@
+// ==========================================================
+// TALEZ Story Filters & Success Animations
+// ==========================================================
+
+@import '../config/colors';
+
+// ==========================================================
+// Story Filters Section
+// ==========================================================
+
+.story-filters-section {
+  margin-bottom: 32px;
+  animation: fadeInUp 0.5s ease;
+}
+
+.filters-header {
+  margin-bottom: 20px;
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: $text-dark;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    i {
+      color: $primary-coral;
+    }
+  }
+}
+
+.filters-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+// ==========================================================
+// Filter Pills
+// ==========================================================
+
+.filter-pills {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
+}
+
+.filter-pill {
+  padding: 10px 24px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: lighten($text-dark, 55%);
+  color: $text-dark;
+  position: relative;
+  overflow: hidden;
+
+  // Hover effect for inactive pills
+  &:hover:not(.active) {
+    transform: scale(1.02);
+    background: lighten($text-dark, 50%);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  // Active state
+  &.active {
+    background: $primary-coral;
+    color: white;
+    box-shadow: 0 4px 12px rgba($primary-coral, 0.3);
+    transform: scale(1.05);
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120%;
+      height: 120%;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      animation: ripple 0.6s ease-out;
+    }
+  }
+
+  // Click effect
+  &:active {
+    transform: scale(0.98);
+  }
+
+  // Focus state
+  &:focus {
+    outline: 2px solid rgba($primary-coral, 0.4);
+    outline-offset: 2px;
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+// ==========================================================
+// Sort Dropdown
+// ==========================================================
+
+.sort-dropdown {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  @media (max-width: 768px) {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+.sort-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: $text-dark;
+  margin: 0;
+}
+
+.sort-select {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 2px solid lighten($text-dark, 50%);
+  font-size: 14px;
+  font-weight: 600;
+  color: $text-dark;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%232C3E50' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+
+  &:hover {
+    border-color: $primary-coral;
+    box-shadow: 0 2px 8px rgba($primary-coral, 0.15);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $primary-coral;
+    box-shadow: 0 0 0 3px rgba($primary-coral, 0.2);
+  }
+}
+
+// ==========================================================
+// Card Filtering Animations
+// ==========================================================
+
+.story-card-wrapper {
+  animation: fadeInCard 0.3s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+
+  &.hidden {
+    display: none;
+    opacity: 0;
+  }
+
+  &.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes fadeInCard {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// ==========================================================
+// Success Toast Notification
+// ==========================================================
+
+.success-toast {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-100px);
+  z-index: 10000;
+  background: linear-gradient(135deg, $primary-coral 0%, darken($primary-coral, 10%) 100%);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 50px;
+  box-shadow: 0 8px 32px rgba($primary-coral, 0.5);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  animation: slideDown 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+             slideUp 0.4s ease-in 3.6s forwards;
+  opacity: 0;
+
+  .toast-icon {
+    font-size: 24px;
+    animation: bounce 0.6s ease 0.5s;
+  }
+
+  .toast-message {
+    margin: 0;
+  }
+
+  .toast-close {
+    margin-left: 8px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes slideDown {
+  0% {
+    transform: translateX(-50%) translateY(-100px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-100px);
+    opacity: 0;
+  }
+}
+
+// ==========================================================
+// Confetti Canvas
+// ==========================================================
+
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+// ==========================================================
+// CSS Confetti (Pure CSS Alternative)
+// ==========================================================
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: $primary-coral;
+  position: fixed;
+  top: -10px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: confetti-fall 3s linear forwards;
+
+  &.teal {
+    background: $secondary-teal;
+  }
+
+  &.yellow {
+    background: $accent-yellow;
+  }
+
+  &.coral {
+    background: $primary-coral;
+  }
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+// ==========================================================
+// Loading State for Filters
+// ==========================================================
+
+.stories-grid.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.filter-loading {
+  display: none;
+  margin-left: 12px;
+  width: 20px;
+  height: 20px;
+  border: 3px solid lighten($primary-coral, 30%);
+  border-top-color: $primary-coral;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+
+  &.active {
+    display: inline-block;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// ==========================================================
+// Empty Filter Results
+// ==========================================================
+
+.no-results-message {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+  animation: fadeInUp 0.3s ease;
+
+  &.visible {
+    display: block;
+  }
+
+  .no-results-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: $text-dark;
+    margin-bottom: 8px;
+  }
+
+  p {
+    font-size: 16px;
+    color: lighten($text-dark, 20%);
+  }
+}
+
+// ==========================================================
+// Performance & Accessibility
+// ==========================================================
+
+.filter-pill,
+.sort-select,
+.success-toast {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .filter-pill,
+  .sort-select,
+  .success-toast,
+  .story-card-wrapper,
+  .confetti {
+    animation: none !important;
+    transition: none !important;
+  }
+}
