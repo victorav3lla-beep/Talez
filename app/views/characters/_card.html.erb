@@ -2,7 +2,8 @@
             <div class="card h-100 shadow-sm hover-lift character-card"
                  data-selection-target="card"
                  data-id="<%= character.id %>"
-                 data-action="click->selection#select">
+                 data-action="click->selection#select"
+                 style="cursor: pointer;">
               <% if character.image_url.present? %>
                 <%= link_to character_path(character.image) do %>
                 <%= image_tag character.image_url, class: "card-img-top", alt: character.name, style: "height: 200px; object-fit: cover;" %>
