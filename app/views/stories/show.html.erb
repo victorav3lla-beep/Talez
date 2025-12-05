@@ -11,4 +11,8 @@
       <%= image_tag image, alt: @story.title, class: "story-image", loading: "lazy" %>
     <% end %>
   </div>
+  <div class="d-flex justify-content-center gap-3">
+    <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-warning btn-lg" %>
+    <%= link_to "Continue", new_story_path, class: "btn btn-success btn-lg" %>
+  </div>
 </div>
