@@ -1,6 +1,14 @@
-
+<div class="container">
 <% @stories = Story.all %>
-<% @stories.each do |story| %>
-<%= story.title %>
-<%= story.content %>
-<% end %>
+  <% @stories.each do |story| %>
+  <div class= "story-card">
+      <div class="story">
+        <h2 class="story__title"><%= h(story.title) %></h2>
+        <div class="story__content"><%= simple_format(story.content) %></div>
+        <div><%= story.images %></div>
+        <div class="story__link">
+          <%= link_to 'Read More', story_path(story), class: "btn btn-primary" %>
+      </div>
+  </div>
+  <% end %>
+</div>

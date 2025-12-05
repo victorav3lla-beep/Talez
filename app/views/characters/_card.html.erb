@@ -4,9 +4,9 @@
                  data-id="<%= character.id %>"
                  data-action="click->selection#select"
                  style="cursor: pointer;">
-              <% if character.image_url.present? %>
-                <%= link_to character_path(character.image) do %>
-                <%= image_tag character.image_url, class: "card-img-top", alt: character.name, style: "height: 200px; object-fit: cover;" %>
+              <% if character.image.present? %>
+                <%= link_to character_path(character.id) do %>
+                <%= image_tag character.image, class: "card-img-top", alt: character.name, style: "height: 200px; object-fit: cover;" %>
                <% end %>
               <% else %>
                 <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #FFD3B6 0%, #FFAAA5 100%);">
