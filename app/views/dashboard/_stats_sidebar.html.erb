@@ -1,0 +1,56 @@
+<aside class="stats-sidebar">
+  <div class="stats-header">
+    <h3>
+      <span class="stats-icon">📊</span>
+      Your Stats
+    </h3>
+  </div>
+
+  <div class="stats-cards">
+    <!-- Total Stories Card -->
+    <div class="stat-card" data-controller="stat-counter">
+      <div class="stat-emoji">🎯</div>
+      <div class="stat-number" data-stat-counter-target="count" data-final-value="<%= @my_stories.count %>">
+        0
+      </div>
+      <div class="stat-label">Stories</div>
+    </div>
+
+    <!-- Total Likes Card -->
+    <div class="stat-card" data-controller="stat-counter">
+      <div class="stat-emoji">💝</div>
+      <div class="stat-number" data-stat-counter-target="count" data-final-value="<%= @my_stories.sum { |s| s.likes_count || 0 } %>">
+        0
+      </div>
+      <div class="stat-label">Likes</div>
+    </div>
+
+    <!-- Shared Stories Card -->
+    <div class="stat-card" data-controller="stat-counter">
+      <div class="stat-emoji">📚</div>
+      <div class="stat-number" data-stat-counter-target="count" data-final-value="<%= @my_stories.where(public: true).count %>">
+        0
+      </div>
+      <div class="stat-label">Shared</div>
+    </div>
+  </div>
+
+  <!-- Achievement Badge (Optional) -->
+  <% if @my_stories.count >= 10 %>
+    <div class="achievement-badge">
+      <div class="badge-icon">🏆</div>
+      <div class="badge-text">
+        <strong>Story Master!</strong>
+        <span>Created 10+ stories</span>
+      </div>
+    </div>
+  <% elsif @my_stories.count >= 5 %>
+    <div class="achievement-badge">
+      <div class="badge-icon">⭐</div>
+      <div class="badge-text">
+        <strong>Rising Star!</strong>
+        <span>Created 5+ stories</span>
+      </div>
+    </div>
+  <% end %>
+</aside>

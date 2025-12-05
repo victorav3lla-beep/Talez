@@ -1,4 +1,9 @@
-<div class="dashboard-container">
+<div class="dashboard-container" data-controller="success-animation">
+  <!-- Flash Messages (Hidden) -->
+  <% if flash[:success] == 'story_created' %>
+    <div data-flash-success="story_created" style="display: none;"></div>
+  <% end %>
+
   <!-- Sidebar -->
   <%= render 'shared/sidebar', active: 'dashboard' %>
 
@@ -27,21 +32,31 @@
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
           <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3" aria-label="Slide 4"></but          <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="4" aria-label="Slide 5"></button>
         </div>
 
         <!-- Carousel Inner -->
         <div class="carousel-inner">
           <!-- Slide 1: Adventure with Dog -->
-          <div class="carousel-item active">
+          <div class="carousel-item active" data-cta-text="Start Your Adventure">
             <div class="carousel-content">
               <div class="carousel-text">
                 <h1 class="carousel-title">Ready for an adventure?</h1>
                 <p class="carousel-subtitle">Create amazing stories with your favorite characters!</p>
+                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
+                  hero_carousel_target: "ctaButton",
+                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
+                } do %>
+                  <span class="btn-icon">
+                    <i class="fas fa-plus-circle"></i>
+                  </span>
+                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
+                  <div class="btn-glow"></div>
+                <% end %>
               </div>
               <div class="carousel-image">
                 <div class="floating-character">
-                  <%= image_tag 'hero-kid-dog.png', alt: 'Kid with dog', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300?text=Adventure+Awaits'" %>
+                  <%= image_tag 'hero_main.jpeg', alt: 'Kid with dog', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300?text=Adventure+Awaits'" %>
                   <div class="sparkle sparkle-1"></div>
                   <div class="sparkle sparkle-2"></div>
                   <div class="sparkle sparkle-3"></div>
@@ -51,15 +66,26 @@
           </div>
 
           <!-- Slide 2: Wizard Magic -->
-          <div class="carousel-item">
+          <div class="carousel-item" data-cta-text="Create Magic">
             <div class="carousel-content">
               <div class="carousel-text">
                 <h1 class="carousel-title">Create magical stories!</h1>
                 <p class="carousel-subtitle">Cast spells and discover enchanted worlds!</p>
+                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
+                  hero_carousel_target: "ctaButton",
+                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
+                } do %>
+                  <span class="btn-icon">
+                    <i class="fas fa-plus-circle"></i>
+                  </span>
+                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
+                  <div class="btn-glow"></div>
+                <% end %>
               </div>
               <div class="carousel-image">
                 <div class="floating-character">
-                  <img src="https://via.placeholder.com/400x300/9b59b6/ffffff?text=🧙+Magic+Time!" alt="Wizard casting spell" class="hero-img">
+                  <%= image_tag 'hero-wizard.png', alt: 'Wizard casting spell', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/9b59b6/ffffff?text=🧙+Magic+Time!'" %>
+                  <%= image_tag 'enchanted_forest.jpg', alt: 'Enchanted Forest', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/9b59b6/ffffff?text=🧙+Magic+Time!'" %>
                   <div class="sparkle sparkle-1"></div>
                   <div class="sparkle sparkle-2"></div>
                   <div class="sparkle sparkle-3"></div>
@@ -70,15 +96,26 @@
           </div>
 
           <!-- Slide 3: Space Adventure -->
-          <div class="carousel-item">
+          <div class="carousel-item" data-cta-text="Explore New Worlds">
             <div class="carousel-content">
               <div class="carousel-text">
                 <h1 class="carousel-title">Explore new worlds!</h1>
                 <p class="carousel-subtitle">Blast off into space for epic adventures!</p>
+                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
+                  hero_carousel_target: "ctaButton",
+                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
+                } do %>
+                  <span class="btn-icon">
+                    <i class="fas fa-plus-circle"></i>
+                  </span>
+                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
+                  <div class="btn-glow"></div>
+                <% end %>
               </div>
               <div class="carousel-image">
                 <div class="floating-character">
-                  <img src="https://via.placeholder.com/400x300/3498db/ffffff?text=🚀+Space+Explorer!" alt="Spaceship in space" class="hero-img">
+                  <%= image_tag 'hero-spaceship.jpg', alt: 'Spaceship in space', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/3498db/ffffff?text=🚀+Space+Explorer!'" %>
+                  <%= image_tag 'galaxy_beyond.jpg', alt: 'A galaxy beyond', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/3498db/ffffff?text=🚀+Space+Explorer!'" %>
                   <div class="sparkle sparkle-1"></div>
                   <div class="sparkle sparkle-2"></div>
                   <div class="sparkle sparkle-3"></div>
@@ -87,21 +124,53 @@
             </div>
           </div>
 
-          <!-- Slide 4: Underwater -->
-          <div class="carousel-item">
+          <!-- Slide 4: Dragon Adventure -->
+          <div class="carousel-item" data-cta-text="Befriend a Dragon">
             <div class="carousel-content">
               <div class="carousel-text">
-                <h1 class="carousel-title">Dive into imagination!</h1>
-                <p class="carousel-subtitle">Swim with sea creatures in underwater adventures!</p>
+                <h1 class="carousel-title">Befriend a Dragon!</h1>
+                <p class="carousel-subtitle">Embark on legendary quests in a world of fantasy.</p>
+                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
+                  hero_carousel_target: "ctaButton",
+                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
+                } do %>
+                  <span class="btn-icon">
+                    <i class="fas fa-plus-circle"></i>
+                  </span>
+                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
+                  <div class="btn-glow"></div>
+                <% end %>
               </div>
               <div class="carousel-image">
                 <div class="floating-character">
-                  <img src="https://via.placeholder.com/400x300/1abc9c/ffffff?text=🐠+Under+the+Sea!" alt="Underwater scene" class="hero-img">
+                  <%= image_tag 'hero_dragon.jpg', alt: 'A friendly dragon', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/e74c3c/ffffff?text=🐉+Dragon+Quest!'" %>
                   <div class="sparkle sparkle-1"></div>
                   <div class="sparkle sparkle-2"></div>
                   <div class="sparkle sparkle-3"></div>
-                  <div class="sparkle sparkle-4"></div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slide 5: Future City -->
+          <div class="carousel-item" data-cta-text="Build the Future">
+            <div class="carousel-content">
+              <div class="carousel-text">
+                <h1 class="carousel-title">Journey to a Future City!</h1>
+                <p class="carousel-subtitle">Design a world of tomorrow with flying cars and towering skyscrapers.</p>
+                <%= link_to characters_path, class: 'btn-create-story-hero', data: {
+                  hero_carousel_target: "ctaButton",
+                  action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave"
+                } do %>
+                  <span class="btn-icon">
+                    <i class="fas fa-plus-circle"></i>
+                  </span>
+                  <span class="btn-text" data-hero-carousel-target="ctaText">Create New Story</span>
+                  <div class="btn-glow"></div>
+                <% end %>
+              </div>
+              <div class="carousel-image">
+                <%= image_tag 'future_city.jpeg', alt: 'A futuristic city', class: 'hero-img', onerror: "this.src='https://via.placeholder.com/400x300/1abc9c/ffffff?text=🏙️+Future+City'" %>
               </div>
             </div>
           </div>
@@ -120,17 +189,6 @@
           </span>
           <span class="visually-hidden">Next</span>
         </button>
-      </div>
-
-      <!-- Main CTA Button -->
-      <div class="hero-cta">
-        <%= link_to characters_path, class: 'btn-create-story-hero', data: { action: "mouseenter->hero-carousel#buttonHover mouseleave->hero-carousel#buttonLeave" } do %>
-          <span class="btn-icon">
-            <i class="fas fa-plus-circle"></i>
-          </span>
-          <span class="btn-text">Create New Story</span>
-          <div class="btn-glow"></div>
-        <% end %>
       </div>
     </section>
 
@@ -170,34 +228,55 @@
       </section>
     <% end %>
 
-    <!-- All My Stories -->
-    <section class="my-stories">
-      <div class="stories-header">
-        <h2>
-          <i class="fas fa-book"></i>
-          All My Stories
-        </h2>
-      </div>
+    <!-- Main Content Area with Stats Sidebar -->
+    <div class="content-with-sidebar">
+      <!-- Stories Section (Left/Main) -->
+      <section class="stories-section-main" data-controller="story-filter">
+        <!-- All My Stories -->
+        <div class="my-stories">
+          <%= render 'story_filters' %>
 
-      <% if @my_stories.any? %>
-        <div class="stories-grid">
-          <% @my_stories.each do |story| %>
-            <%= render 'story_card', story: story %>
+          <% if @my_stories.any? %>
+            <div class="stories-grid" data-story-filter-target="grid">
+              <% @my_stories.each do |story| %>
+                <div class="story-card-wrapper"
+                     data-story-filter-target="card"
+                     data-status="<%= story.status || 'draft' %>"
+                     data-public="<%= story.public? %>"
+                     data-created-at="<%= story.created_at.to_i %>"
+                     data-likes="<%= story.likes_count || 0 %>">
+                  <%= render 'story_card', story: story %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="empty-state-enhanced">
+              <div class="empty-state-content-enhanced">
+                <div class="empty-state-icon-large">📖</div>
+                <h3>Your story library is empty</h3>
+                <p>Let's create your first magical adventure!</p>
+                <div class="empty-state-steps">
+                  <div class="step-item">
+                    <span class="step-emoji">✨</span>
+                    <span class="step-text">Choose a hero</span>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-emoji">🌍</span>
+                    <span class="step-text">Pick a universe</span>
+                  </div>
+                  <div class="step-item">
+                    <span class="step-emoji">📝</span>
+                    <span class="step-text">Tell your story</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           <% end %>
         </div>
-      <% else %>
-        <div class="empty-state">
-          <div class="empty-state-content">
-            <div class="empty-state-icon">📖</div>
-            <h3>No stories yet!</h3>
-            <p>Start creating your first amazing story</p>
-            <%= link_to characters_path, class: 'btn btn-primary' do %>
-              <i class="fas fa-plus-circle"></i>
-              Create New Story
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-    </section>
+      </section>
+
+      <!-- Stats Sidebar (Right) -->
+      <%= render 'stats_sidebar' %>
+    </div>
   </div>
 </div>

@@ -4,6 +4,27 @@
     <p>Create magical stories with AI!</p>
   </header>
 
+  <!-- Empty State Design -->
+  <div class="home-empty-state">
+    <div class="home-empty-icon">📖</div>
+    <p class="home-empty-subtitle">Let's create your first magical adventure!</p>
+
+    <div class="home-empty-steps">
+      <div class="home-empty-step">
+        <div class="step-emoji">✨</div>
+        <p class="step-text">Choose a hero</p>
+      </div>
+      <div class="home-empty-step">
+        <div class="step-emoji">🌍</div>
+        <p class="step-text">Pick a universe</p>
+      </div>
+      <div class="home-empty-step">
+        <div class="step-emoji">📝</div>
+        <p class="step-text">Tell your story</p>
+      </div>
+    </div>
+  </div>
+
   <div class="buttons">
     <%= link_to "Sign Up", new_user_registration_path, class: "landing-button" %>
     <%= link_to "Log In", new_user_session_path, class: "landing-button" %>
