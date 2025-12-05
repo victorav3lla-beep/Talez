@@ -1,0 +1,6 @@
+
+<% @stories = Story.all %>
+<% @stories.each do |story| %>
+<%= story.title %>
+<%= story.content %>
+<% end %>

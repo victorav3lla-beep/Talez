@@ -12,9 +12,35 @@ class UniversesController < ApplicationController
     @universe = @selected_profile.universes.build
   end
 
+  # def create
+  #   @universe = @selected_profile.universes.build(universe_params)
+  #   @universe.is_custom = true
+
+  #   if @universe.save
+  #     redirect_to universes_path, notice: "Universe created successfully!"
+  #   else
+  #     render :new, status: :unprocessable_entity
+  #   end
+  # end
+
   def create
     @universe = @selected_profile.universes.build(universe_params)
     @universe.is_custom = true
+
+    if @universe.description.present?
+      image_file = AiImageService.new(@universe.description).generate
+
+      if image_file
+        # Always use a random filename since there's no name field
+        filename = "universe-#{SecureRandom.hex(4)}"
+
+        @universe.image.attach(
+          io: image_file,
+          filename: "#{filename}.png",
+          content_type: "image/png"
+        )
+      end
+    end
 
     if @universe.save
       redirect_to universes_path, notice: "Universe created successfully!"

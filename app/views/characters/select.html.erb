@@ -1,0 +1,11 @@
+<h1>Select Your Character</h1>
+
+<div class="characters-list">
+  <% @characters.each do |char| %>
+    <div class="character-card">
+      <p><%= char %></p>
+      <%= button_to "Choose", "#", method: :post, class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
