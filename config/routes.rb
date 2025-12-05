@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     get :try_again, on: :member
   end
 
-  
+
   # 4. Dashboard
   get 'dashboard', to: 'dashboard#index'
 
@@ -44,7 +44,7 @@ Rails.application.routes.draw do
   end
 
   # 6. Playing the Story
-  resources :stories, only: [:new, :create, :show ] do
+  resources :stories, only: [ :new, :create, :show, :index ] do
     resources :chats, only: [:create, :show]
     member do
       post :bookmark

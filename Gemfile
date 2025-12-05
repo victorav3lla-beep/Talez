@@ -83,3 +83,5 @@ gem "stability_sdk", "~> 0.1"
 gem "replicate", "~> 1.5"
 
 gem "google-cloud-vision", "~> 2.0"
+
+gem "cloudinary"
