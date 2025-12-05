@@ -9,9 +9,9 @@
                  data-id="<%= character.id %>"
                  data-action="click->selection#select"
                  style="cursor: pointer;">
-              <% if character.image_url.present? %>
-                <%= link_to character_path(character) do %>
-                <%= image_tag character.image_url, class: "card-img", alt: character.name %>
+              <% if character.image.present? %>
+                <%= link_to character_path(character.id) do %>
+                <%= image_tag character.image, class: "card-img", alt: character.name %>
                <% end %>
               <% else %>
                 <div class="character-image-fancy">
