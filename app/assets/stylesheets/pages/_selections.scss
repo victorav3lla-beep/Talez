@@ -116,15 +116,12 @@
 .character-card-fancy {
   background: white;
   border-radius: 24px;
-  padding: 1.5rem;
   position: relative;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   box-shadow: 0 8px 30px rgba(255, 107, 107, 0.15);
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow: visible;
+  min-height: 520px;
+  overflow: hidden;
 
   // Magic glow border on hover
   &::before {
@@ -172,16 +169,17 @@
   50% { background-position: 100% 50%; }
 }
 
-// Character image with sparkle effect
+// Character image with sparkle effect - FILLS ENTIRE CARD
 .character-img,
 .character-image-wrapper,
 .character-image-fancy {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 400px;
+  height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  position: relative;
   background: linear-gradient(135deg, $accent-yellow 0%, $primary-coral 100%);
 
   img {
@@ -189,6 +187,18 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.4s ease;
+  }
+
+  // Dark gradient overlay for text readability
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    z-index: 1;
   }
 
   // Sparkle overlay on hover
@@ -210,7 +220,7 @@
     justify-content: center;
 
     i {
-      font-size: 4rem;
+      font-size: 6rem;
       color: white;
       opacity: 0.9;
     }
@@ -230,36 +240,39 @@
   transform: scale(1.1);
 }
 
-// Character Content Area
+// Character Content Area - OVERLAID ON IMAGE
 .character-content,
 .character-info {
-  padding: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
   text-align: center;
-  flex-grow: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
 }
 
-// Character name with gradient
+// Character name with gradient - WHITE FOR OVERLAY
 .character-name,
 .character-name-fancy {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: 900;
-  background: linear-gradient(135deg, $primary-coral 0%, $secondary-teal 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  margin-bottom: 0.75rem;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin: 0;
   text-align: center;
 }
 
 .character-description {
-  color: $text-dark;
-  font-size: 0.9rem;
+  color: white;
+  font-size: 0.95rem;
   line-height: 1.5;
   text-align: center;
-  flex-grow: 1;
-  margin-bottom: 1rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  margin: 0;
 }
 
 // Select Character Button (if used inside cards)
@@ -471,19 +484,31 @@
 // ============================================================
 
 @media (max-width: 768px) {
+  .character-card,
+  .character-card-fancy {
+    min-height: 450px;
+  }
+
   .character-img,
   .character-image-wrapper,
   .character-image-fancy {
-    height: 360px;
-
     i {
-      font-size: 6rem;
+      font-size: 5rem;
     }
+  }
+
+  .character-content,
+  .character-info {
+    padding: 1rem;
   }
 
   .character-name,
   .character-name-fancy {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+  }
+
+  .character-description {
+    font-size: 0.85rem;
   }
 
   .create-own-card,
@@ -517,4 +542,17 @@
 
 .universe-card {
   @extend .character-card;
+
+  // Universe-specific icon styling
+  .character-placeholder i {
+    font-size: 8rem;
+    color: white;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .character-placeholder i {
+      font-size: 6rem;
+    }
+  }
 }
