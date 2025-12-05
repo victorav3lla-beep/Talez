@@ -56,6 +56,27 @@ def create
       is_custom: true
     )
 
+
+      response_text = response["content"] || response_content_from_llm
+      image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+
+      # image_file = AiImageService.new(image_prompt).generate
+      image = RubyLLM.paint("#{response_text}", model: "dall-e-3")
+
+      if image.url
+        # Always use a random filename since there's no name field
+        filename = "story-#{SecureRandom.hex(4)}"
+
+        image_data = URI.open(image.url)
+
+        @story.images.attach(
+          io: image_data,
+          filename: "#{filename}.png",
+          content_type: "image/png",
+        )
+      end
+
+
     image_prompt = "#{character_name}: #{character_description}"
     image_service = AiImageService.new(image_prompt)
     image_file = image_service.generate

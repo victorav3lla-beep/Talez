@@ -1,3 +1,4 @@
+require "open-uri"
 class StoriesController < ApplicationController
   SYSTEM_PROMPT = <<~PROMPT
     You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
@@ -7,6 +8,10 @@ class StoriesController < ApplicationController
 
   def new
     @story = Story.new
+  end
+
+  def index
+    @stories = current_profile.stories
   end
 
   def create

@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     get :try_again, on: :member
   end
 
-  
+
   # 4. Dashboard
   get 'dashboard', to: 'dashboard#index'
 
