@@ -1,0 +1,39 @@
+<div class="story-filters-section" data-controller="story-filter">
+  <div class="filters-header">
+    <h2 class="section-title">
+      <i class="fas fa-book"></i>
+      All My Stories
+    </h2>
+  </div>
+
+  <%# TODO: Move filters to library page - too much information for dashboard %>
+  <%#
+  <div class="filters-controls">
+    <!-- Filter Buttons -->
+    <div class="filter-pills">
+      <button class="filter-pill active" data-action="click->story-filter#filterStories" data-filter="all">
+        All
+      </button>
+      <button class="filter-pill" data-action="click->story-filter#filterStories" data-filter="draft">
+        Drafts
+      </button>
+      <button class="filter-pill" data-action="click->story-filter#filterStories" data-filter="complete">
+        Complete
+      </button>
+      <button class="filter-pill" data-action="click->story-filter#filterStories" data-filter="public">
+        Public
+      </button>
+    </div>
+
+    <!-- Sort Dropdown -->
+    <div class="sort-dropdown">
+      <label for="story-sort" class="sort-label">Sort:</label>
+      <select id="story-sort" class="sort-select" data-action="change->story-filter#sortStories">
+        <option value="recent" selected>Recent</option>
+        <option value="oldest">Oldest</option>
+        <option value="liked">Most Liked</option>
+      </select>
+    </div>
+  </div>
+  %>
+</div>
