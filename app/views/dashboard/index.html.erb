@@ -201,7 +201,7 @@
             Continue Reading
           </h3>
           <div class="story-thumb-wrapper">
-            <% first_image = @continue_reading.chats.first&.messages&.where.not(image_url: nil)&.first&.image_url %>
+            <% first_image = @continue_reading.chats.first&.messages&.where(image_url: nil)&.first&.image_url %>
             <%= image_tag first_image || 'https://via.placeholder.com/200x250?text=Story', class: 'story-thumb' %>
           </div>
           <p class="story-title"><%= @continue_reading.title || 'Untitled Story' %></p>
