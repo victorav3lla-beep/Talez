@@ -1,6 +1,15 @@
 // Character & Universe Selection Pages
 // Styles for characters/index and universes/index
 
+@import '../config/colors';
+
+// Page wrapper with dashboard-style background
+.page-wrapper {
+  min-height: 100vh;
+  background-color: $bg-light-gray;
+  padding-bottom: 100px; // Extra padding for fixed continue button
+}
+
 .hover-lift {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 

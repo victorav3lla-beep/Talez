@@ -1,10 +1,11 @@
 /* Root colors and transitions */
+@import '../config/colors';
+
 body {
   --primary-color: #3b73cc; /* Blue */
   --secondary-color: #e9680c; /* Orange */
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-  font-family: "Comic Sans MS", sans-serif;
+  background-color: $bg-light-gray;
+  color: $text-dark;
   transition: background-color 0.5s, color 0.5s;
   margin: 0;
   padding: 0;
@@ -19,6 +20,69 @@ body {
   text-align: center;
   padding-top: 2rem;
   padding-bottom: 2rem;
+}
+
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.home-content {
+  text-align: center;
+  max-width: 800px;
+}
+
+.home-icon {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+}
+
+.home-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: $primary-coral;
+  margin-bottom: 1rem;
+}
+
+.home-subtitle {
+  font-size: 1.25rem;
+  color: $text-muted;
+  margin-bottom: 3rem;
+}
+
+.home-steps {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.home-step-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 16px;
+  min-width: 150px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .step-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .step-label {
+    font-size: 1rem;
+    font-weight: 600;
+    color: $text-dark;
+    margin: 0;
+  }
 }
 
 /* Forest theme */
