@@ -9,11 +9,34 @@ export default class extends Controller {
     // Animate counter on load
     this.animateCounter()
 
+    // Initialize Bootstrap carousel with automatic cycling
+    this.initializeCarousel()
+
     // Optional: Track carousel slides for analytics
     this.setupCarouselTracking()
 
     // Initialize CTA text for first slide
     this.updateCTAText()
+  }
+
+  // Initialize and start the Bootstrap carousel
+  initializeCarousel() {
+    const carouselElement = document.getElementById('heroCarousel')
+    if (!carouselElement) return
+
+    // Initialize Bootstrap carousel if not already initialized
+    let carousel = bootstrap.Carousel.getInstance(carouselElement)
+    if (!carousel) {
+      carousel = new bootstrap.Carousel(carouselElement, {
+        interval: 5000,  // 5 seconds between slides
+        ride: 'carousel', // Start cycling on load
+        wrap: true,      // Loop back to first slide
+        pause: 'hover'   // Pause on hover for better UX
+      })
+    }
+
+    // Ensure carousel starts cycling
+    carousel.cycle()
   }
 
   // Animate the story count number with a pop effect
