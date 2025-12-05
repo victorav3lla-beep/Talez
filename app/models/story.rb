@@ -13,4 +13,6 @@ class Story < ApplicationRecord
   has_many :liked_by_profiles, through: :likes, source: :profile
 
   has_many :bookmarks, dependent: :destroy
+
+  has_many_attached :images
 end

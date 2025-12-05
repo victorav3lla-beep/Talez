@@ -1,3 +1,14 @@
-  <h3>The beggining</h3>
-  <%= @story.title %>
-<%= @story.content %>
+<div class="container story-show m-5-auto p-4 bg-light rounded">
+  <hr>
+  <h3><%= @story.title %></h3>
+  <hr>
+  <div class="container">
+    <%= @story.content %>
+  </div>
+  <hr>
+  <div class="story-images-container">
+    <% @story.images.each do |image| %>
+      <%= image_tag image, alt: @story.title, class: "story-image", loading: "lazy" %>
+    <% end %>
+  </div>
+</div>

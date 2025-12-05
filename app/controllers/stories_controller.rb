@@ -18,7 +18,27 @@ class StoriesController < ApplicationController
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content])
     response = JSON.parse(response.content)
     if @story.update(response)
-      redirect_to story_path(@story), notice: "Story created successfully!"
+      response_text = response["content"] || response_content_from_llm
+      image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+
+      # image_file = AiImageService.new(image_prompt).generate
+      image = RubyLLM.paint("#{response_text}", model: "dall-e-3")
+
+      if image.url
+        # Always use a random filename since there's no name field
+        filename = "story-#{SecureRandom.hex(4)}"
+
+        image_data = URI.open(image.url)
+
+        @story.images.attach(
+          io: image_data,
+          filename: "#{filename}.png",
+          content_type: "image/png",
+        )
+      end
+
+      # Redirect after successfully updating the story and attaching the image
+      redirect_to story_path(@story), notice: "Story image created successfully!"
     else
       render :new, status: :unprocessable_entity
     end
@@ -36,7 +56,7 @@ class StoriesController < ApplicationController
 
   def instructions(character, universe)
     <<~PROMPT
-      You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
+      You are a kids animated storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
 
       I am a kid looking to create a story, and would appreciate assistance creating aesthetically pleasing stories in an organized way
 
@@ -48,7 +68,7 @@ class StoriesController < ApplicationController
       Name: #{universe.name}
       Description: #{universe.description}
 
-      Please help me create a story that fits within this context.
+      Please help me create the beggining of a story that fits within this context, then I will continue with the problem and the ending.
       Return in JSON format, keys should be ["title", "content"]
     PROMPT
   end
