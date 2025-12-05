@@ -1,0 +1,12 @@
+.story-images-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.story-image {
+  max-width: 100%;
+  height: auto;
+}
