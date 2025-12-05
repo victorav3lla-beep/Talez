@@ -29,8 +29,8 @@
                  data-id="<%= universe.id %>"
                  data-action="click->selection#select"
                  style="cursor: pointer;">
-              <% if universe.image_url.present? %>
-                <%= image_tag universe.image_url, class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
+              <% if universe.image.attached? %>
+                <%= image_tag url_for(universe.image), class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
               <% else %>
                 <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #FFD3B6 0%, #FFAAA5 100%);">
                   <i class="bi bi-globe-americas text-white" style="font-size: 4rem;"></i>
@@ -60,8 +60,8 @@
                   <i class="bi bi-star-fill"></i> Custom
                 </span>
               </div>
-              <% if universe.image_url.present? %>
-                <%= image_tag universe.image_url, class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
+              <% if universe.image.attached? %>
+                <%= image_tag url_for(universe.image), class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
               <% else %>
                 <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #FFD3B6 0%, #FFAAA5 100%);">
                   <i class="bi bi-globe-americas" style="font-size: 4rem; color: #FF6B6B;"></i>
