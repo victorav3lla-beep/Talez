@@ -1,31 +1,432 @@
+// ============================================================
 // Character & Universe Selection Pages
 // Styles for characters/index and universes/index
+// TALEZ Dashboard Design System
+// ============================================================
 
 @import '../config/colors';
+
+// ============================================================
+// PAGE LAYOUT
+// ============================================================
 
 // Page wrapper with dashboard-style background
 .page-wrapper {
   min-height: 100vh;
   background-color: $bg-light-gray;
-  padding-bottom: 100px; // Extra padding for fixed continue button
+  padding-bottom: 120px; // Extra padding for fixed continue button
+  position: relative;
 }
 
-.hover-lift {
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+// ============================================================
+// BACK BUTTON - Top Left
+// ============================================================
+
+.back-button {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  background: white;
+  padding: 12px 24px;
+  border-radius: 12px;
+  color: $text-dark;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 100;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(255, 107, 107, 0.25) !important;
+    transform: translateX(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: $primary-coral;
+  }
+
+  @media (max-width: 768px) {
+    top: 1rem;
+    left: 1rem;
+    padding: 8px 16px;
+    font-size: 0.9rem;
   }
 }
 
-.border-dashed {
-  border-style: dashed !important;
+// ============================================================
+// MAGICAL TITLE SECTION
+// ============================================================
+
+.magical-title-section {
+  text-align: center;
+  margin: 3rem 0 4rem;
+
+  .magical-title {
+    font-size: 3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, $primary-coral 0%, $secondary-teal 50%, $accent-yellow 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-flow 3s ease infinite;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+
+    .sparkle {
+      display: inline-block;
+      animation: sparkle-spin 3s linear infinite;
+      margin: 0 0.5rem;
+    }
+  }
 }
 
+@keyframes gradient-flow {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes sparkle-spin {
+  0%, 100% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(-15deg) scale(1.2);
+  }
+  50% {
+    transform: rotate(0deg) scale(1);
+  }
+  75% {
+    transform: rotate(15deg) scale(1.2);
+  }
+}
+
+// ============================================================
+// CHARACTERS SHOWCASE
+// ============================================================
+
+.characters-showcase {
+  margin-bottom: 3rem;
+}
+
+// ============================================================
+// FANCY MAGICAL CHARACTER CARDS
+// ============================================================
+
+.character-card,
+.character-card-fancy {
+  background: white;
+  border-radius: 24px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.15);
+  min-height: 520px;
+  overflow: hidden;
+
+  // Magic glow border on hover
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 24px;
+    padding: 3px;
+    background: linear-gradient(45deg, $primary-coral, $secondary-teal, $accent-yellow, $primary-coral);
+    background-size: 300% 300%;
+    animation: gradient-rotate 3s ease infinite;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+  }
+
+  &:hover {
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 0 25px 60px rgba(255, 107, 107, 0.35);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &.selected {
+    transform: translateY(-20px) scale(1.05);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes gradient-rotate {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+// Character image with sparkle effect - FILLS ENTIRE CARD
+.character-img,
+.character-image-wrapper,
+.character-image-fancy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, $accent-yellow 0%, $primary-coral 100%);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  // Dark gradient overlay for text readability
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    z-index: 1;
+  }
+
+  // Sparkle overlay on hover
+  &::after {
+    content: '✨';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 2.5rem;
+    opacity: 0;
+    transform: scale(0) rotate(-45deg);
+    transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    z-index: 2;
+  }
+
+  &.character-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    i {
+      font-size: 6rem;
+      color: white;
+      opacity: 0.9;
+    }
+  }
+}
+
+.character-card:hover .character-img::after,
+.character-card:hover .character-image-wrapper::after,
+.character-card:hover .character-image-fancy::after {
+  opacity: 1;
+  transform: scale(1) rotate(0deg);
+}
+
+.character-card:hover .character-img img,
+.character-card:hover .character-image-wrapper img,
+.character-card:hover .character-image-fancy img {
+  transform: scale(1.1);
+}
+
+// Character Content Area - OVERLAID ON IMAGE
+.character-content,
+.character-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  text-align: center;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// Character name with gradient - WHITE FOR OVERLAY
+.character-name,
+.character-name-fancy {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  margin: 0;
+  text-align: center;
+}
+
+.character-description {
+  color: white;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  text-align: center;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+  margin: 0;
+}
+
+// Select Character Button (if used inside cards)
+.btn-select-character {
+  width: 100%;
+  background: linear-gradient(135deg, $primary-coral 0%, $secondary-teal 100%);
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Custom badge for user-created characters
+.custom-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: $primary-coral;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  display: none; // Hidden by default, shown on custom cards
+}
+
+// ============================================================
+// CREATE YOUR OWN - MAGIC DUST CARD
+// ============================================================
+
+.create-own-card,
+.create-character-card,
+.create-card-fancy {
+  background: linear-gradient(135deg, $primary-coral 0%, $secondary-teal 50%, $accent-yellow 100%);
+  background-size: 200% 200%;
+  animation: gradient-shift 5s ease infinite;
+  border: none;
+  color: white;
+  border-radius: 24px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.25);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 540px;
+
+  // Floating sparkles background
+  &::before {
+    content: '✨ ⭐ 💫 ✨ 🌟';
+    position: absolute;
+    inset: 0;
+    font-size: 2.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-around;
+    align-items: center;
+    animation: float-sparkles 6s ease-in-out infinite;
+    opacity: 0.25;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-20px) rotate(2deg) scale(1.05);
+    box-shadow: 0 25px 60px rgba(255, 107, 107, 0.4);
+  }
+
+  .create-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: bounce-float 2s ease-in-out infinite;
+    position: relative;
+    z-index: 2;
+
+    i {
+      color: white;
+    }
+  }
+
+  .create-title,
+  .create-text {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
+    color: white;
+  }
+
+  .create-description,
+  .create-subtext {
+    font-size: 1rem;
+    opacity: 0.95;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    color: white;
+    margin: 0;
+  }
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes float-sparkles {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-15px) rotate(120deg);
+  }
+  66% {
+    transform: translateY(-5px) rotate(240deg);
+  }
+}
+
+@keyframes bounce-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-15px) scale(1.1);
+  }
+}
+
+// ============================================================
+// BUTTONS
+// ============================================================
+
 .btn-sunset {
-  background-color: #FF6B6B;
-  border-color: #FF6B6B;
+  background-color: $primary-coral;
+  border-color: $primary-coral;
   color: white;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
@@ -47,27 +448,23 @@
 }
 
 .btn-outline-sunset {
-  border: 2px solid #FF6B6B;
-  color: #FF6B6B;
+  border: 2px solid $primary-coral;
+  color: $primary-coral;
   font-weight: 500;
   transition: all 0.2s ease-in-out;
+  background: white;
 
   &:hover {
-    background-color: #FF6B6B;
-    border-color: #FF6B6B;
+    background-color: $primary-coral;
+    border-color: $primary-coral;
     color: white;
     transform: scale(1.02);
   }
 }
 
-.character-card,
-.universe-card {
-  &.selected {
-    border: 4px solid #FF6B6B !important;
-    transform: scale(1.05);
-    box-shadow: 0 1rem 2rem rgba(255, 107, 107, 0.4) !important;
-  }
-}
+// ============================================================
+// CONTINUE BUTTON - Fixed at Bottom
+// ============================================================
 
 .continue-button-wrapper {
   position: fixed;
@@ -79,5 +476,83 @@
   .btn {
     min-width: 200px;
     box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.3);
+  }
+}
+
+// ============================================================
+// RESPONSIVE BREAKPOINTS
+// ============================================================
+
+@media (max-width: 768px) {
+  .character-card,
+  .character-card-fancy {
+    min-height: 450px;
+  }
+
+  .character-img,
+  .character-image-wrapper,
+  .character-image-fancy {
+    i {
+      font-size: 5rem;
+    }
+  }
+
+  .character-content,
+  .character-info {
+    padding: 1rem;
+  }
+
+  .character-name,
+  .character-name-fancy {
+    font-size: 1.4rem;
+  }
+
+  .character-description {
+    font-size: 0.85rem;
+  }
+
+  .create-own-card,
+  .create-character-card,
+  .create-card-fancy {
+    min-height: 500px;
+
+    &::before {
+      font-size: 3rem;
+    }
+
+    .create-icon {
+      font-size: 4.5rem;
+    }
+
+    .create-title,
+    .create-text {
+      font-size: 1.6rem;
+    }
+
+    .create-description,
+    .create-subtext {
+      font-size: 1rem;
+    }
+  }
+}
+
+// ============================================================
+// UNIVERSE CARDS (shared styles)
+// ============================================================
+
+.universe-card {
+  @extend .character-card;
+
+  // Universe-specific icon styling
+  .character-placeholder i {
+    font-size: 8rem;
+    color: white;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 768px) {
+    .character-placeholder i {
+      font-size: 6rem;
+    }
   }
 }

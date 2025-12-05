@@ -9,105 +9,92 @@
 <%= render 'shared/theme_toggle' %>
 
 <div class="page-wrapper">
-<div class="container py-5" data-controller="selection">
-  <div class="text-center mb-5">
-    <h1 class="display-4 fw-bold" style="color: #FF6B6B;">Choose your universe</h1>
-    <p class="lead text-muted">Select the setting for your story</p>
-    <button class="btn btn-outline-secondary mt-3" id="randomize-btn" type="button">
-      <i class="bi bi-shuffle me-2"></i>Randomize
-    </button>
-  </div>
-
-  <%= form_with url: select_universes_path, method: :post, data: { turbo: false } do |f| %>
-    <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
-
-    <div class="row g-4">
-      <% if @default_universes.any? %>
-        <% @default_universes.each do |universe| %>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card h-100 shadow-sm hover-lift universe-card"
-                 data-selection-target="card"
-                 data-id="<%= universe.id %>"
-                 data-action="click->selection#select"
-                 style="cursor: pointer;">
-              <% if universe.image.attached? %>
-                <%= image_tag url_for(universe.image), class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
-              <% else %>
-                <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #FFD3B6 0%, #FFAAA5 100%);">
-                  <i class="bi bi-globe-americas text-white" style="font-size: 4rem;"></i>
-                </div>
-              <% end %>
-              <div class="card-body d-flex flex-column text-center">
-                <h5 class="card-title mb-3" style="color: #FF6B6B;"><%= universe.name %></h5>
-                <% if universe.description.present? %>
-                  <p class="card-text text-muted small mb-3 flex-grow-1"><%= truncate(universe.description, length: 80) %></p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-
-      <% if @custom_universes.any? %>
-        <% @custom_universes.each do |universe| %>
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div class="card h-100 shadow-sm hover-lift universe-card border-2"
-                 data-selection-target="card"
-                 data-id="<%= universe.id %>"
-                 data-action="click->selection#select"
-                 style="border-color: #FF6B6B; cursor: pointer;">
-              <div class="position-absolute top-0 end-0 m-2" style="z-index: 10;">
-                <span class="badge" style="background-color: #FF6B6B;">
-                  <i class="bi bi-star-fill"></i> Custom
-                </span>
-              </div>
-              <% if universe.image.attached? %>
-                <%= image_tag url_for(universe.image), class: "card-img-top", alt: universe.name, style: "height: 200px; object-fit: cover;" %>
-              <% else %>
-                <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: linear-gradient(135deg, #FFD3B6 0%, #FFAAA5 100%);">
-                  <i class="bi bi-globe-americas" style="font-size: 4rem; color: #FF6B6B;"></i>
-                </div>
-              <% end %>
-              <div class="card-body d-flex flex-column text-center">
-                <h5 class="card-title mb-3" style="color: #FF6B6B;"><%= universe.name %></h5>
-                <% if universe.description.present? %>
-                  <p class="card-text text-muted small mb-3 flex-grow-1"><%= truncate(universe.description, length: 80) %></p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        <% end %>
-      <% end %>
-
-      <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-        <%= link_to new_universe_path, class: "text-decoration-none" do %>
-          <div class="card h-100 shadow-sm hover-lift border-2 border-dashed" style="border-color: #FF6B6B;">
-            <div class="card-body d-flex flex-column align-items-center justify-content-center text-center py-5">
-              <i class="bi bi-plus-circle mb-3" style="font-size: 3rem; color: #FF6B6B;"></i>
-              <h5 class="card-title mb-3" style="color: #FF6B6B;">Create your own</h5>
-              <p class="card-text text-muted small mb-4">Design a unique world for your story</p>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-
-    <%= link_to "Back", characters_path, class: "btn btn-danger mt-4" %>
-
-    <div class="continue-button-wrapper">
-      <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
-    </div>
+  <!-- Back Button -->
+  <%= link_to characters_path, class: "back-button" do %>
+    <i class="fas fa-arrow-left me-2"></i>Back
   <% end %>
-</div>
-</div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const randomizeBtn = document.getElementById('randomize-btn');
+  <div class="container py-5" data-controller="selection">
+    <!-- Simple magical title -->
+    <div class="magical-title-section">
+      <h1 class="magical-title">
+        <span class="sparkle">🌍</span> Where Will Your Story Unfold? <span class="sparkle">🌍</span>
+      </h1>
+    </div>
 
-    randomizeBtn.addEventListener('click', function() {
-      console.log('Randomize button clicked - functionality to be implemented');
-      alert('Randomize feature coming soon!');
-    });
-  });
-</script>
+    <%= form_with url: select_universes_path, method: :post, data: { turbo: false } do |f| %>
+      <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
+
+      <!-- Universes Showcase: 4 cards max (3 universes + 1 Create) -->
+      <div class="characters-showcase">
+        <div class="row g-4 justify-content-center">
+          <!-- Universe 1: Placeholder -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="character-card universe-card"
+                 data-selection-target="card"
+                 data-id="<%= @default_universes.first&.id || 1 %>"
+                 data-action="click->selection#select">
+              <div class="character-image-fancy character-placeholder">
+                <i class="bi bi-globe-americas"></i>
+              </div>
+              <div class="character-info">
+                <h5 class="character-name-fancy">Enchanted Forest</h5>
+                <p class="character-description">A magical woodland filled with ancient trees and wonder!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Universe 2: Placeholder -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="character-card universe-card"
+                 data-selection-target="card"
+                 data-id="<%= @default_universes.second&.id || 2 %>"
+                 data-action="click->selection#select">
+              <div class="character-image-fancy character-placeholder">
+                <i class="bi bi-rocket-takeoff"></i>
+              </div>
+              <div class="character-info">
+                <h5 class="character-name-fancy">Galaxy Beyond</h5>
+                <p class="character-description">A vast cosmos of stars, planets, and endless adventures!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Universe 3: Placeholder -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <div class="character-card universe-card"
+                 data-selection-target="card"
+                 data-id="<%= @default_universes.third&.id || 3 %>"
+                 data-action="click->selection#select">
+              <div class="character-image-fancy character-placeholder">
+                <i class="bi bi-building"></i>
+              </div>
+              <div class="character-info">
+                <h5 class="character-name-fancy">Future City</h5>
+                <p class="character-description">A bustling metropolis of technology and innovation!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Create Your Own Card -->
+          <div class="col-12 col-sm-6 col-lg-3">
+            <%= link_to new_universe_path, class: "text-decoration-none" do %>
+              <div class="create-card-fancy">
+                <div class="create-icon">
+                  <i class="bi bi-plus-circle"></i>
+                </div>
+                <h5 class="create-text">Create Your Own</h5>
+                <p class="create-subtext">Design your own world!</p>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continue Button - Fixed at Bottom -->
+      <div class="continue-button-wrapper">
+        <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
+      </div>
+    <% end %>
+  </div>
+</div>
