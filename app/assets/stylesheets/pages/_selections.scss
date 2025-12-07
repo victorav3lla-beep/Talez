@@ -1,14 +1,13 @@
-// David work - TALEZ Selection Pages (Premium v2)
-// Characters & Universe selection with glassmorphism + gold effects
+// ============================================================
+// TALEZ DESIGN SYSTEM - HYBRID MASTER V3
+// ============================================================
 @import '../config/colors';
 
-// Config vars
+// --- CONFIG VARS ---
 $card-radius: 24px;
 $gold-dark: #b8860b;
 $gold-light: #ffd700;
-$gold-pale: #fff8dc;
 
-// Page layout with subtle vignette
 .page-wrapper {
   min-height: 100vh;
   background: radial-gradient(circle at center top, #f8f9fa 0%, #e9ecef 100%);
@@ -17,7 +16,7 @@ $gold-pale: #fff8dc;
   overflow-x: hidden;
 }
 
-// Back button with glassmorphism
+// --- BACK BUTTON ---
 .back-button {
   position: absolute;
   top: 2rem;
@@ -26,105 +25,126 @@ $gold-pale: #fff8dc;
   backdrop-filter: blur(10px);
   padding: 12px 24px;
   border-radius: 16px;
-  color: $text-dark;
+  color: #333;
   text-decoration: none;
   font-weight: 600;
-  border: 1px solid rgba(0,0,0,0.05);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  transition: all 0.3s ease;
   z-index: 100;
-
-  &:hover {
-    transform: translateX(-5px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    color: $primary-coral;
-  }
-
-  @media (max-width: 768px) {
-    top: 1rem;
-    left: 1rem;
-    padding: 8px 16px;
-    font-size: 0.9rem;
-  }
+  &:hover { transform: translateX(-5px); color: $primary-coral; }
 }
 
-// Magical title with drop shadow
+// --- MAGICAL TITLE ---
 .magical-title-section {
   text-align: center;
   margin: 4rem 0 5rem;
-  position: relative;
-
   .magical-title {
     font-size: 3.5rem;
     font-weight: 900;
-    letter-spacing: -1px;
     background: linear-gradient(135deg, $primary-coral 0%, $secondary-teal 50%, $accent-yellow 100%);
     background-size: 200% auto;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: transparent;
     animation: gradient-flow 4s ease infinite;
     filter: drop-shadow(0 4px 10px rgba(255, 107, 107, 0.3));
-
-    @media (max-width: 768px) {
-      font-size: 2.2rem;
-    }
-
-    .sparkle {
-      display: inline-block;
-      animation: sparkle-spin 3s linear infinite;
-      margin: 0 0.5rem;
-    }
   }
 }
+@keyframes gradient-flow { 0% { background-position: 0% 50%; } 100% { background-position: 0% 50%; } }
 
-@keyframes gradient-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-@keyframes sparkle-spin {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  25% { transform: rotate(-15deg) scale(1.2); }
-  50% { transform: rotate(0deg) scale(1); }
-  75% { transform: rotate(15deg) scale(1.2); }
-}
-
-.characters-showcase {
-  margin-bottom: 3rem;
-}
-
-// Premium character cards with glassmorphism
+// --- CHARACTER CARD (MASTER CLASS) ---
 .character-card-fancy {
   position: relative;
   background: white;
   border-radius: $card-radius;
   min-height: 520px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   border: none;
-  z-index: 1;
   overflow: hidden;
+  clip-path: inset(0 round $card-radius); // Fix for preserve-3d
 
-  &:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-    z-index: 5;
+  // 3D TILT PROPERTIES (New)
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.1s ease-out; // Rapide pour le tilt
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
-    .character-image-fancy img { transform: scale(1.1); }
-    .character-image-fancy::after {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
+  // Rainbow holographic layer
+  .holo-rainbow {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease, background 0.1s ease;
+    border-radius: inherit;
+    mix-blend-mode: screen;
+  }
+
+  // Sparkle container
+  .sparkle-container {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+    border-radius: inherit;
+    overflow: hidden;
+  }
+
+  // Individual sparkle
+  .sparkle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    animation: sparkle-fade 1s ease-out forwards;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, white, transparent);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1px;
+      height: 8px;
+      background: linear-gradient(180deg, transparent, white, transparent);
     }
   }
 
-  // Image wrapper
-  .character-image-fancy {
+  @keyframes sparkle-fade {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+  }
+
+  // IMAGE & SHEEN
+  .character-img, .character-image-wrapper {
     position: absolute;
-    inset: 0;
+    inset: -10px; // Overflow to cover corners during parallax
     z-index: 0;
+    transition: transform 0.1s ease; // Parallax
 
     img {
       width: 100%;
@@ -133,44 +153,13 @@ $gold-pale: #fff8dc;
       transition: transform 0.6s ease;
     }
 
-    // Diagonal sheen before, sparkle after
-    &::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(
-        115deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.7) 50%,
-        transparent 60%
-      );
-      transform: scale(1.5);
-      z-index: 3;
-      pointer-events: none;
-      opacity: 0;
-    }
-
-    // Sparkle on hover
-    &::after {
-      content: '✨';
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 2rem;
-      opacity: 0;
-      transform: scale(0) rotate(-45deg);
-      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-      z-index: 2;
-      filter: drop-shadow(0 0 10px white);
-    }
-
-    &.character-placeholder {
+    // Placeholder for images
+    .character-placeholder {
       display: flex;
       align-items: center;
       justify-content: center;
+      width: 100%;
+      height: 100%;
       background: linear-gradient(135deg, $accent-yellow 0%, $primary-coral 100%);
 
       i {
@@ -179,121 +168,102 @@ $gold-pale: #fff8dc;
         opacity: 0.9;
       }
     }
+
+    // Sheen Effect (Fix: Intégré directement ici)
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(115deg, transparent 40%, rgba(255, 255, 255, 0.7) 50%, transparent 60%);
+      transform: scale(1.5);
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0; // Caché par défaut
+    }
   }
 
-  &:hover .character-image-fancy::after {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-
-  // Glass content area at bottom
-  .character-info {
+  // GLASSMORPHISM CONTENT
+  .character-content {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     padding: 2rem 1.5rem;
-    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.5) 100%);
+    // Fix: Static blur to prevent white flash
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
     backdrop-filter: blur(10px);
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
     border-top: 1px solid rgba(255,255,255,0.1);
+    border-bottom-left-radius: inherit;
+    border-bottom-right-radius: inherit;
   }
 
-  .character-name-fancy {
+  .character-name {
     font-size: 1.8rem;
     font-weight: 800;
     color: white;
-    margin: 0;
     text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-    letter-spacing: -0.5px;
   }
 
   .character-description {
     color: rgba(255, 255, 255, 0.9);
     font-size: 0.95rem;
-    line-height: 1.5;
-    font-weight: 400;
-    margin: 0;
   }
 
-  // Golden selected state
+  // GOLDEN SELECTION STATE
   &::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    box-sizing: border-box;
     pointer-events: none;
     z-index: 10;
     opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.5s cubic-bezier(0.25, 0.8, 0.25, 1),
-                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1),
-                border-color 0.5s ease,
-                box-shadow 0.5s ease;
-    border: 3px solid rgba(255, 236, 179, 0);
-    box-shadow: inset 0 0 0 0 rgba(0,0,0,0);
-    will-change: opacity, transform;
+    transition: all 0.3s ease;
+    border: 3px solid rgba(255, 236, 179, 0.9);
   }
 
   &.selected {
-    transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-
-    // Sheen animation
-    .character-image-fancy::before {
+    // Activation du Sheen
+    .character-img::before, .character-image-wrapper::before {
       opacity: 1;
       animation: holoSheen 4s infinite linear;
     }
 
     &::after {
       opacity: 1;
-      transform: scale(1);
-      border-color: $gold-light;
-      box-shadow:
-        inset 0 0 20px rgba(255, 223, 100, 0.2),
-        inset 0 0 0 4px $gold-dark,
-        0 0 30px rgba(255, 215, 0, 0.6);
+      box-shadow: inset 0 0 20px rgba(255, 223, 100, 0.2), inset 0 0 0 4px $gold-dark, 0 0 30px rgba(255, 215, 0, 0.6);
       animation: premiumPulse 4s infinite ease-in-out;
     }
-
-    .character-name-fancy {
-      color: $gold-light;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-    }
+    .character-name { color: $gold-light; }
   }
 }
 
 @keyframes premiumPulse {
-  0%, 100% {
-    box-shadow:
-      inset 0 0 20px rgba(255, 223, 100, 0.2),
-      inset 0 0 0 4px $gold-dark,
-      0 0 30px rgba(255, 215, 0, 0.5);
-  }
-  50% {
-    box-shadow:
-      inset 0 0 40px rgba(255, 236, 179, 0.4),
-      inset 0 0 0 4px #e5c15d,
-      0 0 50px rgba(255, 215, 0, 0.9);
-  }
+  0%, 100% { box-shadow: inset 0 0 20px rgba(255, 223, 100, 0.2), inset 0 0 0 4px $gold-dark, 0 0 30px rgba(255, 215, 0, 0.5); }
+  50% { box-shadow: inset 0 0 40px rgba(255, 236, 179, 0.4), inset 0 0 0 4px #e5c15d, 0 0 50px rgba(255, 215, 0, 0.9); }
 }
 
-// Holographic create card
-.create-card-fancy {
+@keyframes holoSheen {
+  0% { left: -150%; }
+  50% { left: 150%; }
+  100% { left: 150%; }
+}
+
+// --- CREATE CARD (HOLOGRAPHIC OIL SLICK) ---
+.create-own-card {
   @extend .character-card-fancy;
   background: black;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem;
-  overflow: hidden;
 
-  // Holographic background
   &::before {
     content: '';
     position: absolute;
@@ -301,12 +271,7 @@ $gold-pale: #fff8dc;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at center,
-      $primary-coral,
-      $accent-yellow,
-      $secondary-teal,
-      $primary-coral
-    );
+    background: radial-gradient(circle at center, $primary-coral, $accent-yellow, $secondary-teal, $primary-coral);
     background-size: 50% 50%;
     filter: blur(40px);
     animation: holo-spin 10s linear infinite;
@@ -314,72 +279,48 @@ $gold-pale: #fff8dc;
     z-index: 0;
   }
 
-  // Dark overlay
-  &::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 1;
-  }
-
-  .create-icon {
+  .create-content-wrapper {
     position: relative;
     z-index: 5;
-    font-size: 5rem;
-    margin-bottom: 1.5rem;
+    text-align: center;
     color: white;
-    filter: drop-shadow(0 0 15px rgba(255,255,255,0.6));
-    animation: float-icon 3s ease-in-out infinite;
-
-    i { color: white; }
+    transform: translateZ(30px); // Effet 3D
   }
 
-  .create-text {
-    position: relative;
-    z-index: 5;
-    font-size: 2rem;
-    font-weight: 800;
+  .create-icon { font-size: 5rem; margin-bottom: 1.5rem; }
+  .create-text { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .create-subtext { color: rgba(255, 255, 255, 0.9); }
+}
+@keyframes holo-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+// --- CONTINUE BUTTON ---
+.continue-button-wrapper {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  width: 90%;
+  max-width: 400px;
+  .btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 20px;
+    background: linear-gradient(90deg, $primary-coral, #ff6b6b);
+    border: none;
     color: white;
-    margin-bottom: 0.5rem;
-  }
-
-  .create-subtext {
-    position: relative;
-    z-index: 5;
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
-  }
-
-  &:hover {
-    &::before {
-      opacity: 0.8;
-      animation-duration: 5s;
-    }
-    .create-icon {
-      transform: scale(1.1);
-    }
+    font-weight: bold;
+    box-shadow: 0 10px 30px rgba($primary-coral, 0.4);
+    &:hover { transform: translateY(-3px); }
   }
 }
 
-@keyframes holo-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+// --- UNIVERSE CARD (INHERITS CHARACTER STYLES) ---
+.universe-card {
+  @extend .character-card-fancy;
 }
 
-@keyframes float-icon {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-// Sheen diagonal animation
-@keyframes holoSheen {
-  0% { left: -150%; }
-  20% { left: 150%; }
-  100% { left: 150%; }
-}
-
-// Buttons
+// --- BUTTONS ---
 .btn-sunset {
   background-color: $primary-coral;
   border-color: $primary-coral;
@@ -403,66 +344,12 @@ $gold-pale: #fff8dc;
   }
 }
 
-// Continue button
-.continue-button-wrapper {
-  position: fixed;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  width: 90%;
-  max-width: 400px;
-
-  .btn {
-    width: 100%;
-    padding: 16px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba($primary-coral, 0.4);
-    text-transform: uppercase;
-    background: linear-gradient(90deg, $primary-coral, #ff6b6b);
-    border: none;
-    min-width: 200px;
-
-    &:hover:not(:disabled) {
-      transform: translateY(-3px);
-      box-shadow: 0 15px 40px rgba($primary-coral, 0.6);
-      filter: brightness(1.1);
-    }
-  }
-}
-
-// Universe cards use character card styles
-.universe-card {
-  @extend .character-card-fancy;
-
-  .character-placeholder i {
-    font-size: 8rem;
-  }
-
-  @media (max-width: 768px) {
-    .character-placeholder i {
-      font-size: 6rem;
-    }
-  }
-}
-
-// Responsive
+// --- RESPONSIVE ---
 @media (max-width: 768px) {
   .page-wrapper { padding-bottom: 120px; }
-
   .character-card-fancy {
     min-height: 420px;
-
-    .character-name-fancy {
-      font-size: 1.5rem;
-    }
-
-    .character-info {
-      backdrop-filter: blur(10px);
-      padding: 1.5rem 1rem;
-    }
+    .character-name { font-size: 1.5rem; }
+    .character-content { padding: 1.5rem 1rem; }
   }
 }
