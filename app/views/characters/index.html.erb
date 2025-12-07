@@ -30,7 +30,7 @@
         <div class="row g-4 justify-content-center">
           <!-- Character 1: Sparkle Fairy -->
           <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card"
+            <div class="character-card-fancy"
                  data-selection-target="card"
                  data-id="<%= @default_characters.first&.id || 1 %>"
                  data-action="click->selection#select">
@@ -46,7 +46,7 @@
 
           <!-- Character 2: Blaze Dragon -->
           <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card"
+            <div class="character-card-fancy"
                  data-selection-target="card"
                  data-id="<%= @default_characters.second&.id || 2 %>"
                  data-action="click->selection#select">
@@ -62,7 +62,7 @@
 
           <!-- Character 3: Captain Stella -->
           <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card"
+            <div class="character-card-fancy"
                  data-selection-target="card"
                  data-id="<%= @default_characters.third&.id || 3 %>"
                  data-action="click->selection#select">

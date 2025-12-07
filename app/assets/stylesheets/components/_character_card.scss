@@ -1,0 +1,115 @@
+// David work - Premium gold selection effect for character & universe cards
+.character-card {
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  border-radius: 20px;
+  overflow: hidden;
+  border: none;
+  z-index: 1;
+
+  // Base styles
+  background: white;
+  min-height: 520px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  // Diagonal sheen effect
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -150%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      115deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.7) 50%,
+      transparent 60%
+    );
+    transform: scale(1.5);
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0;
+  }
+
+  // Premium gold frame
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-sizing: border-box;
+    opacity: 0;
+    transform: scale(0.98);
+    transition: all 0.5s ease;
+    border: 2px solid rgba(255, 236, 179, 0.8);
+    box-shadow:
+      inset 0 0 15px rgba(255, 215, 0, 0.3),
+      inset 0 0 0 3px #d4af37,
+      0 0 20px rgba(212, 175, 55, 0.0);
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  // Selected state
+  &.selected {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+
+    &::before {
+      opacity: 1;
+      animation: holoSheen 4s infinite linear;
+    }
+
+    &::after {
+      opacity: 1;
+      transform: scale(1);
+      box-shadow:
+        inset 0 0 20px rgba(255, 223, 100, 0.4),
+        inset 0 0 0 4px #d4af37,
+        0 0 25px rgba(255, 215, 0, 0.6);
+      animation: premiumPulse 4s infinite ease-in-out;
+    }
+  }
+}
+
+// Breathing animation for gold frame
+@keyframes premiumPulse {
+  0% {
+    box-shadow:
+      inset 0 0 20px rgba(255, 223, 100, 0.4),
+      inset 0 0 0 4px #d4af37,
+      0 0 25px rgba(255, 215, 0, 0.5);
+  }
+  50% {
+    box-shadow:
+      inset 0 0 30px rgba(255, 236, 179, 0.6),
+      inset 0 0 0 4px #f1e5ac,
+      0 0 40px rgba(255, 215, 0, 0.8);
+  }
+  100% {
+    box-shadow:
+      inset 0 0 20px rgba(255, 223, 100, 0.4),
+      inset 0 0 0 4px #d4af37,
+      0 0 25px rgba(255, 215, 0, 0.5);
+  }
+}
+
+// Diagonal sheen animation
+@keyframes holoSheen {
+  0% {
+    left: -150%;
+  }
+  20% {
+    left: 150%;
+  }
+  100% {
+    left: 150%;
+  }
+}
