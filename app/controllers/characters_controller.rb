@@ -1,12 +1,13 @@
+require "open-uri"
 class CharactersController < ApplicationController
   SYSTEM_PROMPT = <<~PROMPT
-  You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
+    You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
 
-  I am a kid looking to create a story, and would appreciate assistance creating aesthetically pleasing stories in an organized way
+    I am a kid looking to create a story, and would appreciate assistance creating aesthetically pleasing stories in an organized way
 
-  Return in JSON format, keys should be ["name", "description"]
+    Return in JSON format, keys should be ["name", "description"]
   PROMPT
-    before_action :authenticate_user!
+  before_action :authenticate_user!
   before_action :load_selected_profile, only: [:index, :new, :create]
 
   def index
@@ -30,78 +31,57 @@ class CharactersController < ApplicationController
   #   # end
   # end
 
-def create
-  if character_params[:description].present?
-    llm = RubyLLM.chat
-    llm.with_instructions(SYSTEM_PROMPT)
+  def create
+    if character_params[:description].present?
+      llm = RubyLLM.chat
+      llm.with_instructions(SYSTEM_PROMPT)
 
-    if character_params[:name].blank?
-      response = llm.ask(character_params[:description])
-      begin
-        character_data = JSON.parse(response.content)
-        character_name = character_data["name"]
-        character_description = character_data["description"]
-      rescue JSON::ParserError => e
-        redirect_to characters_path, alert: "AI error: #{e.message}"
-        return
+      if character_params[:name].blank?
+        response = llm.ask(character_params[:description])
+        begin
+          character_data = JSON.parse(response.content)
+          character_name = character_data["name"]
+          character_description = character_data["description"]
+        rescue JSON::ParserError => e
+          redirect_to characters_path, alert: "AI error: #{e.message}"
+          return
+        end
+      else
+        character_name = character_params[:name]
+        character_description = character_params[:description]
       end
-    else
-      character_name = character_params[:name]
-      character_description = character_params[:description]
-    end
 
-    @character = @selected_profile.characters.new(
-      name: character_name,
-      description: character_description,
-      is_custom: true
-    )
+      @character = @selected_profile.characters.new(
+        name: character_name,
+        description: character_description,
+        is_custom: true,
+      )
 
-
-      response_text = response["content"] || response_content_from_llm
-      image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
-
-      # image_file = AiImageService.new(image_prompt).generate
-      image = RubyLLM.paint("#{response_text}", model: "dall-e-3")
+      image_prompt = "#{character_name}: #{character_description}"
+      image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3")
 
       if image.url
-        # Always use a random filename since there's no name field
-        filename = "story-#{SecureRandom.hex(4)}"
-
         image_data = URI.open(image.url)
 
-        @story.images.attach(
+        @character.image.attach(
           io: image_data,
-          filename: "#{filename}.png",
+          filename: "#{character_name.parameterize}.png",
           content_type: "image/png",
         )
+      else
+        Rails.logger.warn("No image generated for #{character_name}")
       end
 
-
-    image_prompt = "#{character_name}: #{character_description}"
-    image_service = AiImageService.new(image_prompt)
-    image_file = image_service.generate
-
-    if image_file
-      @character.image.attach(
-        io: image_file,
-        filename: "#{character_name.parameterize}.png",
-        content_type: 'image/png'
-      )
+      if @character.save
+        session[:selected_character_id] = @character.id
+        redirect_to character_path(@character), notice: "Character created!"
+      else
+        redirect_to new_character_path, alert: "Failed to create character: #{@character.errors.full_messages.join(", ")}"
+      end
     else
-      Rails.logger.warn("No image generated for #{character_name}")
+      redirect_to characters_path, alert: "Please provide a description"
     end
-
-    if @character.save
-      session[:selected_character_id] = @character.id
-      redirect_to character_path(@character), notice: "Character created!"
-    else
-      redirect_to new_character_path, alert: "Failed to create character: #{@character.errors.full_messages.join(', ')}"
-    end
-
-  else
-    redirect_to characters_path, alert: "Please provide a description"
   end
-end
 
   def select
     @character = Character.find(params[:id])
@@ -118,15 +98,14 @@ end
     @character = Character.find(params[:id])
   end
 
+  private
 
-private
-
-def load_selected_profile
-  @selected_profile = current_profile
-  unless @selected_profile
-    redirect_to profiles_path, alert: "Please select a profile first."
+  def load_selected_profile
+    @selected_profile = current_profile
+    unless @selected_profile
+      redirect_to profiles_path, alert: "Please select a profile first."
+    end
   end
-end
 
   def character_params
     params.require(:character).permit(:name, :description)
