@@ -1,19 +1,13 @@
 <!-- TALEZ Logo - Top Left -->
-<div class="page-logo">
-  <%= link_to dashboard_path, class: "logo-link" do %>
-    <h1 class="logo-text">TALEZ</h1>
-  <% end %>
+<div class="page-logo" data-controller="logo-switcher">
+  <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
+  <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
 </div>
 
 <!-- Theme Toggle - Top Right -->
 <%= render 'shared/theme_toggle' %>
 
 <div class="page-wrapper">
-  <!-- Back Button -->
-  <%= link_to dashboard_path, class: "back-button" do %>
-    <i class="fas fa-arrow-left me-2"></i>Back
-  <% end %>
-
   <div class="container py-5" data-controller="selection">
     <!-- Simple magical title -->
     <div class="magical-title-section">
@@ -111,6 +105,15 @@
       <div class="continue-button-wrapper">
         <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
       </div>
+
+      <!-- Back Button - At Bottom Right -->
+      <div class="text-end mt-4 mb-5 w-100 px-3">
+        <%= link_to dashboard_path, class: "back-button" do %>
+          <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+        <% end %>
+      </div>
     <% end %>
+
+
   </div>
 </div>

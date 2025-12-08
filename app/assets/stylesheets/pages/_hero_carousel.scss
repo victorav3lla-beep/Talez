@@ -1,5 +1,5 @@
 // ==========================================================
-// TALEZ Hero Carousel - Playful & Kid-Friendly
+// TALEZ Hero Carousel
 // ==========================================================
 
 @import '../config/colors';
@@ -95,9 +95,13 @@
 .hero-carousel-section {
   position: relative;
   padding: 32px;
-  background: linear-gradient(135deg, lighten($primary-coral, 32%) 0%, lighten($accent-yellow, 22%) 100%);
-  border-radius: 0 0 24px 24px;
-  overflow: hidden;
+  background: transparent;
+  border-radius: 0;
+  overflow: visible;
+  background-image: url('/assets/images/background.jpg');
+  background-size: cover; 
+  background-position: center;
+  background-repeat: no-repeat;
 
   @media (max-width: 768px) {
     padding: 20px 16px;
