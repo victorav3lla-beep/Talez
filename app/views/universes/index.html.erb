@@ -96,6 +96,15 @@
         </div>
       </div>
 
+
+      <div class="universe-showcase mt-4">
+        <div class="row g-4 justify-content-center">
+          <% @custom_universes.each do |universe| %>
+            <%= render partial: "card", locals: { universe: universe } %>
+          <% end %>
+        </div>
+      </div>
+
       <!-- Continue Button - Fixed at Bottom -->
       <div class="continue-button-wrapper">
         <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
