@@ -4,6 +4,7 @@
        data-selection-target="card"
        data-id="<%= universe.id %>"
        data-action="click->selection#select">
+
     <% if universe.is_custom %>
       <%= form_with url: universe_path(universe), method: :delete,
           local: true,
@@ -15,20 +16,23 @@
         <% end %>
       <% end %>
     <% end %>
+
     <div class="character-image-wrapper">
-      <% if universe.image_url.present? %>
-        <%= image_tag universe.image_url, alt: universe.name %>
+      <% if universe.image.attached? %>
+        <%= image_tag universe.image, alt: universe.name %>
       <% else %>
         <div class="character-placeholder">
           <i class="bi bi-globe-americas"></i>
         </div>
       <% end %>
     </div>
+
     <div class="character-content">
       <h5 class="character-name"><%= universe.name %></h5>
       <% if universe.description.present? %>
         <p class="character-description"><%= truncate(universe.description, length: 80) %></p>
       <% end %>
     </div>
+
   </div>
 </div>
