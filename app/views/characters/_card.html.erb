@@ -10,10 +10,13 @@
       <% end %>
     </div>
     <div class="character-content">
-      <h5 class="character-name"><%= character.name %></h5>
-      <% if character.description.present? %>
-        <p class="character-description"><%= truncate(character.description, length: 80) %></p>
+      <%= link_to character_path(character), class: "text-decoration-none text-dark" do %>
+        <h5 class="character-name"><%= character.name %></h5>
+        <% if character.description.present? %>
+          <p class="character-description"><%= truncate(character.description, length: 80) %></p>
+        <% end %>
       <% end %>
     </div>
+
   </div>
 </div>

@@ -98,6 +98,12 @@ class CharactersController < ApplicationController
     @character = Character.find(params[:id])
   end
 
+  def destroy
+    @character = current_profile.characters.find(params[:id])
+    @character.destroy
+    redirect_to characters_path, notice: "Character deleted successfully."
+  end
+
   private
 
   def load_selected_profile
