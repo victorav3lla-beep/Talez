@@ -28,63 +28,68 @@
       <!-- Universes Showcase: 4 cards max (3 universes + 1 Create) -->
       <div class="characters-showcase">
         <div class="row g-4 justify-content-center">
-          <!-- Universe 1: Placeholder -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card universe-card"
+          <!-- Universe 1: Enchanted Forest -->
+          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+            <div class="universe-card"
+                 data-tilt-target="card"
                  data-selection-target="card"
                  data-id="<%= @default_universes.first&.id || 1 %>"
                  data-action="click->selection#select">
-              <div class="character-image-fancy character-placeholder">
-                <i class="bi bi-globe-americas"></i>
+              <div class="character-image-wrapper">
+                <%= image_tag 'enchanted_forest.jpg', alt: 'Enchanted Forest' %>
               </div>
-              <div class="character-info">
-                <h5 class="character-name-fancy">Enchanted Forest</h5>
+              <div class="character-content">
+                <h5 class="character-name">Enchanted Forest</h5>
                 <p class="character-description">A magical woodland filled with ancient trees and wonder!</p>
               </div>
             </div>
           </div>
 
-          <!-- Universe 2: Placeholder -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card universe-card"
+          <!-- Universe 2: Galaxy Beyond -->
+          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+            <div class="universe-card"
+                 data-tilt-target="card"
                  data-selection-target="card"
                  data-id="<%= @default_universes.second&.id || 2 %>"
                  data-action="click->selection#select">
-              <div class="character-image-fancy character-placeholder">
-                <i class="bi bi-rocket-takeoff"></i>
+              <div class="character-image-wrapper">
+                <%= image_tag 'galaxy_beyond.jpg', alt: 'Galaxy Beyond' %>
               </div>
-              <div class="character-info">
-                <h5 class="character-name-fancy">Galaxy Beyond</h5>
+              <div class="character-content">
+                <h5 class="character-name">Galaxy Beyond</h5>
                 <p class="character-description">A vast cosmos of stars, planets, and endless adventures!</p>
               </div>
             </div>
           </div>
 
-          <!-- Universe 3: Placeholder -->
-          <div class="col-12 col-sm-6 col-lg-3">
-            <div class="character-card universe-card"
+          <!-- Universe 3: Future City -->
+          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+            <div class="universe-card"
+                 data-tilt-target="card"
                  data-selection-target="card"
                  data-id="<%= @default_universes.third&.id || 3 %>"
                  data-action="click->selection#select">
-              <div class="character-image-fancy character-placeholder">
-                <i class="bi bi-building"></i>
+              <div class="character-image-wrapper">
+                <%= image_tag 'future_city.jpeg', alt: 'Future City' %>
               </div>
-              <div class="character-info">
-                <h5 class="character-name-fancy">Future City</h5>
+              <div class="character-content">
+                <h5 class="character-name">Future City</h5>
                 <p class="character-description">A bustling metropolis of technology and innovation!</p>
               </div>
             </div>
           </div>
 
           <!-- Create Your Own Card -->
-          <div class="col-12 col-sm-6 col-lg-3">
+          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
             <%= link_to new_universe_path, class: "text-decoration-none" do %>
-              <div class="create-card-fancy">
-                <div class="create-icon">
-                  <i class="bi bi-plus-circle"></i>
+              <div class="create-own-card" data-tilt-target="card">
+                <div class="create-content-wrapper">
+                  <div class="create-icon">
+                    <i class="bi bi-plus-circle"></i>
+                  </div>
+                  <h5 class="create-text">Create Your Own</h5>
+                  <p class="create-subtext">Design your own world!</p>
                 </div>
-                <h5 class="create-text">Create Your Own</h5>
-                <p class="create-subtext">Design your own world!</p>
               </div>
             <% end %>
           </div>
