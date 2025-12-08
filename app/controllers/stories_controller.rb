@@ -38,7 +38,7 @@ class StoriesController < ApplicationController
       )
 
       # Generate and attach page image
-      page_image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+      page_image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
       page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
       if page_image.url
@@ -87,7 +87,7 @@ class StoriesController < ApplicationController
     )
 
     # Generate and attach page image
-    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
     page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
     if page_image.url
@@ -154,7 +154,7 @@ class StoriesController < ApplicationController
   end
 
   def generate_cover
-    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, 16:9, professional book cover layout"
+    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
     cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
 
     if cover_image.url
