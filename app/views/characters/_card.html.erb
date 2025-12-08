@@ -1,26 +1,19 @@
-          <div class="col-12 col-sm-6 col-md-4 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="character-card-fancy"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= character.id %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <% if character.image_url.present? %>
-                  <%= image_tag character.image_url, alt: character.name %>
-                <% else %>
-                  <div class="character-placeholder">
-                    <i class="bi bi-person-circle"></i>
-                  </div>
-                <% end %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name"><%= character.name %></h5>
-                <% if character.description.present? %>
-                  <p class="character-description"><%= truncate(character.description, length: 80) %></p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 custom-character-card" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+  <div class="character-card-fancy" data-tilt-target="card" data-selection-target="card" data-id="<%= character.id %>" data-action="click->selection#select">
+    <div class="character-image-wrapper">
+      <% if character.image.attached? %>
+        <%= image_tag character.image, alt: character.name %>
+      <% else %>
+        <div class="character-placeholder">
+          <i class="bi bi-person-circle"></i>
         </div>
-      </div>
+      <% end %>
+    </div>
+    <div class="character-content">
+      <h5 class="character-name"><%= character.name %></h5>
+      <% if character.description.present? %>
+        <p class="character-description"><%= truncate(character.description, length: 80) %></p>
+      <% end %>
+    </div>
+  </div>
+</div>

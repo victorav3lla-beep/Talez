@@ -97,9 +97,17 @@
       </div>
 
 
-      <% @custom_characters.each do|character|%>
-      <%= render partial: "card", locals: {character: character}%>
-      <%end %>
+      <!-- Custom Characters -->
+<div class="characters-showcase mt-4">
+  <div class="row g-4 justify-content-center">
+    <% @custom_characters.each do |character| %>
+      <%= render partial: "card", locals: { character: character } %>
+    <% end %>
+  </div>
+</div>
+
+
+
 
       <!-- Continue Button - Fixed at Bottom -->
       <div class="continue-button-wrapper">
