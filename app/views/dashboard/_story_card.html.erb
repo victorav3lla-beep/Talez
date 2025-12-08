@@ -1,8 +1,9 @@
 <div class="story-card" data-controller="story-card">
   <!-- Image (first AI-generated image from chat) -->
   <div class="card-img-wrapper">
-    <% first_image = story.chats.first&.messages&.where(image_url: nil)&.first&.image_url %>
-    <%= image_tag first_image || 'https://via.placeholder.com/300x400?text=Story', class: 'card-img', alt: story.title %>
+    <#% first_image = story.chats.first&.messages&.where(image_url: nil)&.first&.image_url %>
+    <% first_image = story.images.first %>
+    <%= image_tag first_image, class: 'card-img', alt: story.title if first_image.present? %>
 
     <!-- Status Badge Overlay -->
     <div class="card-status-badge">
