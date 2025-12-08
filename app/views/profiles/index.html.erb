@@ -1,22 +1,27 @@
+<div class="profile-logo">
+  <%= link_to root_path, class: "profile-logo-link" do %>
+    Talez
+  <% end %>
+</div>
+
 <div id="profile-selector">
 
   <% @profiles.each do |profile| %>
-      <%= button_to select_profile_path(profile), method: :post, class: "profile-btn", style: "background: none; border: none; cursor: pointer;" do %>
-
+    <div class="profile-container">
+      <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
         <% if profile.avatar_url.present? %>
-          <img class="avatar-xl" src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar" width="150">
+          <img class="avatar-xl" src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
         <% else %>
-          <img class="avatar-xl" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar" width="150">
+          <img class="avatar-xl" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar">
         <% end %>
         <p><%= profile.username %></p>
-        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger" %>
       <% end %>
+      <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger profile-delete-btn" %>
+    </div>
   <% end %>
 
-  <div class="mb-4 pb-2">
-    <a href="<%= new_user_profile_path(current_user) %>">
-      <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile" width="150">
-      <p>Add profile</p>
-    </a>
-  </div>
+  <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
+    <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile">
+    <p>Add profile</p>
+  <% end %>
 </div>
