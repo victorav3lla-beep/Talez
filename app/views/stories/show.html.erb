@@ -4,7 +4,7 @@
 
   <!-- Pages Carousel with Cover -->
   <% if @story.cover.attached? || @story.pages.any? %>
-    <div id="pagesCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="carousel">
+    <div id="pagesCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="false">
       <!-- Carousel Indicators -->
       <div class="carousel-indicators">
         <% if @story.cover.attached? %>

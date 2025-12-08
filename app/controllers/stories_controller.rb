@@ -154,7 +154,7 @@ class StoriesController < ApplicationController
   end
 
   def generate_cover
-    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
+    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image"
     cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
 
     if cover_image.url

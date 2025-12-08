@@ -2,10 +2,10 @@
   <div class="story-card-fancy shadow-sm" data-tilt-target="card">
     <%= link_to story_path(story), class: "text-decoration-none text-dark" do %>
       <div class="story-image-wrapper">
-        <% if story.images.present? %>
-          <%= image_tag story.images.first, class: "img-fluid", alt: story.title %>
+        <% if story.cover.present? %>
+          <%= image_tag story.cover, class: "img-fluid", alt: story.title %>
         <% else %>
-          <%= image_tag "placeholder_cover.png", class: "img-fluid", alt: "Placeholder" %>
+          <%= image_tag "default-story.png", class: "img-fluid", alt: "Placeholder" %>
         <% end %>
       </div>
       <div class="story-card__body text-center mt-2">
