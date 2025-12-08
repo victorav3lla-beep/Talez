@@ -34,7 +34,31 @@ $transition-base: all 0.3s ease;
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  background-color: $bg-light-gray;
+  position: relative;
+  background:
+    radial-gradient(circle 1200px at 15% 25%, rgba(255, 107, 107, 0.7) 0%, transparent 50%),
+    radial-gradient(circle 1000px at 85% 75%, rgba(78, 205, 196, 0.7) 0%, transparent 50%),
+    radial-gradient(circle 1100px at 50% 50%, rgba(255, 230, 109, 0.6) 0%, transparent 55%),
+    radial-gradient(circle 1300px at 75% 15%, rgba(255, 107, 107, 0.6) 0%, transparent 55%),
+    radial-gradient(circle 900px at 25% 85%, rgba(78, 205, 196, 0.65) 0%, transparent 50%);
+  background-color: #F7F7F7;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+}
+
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-20px, 10px) scale(1.02);
+  }
+  50% {
+    transform: translate(10px, -15px) scale(0.98);
+  }
+  75% {
+    transform: translate(-15px, 20px) scale(1.01);
+  }
 }
 
 .main-content {
@@ -42,6 +66,8 @@ $transition-base: all 0.3s ease;
   margin-left: 220px;  // Large sidebar width
   padding: 0;
   overflow-x: hidden;
+  position: relative;
+  z-index: 1;
 
   @media (max-width: 768px) {
     margin-left: 80px;
@@ -63,7 +89,7 @@ $transition-base: all 0.3s ease;
   flex-direction: column;
   padding: 24px 16px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
-  z-index: 1000;
+  z-index: 1001;
   transition: $transition-base;
 
   // Logo Section
@@ -241,7 +267,7 @@ $transition-base: all 0.3s ease;
   justify-content: space-between;
   gap: 24px;
   box-shadow: $shadow-sm;
-  z-index: 100;
+  z-index: 10;
 
   // Search Wrapper
   .search-wrapper {
