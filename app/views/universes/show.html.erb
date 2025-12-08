@@ -1,0 +1,26 @@
+<div class="universe-show-container text-center py-5">
+  <h1 class="mb-3"><%= @universe.name || "Your Universe" %></h1>
+  <p class="mb-4"><%= @universe.description %></p>
+
+  <% if @universe.image.attached? %>
+    <%= image_tag url_for(@universe.image), class: "img-fluid rounded shadow mb-4", style: "max-height: 500px; object-fit: cover;" %>
+  <% end %>
+
+
+  <%= link_to universes_path, class: "back-button" do %>
+    <i class="fas fa-arrow-left me-2"></i>Back
+  <% end %>
+
+  <div class="d-flex justify-content-center gap-3 mt-3">
+    <%= button_to "Delete Universe", universe_path(@universe),
+          method: :delete,
+          data: { turbo_confirm: "Are you sure you want to delete this universe?" },
+          class: "btn btn-danger btn-lg" %>
+  </div>
+
+
+  <div class="d-flex justify-content-center gap-3">
+    <%= link_to "Try Again", new_universe_path(description: @universe.description), class: "btn btn-warning btn-lg" %>
+    <%= link_to "Continue", stories_path, class: "btn btn-success btn-lg" %>
+  </div>
+</div>

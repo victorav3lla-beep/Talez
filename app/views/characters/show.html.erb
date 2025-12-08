@@ -6,6 +6,18 @@
     <%= image_tag url_for(@character.image), class: "img-fluid rounded shadow mb-4", style: "max-height: 500px; object-fit: cover;" %>
   <% end %>
 
+    <%= link_to characters_path, class: "back-button" do %>
+      <i class="fas fa-arrow-left me-2"></i>Back
+    <% end %>
+
+
+  <div class="d-flex justify-content-center gap-3 mt-3">
+    <%= button_to "Delete Character", character_path(@character),
+          method: :delete,
+          data: { confirm: "Are you sure you want to delete this character?" },
+          class: "btn btn-danger btn-lg" %>
+  </div>
+
   <div class="d-flex justify-content-center gap-3">
     <%= link_to "Try Again", new_character_path(description: @character.description), class: "btn btn-warning btn-lg" %>
     <%= link_to "Continue", universes_path, class: "btn btn-success btn-lg" %>
