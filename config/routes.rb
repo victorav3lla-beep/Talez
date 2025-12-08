@@ -25,19 +25,22 @@ Rails.application.routes.draw do
     get :try_again, on: :member
   end
 
+  resources :universes do
+    get :try_again, on: :member
+  end
 
   # 4. Dashboard
   get 'dashboard', to: 'dashboard#index'
 
   # 5. Game Flow (Story Creation)
   # We use 'collection' for select because we submit a form with a hidden ID
-  resources :characters, only: [:index, :show, :new, :create] do
+  resources :characters, only: [:index, :show, :new, :create, :destroy] do
     collection do
       post :select # Creates: POST /characters/select
     end
   end
 
-  resources :universes, only: [:index, :show, :new, :create] do
+  resources :universes, only: [:index, :show, :new, :create, :destroy] do
     collection do
       post :select # Creates: POST /universes/select
     end

@@ -1,21 +1,5 @@
-<div class="col-12 col-sm-6 col-md-4 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-  <div class="universe-card position-relative"
-       data-tilt-target="card"
-       data-selection-target="card"
-       data-id="<%= universe.id %>"
-       data-action="click->selection#select">
-
-    <% if universe.is_custom %>
-      <%= form_with url: universe_path(universe), method: :delete,
-          local: true,
-          style: "display: inline; position: absolute; top: 10px; right: 10px; z-index: 10;",
-          data: { turbo: false },
-          onsubmit: "event.stopPropagation(); return confirm('Are you sure you want to delete #{universe.name}?');" do |f| %>
-        <%= f.button type: :submit, class: "btn btn-sm btn-danger", style: "opacity: 0.9;", onclick: "event.stopPropagation();" do %>
-          <i class="bi bi-trash"></i>
-        <% end %>
-      <% end %>
-    <% end %>
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 custom-character-card" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+  <div class="character-card-fancy" data-tilt-target="card" data-selection-target="card" data-id="<%= universe.id %>" data-action="click->selection#select">
 
     <div class="character-image-wrapper">
       <% if universe.image.attached? %>
@@ -28,11 +12,13 @@
     </div>
 
     <div class="character-content">
-      <h5 class="character-name"><%= universe.name %></h5>
-      <% if universe.description.present? %>
-        <p class="character-description"><%= truncate(universe.description, length: 80) %></p>
+      <%= link_to universe_path(universe), class: "text-decoration-none text-dark" do %>
+        <h5 class="character-name"><%= universe.name %></h5>
+        <% if universe.description.present? %>
+          <p class="character-description"><%= truncate(universe.description, length: 80) %></p>
+        <% end %>
       <% end %>
-    </div>
 
+    </div>
   </div>
 </div>

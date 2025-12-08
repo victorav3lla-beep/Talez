@@ -97,6 +97,11 @@ end
     @universe = Universe.find(params[:id])
   end
 
+def destroy
+  @universe = current_profile.universes.find(params[:id])
+  @universe.destroy
+  redirect_to universes_path, notice: "Universe deleted successfully."
+end
 
   private
 
