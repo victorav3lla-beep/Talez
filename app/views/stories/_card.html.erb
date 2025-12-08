@@ -1,0 +1,16 @@
+<div class="col-12 col-sm-6 col-md-4 col-lg-3 story-card" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+  <div class="story-card-fancy shadow-sm" data-tilt-target="card">
+    <%= link_to story_path(story), class: "text-decoration-none text-dark" do %>
+      <div class="story-image-wrapper">
+        <% if story.images.present? %>
+          <%= image_tag story.images.first, class: "img-fluid", alt: story.title %>
+        <% else %>
+          <%= image_tag "placeholder_cover.png", class: "img-fluid", alt: "Placeholder" %>
+        <% end %>
+      </div>
+      <div class="story-card__body text-center mt-2">
+        <h5 class="story-card__title"><%= story.title %></h5>
+      </div>
+    <% end %>
+  </div>
+</div>
