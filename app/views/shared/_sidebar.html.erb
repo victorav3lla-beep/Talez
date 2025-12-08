@@ -1,8 +1,9 @@
 <aside class="sidebar">
   <!-- Logo -->
-  <div class="sidebar-logo">
+  <div class="sidebar-logo" data-controller="logo-switcher">
     <%= link_to dashboard_path, class: 'logo-link', title: 'TALEZ Dashboard' do %>
-      <h1 class="logo-text">TALEZ</h1>
+      <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
+      <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
     <% end %>
   </div>
 

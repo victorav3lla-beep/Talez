@@ -87,14 +87,14 @@ $transition-base: all 0.3s ease;
   background-color: $sidebar-bg;
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
+  padding: 16px 16px;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
   z-index: 1001;
   transition: $transition-base;
 
   // Logo Section
   .sidebar-logo {
-    margin-bottom: 40px;
+    margin-bottom: 24px;
     text-align: center;
 
     .logo-link {
@@ -102,13 +102,18 @@ $transition-base: all 0.3s ease;
       display: block;
     }
 
-    .logo-text {
-      font-size: 28px;
-      font-weight: 900;
-      color: $primary-coral;
-      letter-spacing: 1px;
-      margin: 0;
-      line-height: 1.2;
+    .logo-image {
+      width: 185px;
+      height: auto;
+      transition: opacity 0.5s ease, transform 0.3s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      @media (max-width: 768px) {
+        width: 90px;
+      }
     }
   }
 

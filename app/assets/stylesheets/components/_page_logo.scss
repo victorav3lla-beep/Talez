@@ -3,45 +3,61 @@
 
 .page-logo {
   position: fixed;
-  top: 2rem;
-  left: 2rem;
+  top: 1rem;
+  left: 1rem;
   z-index: 1000;
 
   @media (max-width: 768px) {
-    top: 1rem;
-    left: 1rem;
+    top: 0.5rem;
+    left: 0.5rem;
   }
 
   .logo-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.75rem 1.5rem;
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
-    border-radius: 50px;
+    display: inline-block;
     text-decoration: none;
-    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 
     &:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
-    }
-
-    @media (max-width: 768px) {
-      padding: 0.5rem 1rem;
+      transform: scale(1.05);
     }
   }
 
-  .logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: white;
-    margin: 0;
-    letter-spacing: 0.5px;
+  .logo-image {
+    width: 150px;
+    height: auto;
+    transition: opacity 0.5s ease;
+    display: block;
 
     @media (max-width: 768px) {
-      font-size: 1.25rem;
+      width: 110px;
+    }
+  }
+}
+
+// Profile Page Logo - Larger size
+.profile-logo {
+  text-align: center;
+  margin: 2rem 0;
+  padding: 1rem;
+
+  .profile-logo-link {
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .profile-logo-image {
+    width: 250px;
+    height: auto;
+    transition: opacity 0.5s ease;
+    display: block;
+
+    @media (max-width: 768px) {
+      width: 180px;
     }
   }
 }

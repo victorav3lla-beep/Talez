@@ -8,3 +8,6 @@ application.register("theme-toggle", ThemeToggleController)
 
 import StatCounterController from "./stat_counter_controller"
 application.register("stat-counter", StatCounterController)
+
+import LogoSwitcherController from "./logo_switcher_controller"
+application.register("logo-switcher", LogoSwitcherController)
