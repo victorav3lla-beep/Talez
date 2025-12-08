@@ -14,5 +14,7 @@ class Story < ApplicationRecord
 
   has_many :bookmarks, dependent: :destroy
 
+  has_many :pages, dependent: :destroy
+  has_one_attached :cover
   has_many_attached :images
 end

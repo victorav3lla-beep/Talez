@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_04_083724) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_08_144443) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,6 +89,16 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_083724) do
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
+  create_table "pages", force: :cascade do |t|
+    t.bigint "story_id", null: false
+    t.string "title"
+    t.text "content"
+    t.integer "position"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["story_id"], name: "index_pages_on_story_id"
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.string "name"
     t.integer "age"
@@ -162,6 +172,7 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_04_083724) do
   add_foreign_key "likes", "profiles"
   add_foreign_key "likes", "stories"
   add_foreign_key "messages", "chats"
+  add_foreign_key "pages", "stories"
   add_foreign_key "profiles", "users"
   add_foreign_key "stories", "profiles"
   add_foreign_key "story_characters", "characters"

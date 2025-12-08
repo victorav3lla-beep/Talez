@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :profiles, only: [:index, :show, :edit, :update, :destroy] do
     member do
       post :select # Creates: POST /profiles/:id/select
+      post :add_page
     end
   end
 
@@ -49,6 +50,7 @@ Rails.application.routes.draw do
     member do
       post :bookmark
       get :print
+      post :add_page
     end
   end
 

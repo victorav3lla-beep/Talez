@@ -1,4 +1,5 @@
 require "open-uri"
+
 class StoriesController < ApplicationController
   SYSTEM_PROMPT = <<~PROMPT
     You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
@@ -18,26 +19,33 @@ class StoriesController < ApplicationController
     @ruby_llm = RubyLLM.chat
     @story = Story.new
     @story.profile = current_profile
+
     character = Character.find(session[:selected_character_id])
     universe = Universe.find(session[:selected_universe_id])
+
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content])
     response = JSON.parse(response.content)
-    if @story.update(response)
-      response_text = response["content"] || response_content_from_llm
-      image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
 
-      # image_file = AiImageService.new(image_prompt).generate
-      image = RubyLLM.paint("#{response_text}", model: "dall-e-3")
+    if @story.save
+      @story.update(title: response["title"])
+      response_text = response["content"]
 
-      if image.url
-        # Always use a random filename since there's no name field
-        filename = "story-#{SecureRandom.hex(4)}"
+      # Create first page (beginning of the story)
+      page = @story.pages.create(
+        title: response["title"],
+        content: response_text,
+        position: 1,
+      )
 
-        image_data = URI.open(image.url)
+      # Generate and attach page image
+      page_image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+      page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
-        @story.images.attach(
-          io: image_data,
-          filename: "#{filename}.png",
+      if page_image.url
+        page_image_data = URI.open(page_image.url)
+        page.image.attach(
+          io: page_image_data,
+          filename: "page-#{SecureRandom.hex(4)}.png",
           content_type: "image/png",
         )
       end
@@ -51,6 +59,52 @@ class StoriesController < ApplicationController
 
   def show
     @story = Story.find(params[:id])
+  end
+
+  def add_page
+    @story = Story.find(params[:id])
+    @ruby_llm = RubyLLM.chat
+
+    character = Character.find(session[:selected_character_id])
+    universe = Universe.find(session[:selected_universe_id])
+
+    # Determine which part of the story we're adding
+    next_position = @story.pages.count + 1
+    story_part = case next_position
+                 when 2 then "problem"
+                 when 3 then "resolution"
+                 else "continuation"
+                 end
+
+    response = @ruby_llm.with_instructions(continuation_instructions(character, universe, story_part)).ask(page_params[:content])
+    response = JSON.parse(response.content)
+
+    # Create the new page
+    page = @story.pages.create(
+      title: response["title"],
+      content: response["content"],
+      position: next_position
+    )
+
+    # Generate and attach page image
+    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast, 16:9"
+    page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
+
+    if page_image.url
+      page_image_data = URI.open(page_image.url)
+      page.image.attach(
+        io: page_image_data,
+        filename: "page-#{SecureRandom.hex(4)}.png",
+        content_type: "image/png"
+      )
+    end
+
+    # If this is the resolution (page 3), generate the cover
+    if next_position == 3
+      generate_cover
+    end
+
+    redirect_to story_path(@story), notice: "Page added successfully!"
   end
 
   private
@@ -76,5 +130,40 @@ class StoriesController < ApplicationController
       Please help me create the beggining of a story that fits within this context, then I will continue with the problem and the ending.
       Return in JSON format, keys should be ["title", "content"]
     PROMPT
+  end
+
+    def page_params
+    params.require(:page).permit(:content)
+  end
+
+  def continuation_instructions(character, universe, story_part)
+    existing_content = @story.pages.order(:position).pluck(:content).join("\n\n")
+
+    <<~PROMPT
+      You are a kids animated storybook creator.
+
+      The main character: #{character.name} - #{character.description}
+      The universe: #{universe.name} - #{universe.description}
+
+      Story so far:
+      #{existing_content}
+
+      Please create the #{story_part} of the story.
+      Return in JSON format, keys should be ["title", "content"]
+    PROMPT
+  end
+
+  def generate_cover
+    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, 16:9, professional book cover layout"
+    cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
+
+    if cover_image.url
+      cover_data = URI.open(cover_image.url)
+      @story.cover.attach(
+        io: cover_data,
+        filename: "cover-#{SecureRandom.hex(4)}.png",
+        content_type: "image/png"
+      )
+    end
   end
 end
