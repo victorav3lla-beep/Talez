@@ -1,6 +1,7 @@
-<div class="profile-logo">
+<div class="profile-logo" data-controller="logo-switcher">
   <%= link_to root_path, class: "profile-logo-link" do %>
-    Talez
+    <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'profile-logo-image', data: { logo_switcher_target: 'logo1' } %>
+    <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'profile-logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
   <% end %>
 </div>
 
