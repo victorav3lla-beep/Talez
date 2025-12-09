@@ -1,7 +1,9 @@
 <!-- TALEZ Logo - Top Left -->
 <div class="page-logo" data-controller="logo-switcher">
-  <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
-  <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
+  <%= link_to dashboard_path, class: "logo-link" do %>
+    <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
+    <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
+  <% end %>
 </div>
 
 <!-- Theme Toggle - Top Right -->
@@ -106,12 +108,6 @@
         <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
       </div>
 
-      <!-- Back Button - At Bottom Right -->
-      <div class="text-end mt-4 mb-5 w-100 px-3">
-        <%= link_to dashboard_path, class: "back-button" do %>
-          <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
-        <% end %>
-      </div>
     <% end %>
 
 

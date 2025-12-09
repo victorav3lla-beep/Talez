@@ -5,8 +5,8 @@
   position: absolute;
   top: 30px;
   left: 50%;
-  transform: translateX(-50%);
-  z-index: 100; // Toujours au-dessus de tout
+  transform: translateX(calc(-50% + 17px));
+  z-index: 100;
   text-align: center;
   width: 100%;
 
@@ -27,7 +27,7 @@
   }
 }
 
-// Background styling - PLEIN ÉCRAN FIXE
+// Background styling
 .profile-background {
   position: relative;
   height: 100vh;
@@ -127,12 +127,10 @@
       left: -150%;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        115deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.7) 50%,
-        transparent 60%
-      );
+      background: linear-gradient(115deg,
+          transparent 40%,
+          rgba(255, 255, 255, 0.7) 50%,
+          transparent 60%);
       transform: scale(1.5);
       z-index: 2;
       pointer-events: none;
@@ -151,19 +149,65 @@
     font-weight: 700;
     font-size: 1.6rem;
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
 }
 
-// Delete button
+// Delete button styling - "Netflix Style" Cross
 .profile-delete-btn {
+  position: absolute;
+  top: -10px;
+  /* Légèrement au-dessus de l'avatar */
+  right: -10px;
+  /* Légèrement à droite */
+
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+
+  /* Style visuel */
+  background-color: rgba(220, 53, 69, 0.9);
+  /* Rouge semi-transparent */
+  border: 2px solid white;
+  color: white;
+
+  /* Centrer le texte/icone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Typographie */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  line-height: 1;
+
+  /* Animation d'apparition */
   opacity: 0;
-  transition: opacity 0.3s ease;
-  margin-top: 5px;
+  transform: scale(0.8);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10;
+  /* Toujours au-dessus de l'avatar */
+
+  /* Ombre pour le détacher du fond */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background-color: rgb(220, 53, 69);
+    /* Rouge vif au survol */
+    transform: scale(1.1) !important;
+    /* Petit pop */
+    color: white;
+  }
 }
 
+// Quand on survole tout le conteneur du profil (avatar + nom)
 .profile-container:hover .profile-delete-btn {
   opacity: 1;
+  transform: scale(1);
+  top: 5px;
+  /* Petite animation de descente */
+  right: 5px;
 }
 
 // Add profile section
@@ -200,12 +244,20 @@
     font-weight: 700;
     font-size: 1.6rem;
     color: #fff;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
   }
 }
 
 @keyframes holoSheen {
-  0% { left: -150%; }
-  20% { left: 150%; }
-  100% { left: 150%; }
+  0% {
+    left: -150%;
+  }
+
+  20% {
+    left: 150%;
+  }
+
+  100% {
+    left: 150%;
+  }
 }
