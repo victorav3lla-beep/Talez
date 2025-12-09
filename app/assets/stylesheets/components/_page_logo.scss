@@ -3,13 +3,13 @@
 
 .page-logo {
   position: fixed;
-  top: 1rem;
-  left: 1rem;
+  top: 2rem;
+  left: 2rem;
   z-index: 1000;
 
   @media (max-width: 768px) {
-    top: 0.5rem;
-    left: 0.5rem;
+    top: 1rem;
+    left: 1rem;
   }
 
   .logo-link {
@@ -18,7 +18,7 @@
     transition: transform 0.3s ease;
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.2);
     }
   }
 
@@ -46,7 +46,7 @@
     transition: transform 0.3s ease;
 
     &:hover {
-      transform: scale(1.05);
+      transform: scale(1.2);
     }
   }
 

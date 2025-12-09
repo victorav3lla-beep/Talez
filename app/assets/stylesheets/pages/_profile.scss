@@ -1,0 +1,48 @@
+.profile-delete-btn {
+  position: absolute;
+  top: -10px;        /* Légèrement au-dessus de l'avatar */
+  right: -10px;      /* Légèrement à droite */
+  
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  
+  /* Style visuel */
+  background-color: rgba(220, 53, 69, 0.9); /* Rouge semi-transparent */
+  border: 2px solid white;
+  color: white;
+  
+  /* Centrer le texte/icone */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Typographie */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  line-height: 1;
+  
+  /* Animation d'apparition */
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 10; /* Toujours au-dessus de l'avatar */
+  
+  /* Ombre pour le détacher du fond */
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+
+  &:hover {
+    background-color: rgb(220, 53, 69); /* Rouge vif au survol */
+    transform: scale(1.1) !important;   /* Petit pop */
+    color: white;
+  }
+}
+
+// Quand on survole tout le conteneur du profil (avatar + nom)
+.profile-container:hover .profile-delete-btn {
+  opacity: 1;
+  transform: scale(1);
+  top: 5px;   /* Petite animation de descente */
+  right: 5px;
+}
