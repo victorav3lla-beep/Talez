@@ -3,7 +3,7 @@
 
 .page-logo {
   position: fixed;
-  top: 2rem;
+  top: calc(2rem + 0.75rem); /* Adjusted to align with theme toggle content */
   left: 2rem;
   z-index: 1000;
 
