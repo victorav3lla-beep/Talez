@@ -107,6 +107,12 @@ class StoriesController < ApplicationController
     redirect_to story_path(@story), notice: "Page added successfully!"
   end
 
+  def destroy
+    @story = Story.find(params[:id])
+    @story.destroy
+    redirect_to stories_path, notice: "Story deleted successfully."
+  end
+
   private
 
   def story_params
