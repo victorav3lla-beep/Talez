@@ -23,7 +23,7 @@ class StoriesController < ApplicationController
     character = Character.find(session[:selected_character_id])
     universe = Universe.find(session[:selected_universe_id])
 
-    response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content])
+    response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content], with:{ image: [character.image.url, universe.image.url] } )
     response = JSON.parse(response.content)
 
     if @story.save

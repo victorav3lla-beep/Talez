@@ -10,4 +10,8 @@ class Profile < ApplicationRecord
 
   has_many :bookmarks, dependent: :destroy
   has_many :bookmarked_stories, through: :bookmarks, source: :story
+
+  has_one_attached :image
+
+  validates :username, presence: true, uniqueness: { scope: :user_id }
 end
