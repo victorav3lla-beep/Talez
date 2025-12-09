@@ -38,7 +38,10 @@ class StoriesController < ApplicationController
       )
 
       # Generate and attach page image
-      page_image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT OR DIALOGUE, of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
+      page_image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT OR DIALOGUE, of: #{response_text}\nStyle: bright, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
+                        IMPORTANT: Keep the style consistent with the character and universe images provided.
+                        The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+                        The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
       page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
       if page_image.url
@@ -87,7 +90,10 @@ class StoriesController < ApplicationController
     )
 
     # Generate and attach page image
-    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
+    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, bold colors, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
+                        IMPORTANT: Keep the style consistent with the character and universe images provided.
+                        The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+                        The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
     page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
     if page_image.url
@@ -132,13 +138,16 @@ class StoriesController < ApplicationController
       The main character of my story is described as follows:
       Name: #{character.name}
       Description: #{character.description}
+      image: #{character.image.url}
 
       The universe of my story is described as follows:
       Name: #{universe.name}
       Description: #{universe.description}
+      image: #{universe.image.url}
 
-      Please help me create the beggining of a story that fits within this context, then I will continue with the problem and the ending.
+      Please help me create the beggining of a story that fits within this context and using the same style of these images, then I will continue with the problem and the ending.
       Return in JSON format, keys should be ["title", "content"]
+      IMPORTANT: Keep the style consistent with the character and universe images provided.
     PROMPT
   end
 
@@ -152,19 +161,26 @@ class StoriesController < ApplicationController
     <<~PROMPT
       You are a kids animated storybook creator.
 
-      The main character: #{character.name} - #{character.description}
-      The universe: #{universe.name} - #{universe.description}
+      The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+      The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
 
       Story so far:
-      #{existing_content}
+      #{existing_content} - #{@story.pages.order(:position).first&.image&.url}
 
       Please create the #{story_part} of the story.
       Return in JSON format, keys should be ["title", "content"]
+      IMPORTANT: Keep the style consistent with the character and universe images provided.
+
     PROMPT
   end
 
   def generate_cover
-    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}\nStyle: bright, simple shapes, bold colors, friendly characters, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image"
+    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}
+                    The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+                    The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
+                    Story content: #{ @story.pages.order(:position).pluck(:content).join(' ')}
+                    \nStyle: similar to the character and universe style, bright, bold colors, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image
+                    IMPORTANT: Keep the style consistent with the character and universe images provided."
     cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
 
     if cover_image.url
