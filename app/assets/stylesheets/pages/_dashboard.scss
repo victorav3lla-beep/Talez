@@ -31,19 +31,28 @@ $transition-base: all 0.3s ease;
 // Layout
 // ==========================================================
 
+// Remove body background when dashboard page is active
+body:has(.dashboard-page-wrapper) {
+  background: none !important;
+}
+
+// Dashboard Page Background Wrapper
+.dashboard-page-wrapper {
+  min-height: 100vh;
+  background-image: url('/images/backgrounds/background.2.jpeg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  position: relative;
+  z-index: 0;
+}
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   position: relative;
-  background:
-    radial-gradient(circle 1200px at 15% 25%, rgba(255, 107, 107, 0.7) 0%, transparent 50%),
-    radial-gradient(circle 1000px at 85% 75%, rgba(78, 205, 196, 0.7) 0%, transparent 50%),
-    radial-gradient(circle 1100px at 50% 50%, rgba(255, 230, 109, 0.6) 0%, transparent 55%),
-    radial-gradient(circle 1300px at 75% 15%, rgba(255, 107, 107, 0.6) 0%, transparent 55%),
-    radial-gradient(circle 900px at 25% 85%, rgba(78, 205, 196, 0.65) 0%, transparent 50%);
-  background-color: #F7F7F7;
-  background-size: 100% 100%;
-  background-attachment: fixed;
+  background: transparent !important;
 }
 
 @keyframes subtleFloat {
@@ -652,7 +661,14 @@ $transition-base: all 0.3s ease;
 
 .favorite-stories,
 .my-stories {
-  padding: 0 32px 32px;
+  padding: 32px;
+  margin: 0 32px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   h2 {
     font-size: 28px;
@@ -677,7 +693,8 @@ $transition-base: all 0.3s ease;
   }
 
   @media (max-width: 768px) {
-    padding: 0 16px 24px;
+    padding: 20px 16px;
+    margin: 0 16px 16px;
   }
 }
 
