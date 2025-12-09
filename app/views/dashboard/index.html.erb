@@ -159,27 +159,42 @@
         </button>
       </div>
     </section>
-    <!-- Continue Reading Card (Separate) -->
-    <% if @continue_reading %>
-      <section class="continue-reading-section">
-        <div class="continue-reading-card">
-          <h3>
-            <i class="fas fa-book-reader"></i>
-            Continue Reading
-          </h3>
-          <div class="story-thumb-wrapper">
-            <% first_image = @continue_reading.cover.attached? ? @continue_reading.cover : @continue_reading.pages.order(:position).first&.image %>
-            <% if first_image&.attached? %>
-              <%= image_tag first_image, class: 'story-thumb' %>
-            <% else %>
-              <%= image_tag 'default-story.png', class: 'story-thumb', alt: 'Default story' %>
+    <!-- All My Stories Carousel -->
+    <% carousel_stories = @profile.stories.order(updated_at: :desc).limit(5) %>
+    <% if carousel_stories.any? %>
+      <section class="all-stories-carousel-section">
+        <h2 class="carousel-section-title">
+          <i class="fas fa-book"></i>
+          All My Stories
+        </h2>
+        <div id="storiesCarousel" class="stories-scroll-wrapper" data-controller="stories-carousel">
+          <button class="scroll-arrow scroll-arrow-left" data-action="click->stories-carousel#scrollLeft">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+
+          <div class="stories-scroll-container">
+            <% carousel_stories.each do |story| %>
+              <div class="continue-reading-card">
+                <div class="story-thumb-wrapper">
+                  <% first_image = story.cover.attached? ? story.cover : story.pages.order(:position).first&.image %>
+                  <% if first_image&.attached? %>
+                    <%= image_tag first_image, class: 'story-thumb' %>
+                  <% else %>
+                    <%= image_tag 'default-story.png', class: 'story-thumb', alt: 'Default story' %>
+                  <% end %>
+                </div>
+                <p class="story-title"><%= story.title || 'Untitled Story' %></p>
+                <%= link_to story_path(story), class: 'btn btn-sm btn-aqua' do %>
+                  <i class="fas fa-play"></i>
+                  Continue
+                <% end %>
+              </div>
             <% end %>
           </div>
-          <p class="story-title"><%= @continue_reading.title || 'Untitled Story' %></p>
-          <%= link_to story_path(@continue_reading), class: 'btn btn-sm btn-aqua' do %>
-            <i class="fas fa-play"></i>
-            Continue
-          <% end %>
+
+          <button class="scroll-arrow scroll-arrow-right" data-action="click->stories-carousel#scrollRight">
+            <i class="fas fa-chevron-right"></i>
+          </button>
         </div>
       </section>
     <% end %>
@@ -197,50 +212,41 @@
         </div>
       </section>
     <% end %>
+
     <!-- Main Content Area with Stats Sidebar -->
     <div class="content-with-sidebar">
-      <!-- Stories Section (Left/Main) -->
-      <section class="stories-section-main" data-controller="story-filter">
-        <!-- All My Stories -->
-        <div class="my-stories">
-          <%= render 'story_filters' %>
-          <% if @my_stories.any? %>
-            <div class="stories-grid" data-story-filter-target="grid">
-              <% @my_stories.each do |story| %>
-                <div class="story-card-wrapper"
-                     data-story-filter-target="card"
-                     data-status="<%= story.status || 'draft' %>"
-                     data-public="<%= story.public? %>"
-                     data-created-at="<%= story.created_at.to_i %>"
-                     data-likes="<%= story.likes_count || 0 %>">
-                  <%= render 'story_card', story: story %>
-                </div>
+      <!-- Best User's Stories Carousel (Left/Main) -->
+      <% best_community_stories = Story.where(public: true).order(likes_count: :desc).limit(10) %>
+      <section class="best-stories-section-main">
+        <h2 class="section-title">
+          <i class="fas fa-trophy"></i>
+          Best User's Stories
+        </h2>
+        <% if best_community_stories.any? %>
+          <div class="best-stories-scroll-wrapper" data-controller="stories-carousel">
+            <button class="scroll-arrow scroll-arrow-left" data-action="click->stories-carousel#scrollLeft">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <div class="stories-scroll-container">
+              <% best_community_stories.each do |story| %>
+                <%= render 'story_card', story: story %>
               <% end %>
             </div>
-          <% else %>
-            <div class="empty-state-enhanced">
-              <div class="empty-state-content-enhanced">
-                <div class="empty-state-icon-large">📖</div>
-                <h3>Your story library is empty</h3>
-                <p>Let's create your first magical adventure!</p>
-                <div class="empty-state-steps">
-                  <div class="step-item">
-                    <span class="step-emoji">✨</span>
-                    <span class="step-text">Choose a hero</span>
-                  </div>
-                  <div class="step-item">
-                    <span class="step-emoji">🌍</span>
-                    <span class="step-text">Pick a universe</span>
-                  </div>
-                  <div class="step-item">
-                    <span class="step-emoji">📝</span>
-                    <span class="step-text">Tell your story</span>
-                  </div>
-                </div>
-              </div>
+
+            <button class="scroll-arrow scroll-arrow-right" data-action="click->stories-carousel#scrollRight">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        <% else %>
+          <div class="empty-state-enhanced">
+            <div class="empty-state-content-enhanced">
+              <div class="empty-state-icon-large">🏆</div>
+              <h3>No community stories yet</h3>
+              <p>Be the first to share a public story!</p>
             </div>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </section>
       <!-- Stats Sidebar (Right) -->
       <%= render 'stats_sidebar' %>
