@@ -1,0 +1,68 @@
+// app/assets/stylesheets/components/_gooey_background.scss
+
+// Gooey Background Effect - "Ultimate Liquid Gold" Version
+
+.hooks-main {
+  position: fixed !important; // Force la position fixe
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  // NIVEAU 1 : Entre l'image (0) et le contenu (2)
+  z-index: 1;
+
+  pointer-events: none;
+  overflow: hidden;
+
+  // TRANSPARENT : Pour voir l'image rouge derrière
+  background-color: transparent;
+}
+
+.hooks-filter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  filter: url(#goo-liquid-textured);
+  -webkit-filter: url(#goo-liquid-textured);
+  will-change: transform;
+}
+
+.blob-item {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+
+  // Opacité pleine nécessaire pour l'effet liquide
+  opacity: 1;
+  box-shadow: 0 0 20px rgba(245, 208, 97, 0.3);
+}
+
+// Couleurs Or
+$gold-light: #ffe58f;
+$gold-mid: #F5D061;
+$gold-dark: #cfa62e;
+
+.b1 {
+  width: 480px;
+  height: 480px;
+  margin-left: -240px;
+  margin-top: -240px;
+  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+}
+
+.b2 {
+  width: 320px;
+  height: 320px;
+  margin-left: -160px;
+  margin-top: -160px;
+  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+}
+
+.b3 {
+  width: 220px;
+  height: 220px;
+  margin-left: -110px;
+  margin-top: -110px;
+  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+}

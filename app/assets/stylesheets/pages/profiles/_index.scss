@@ -1,12 +1,14 @@
+// app/assets/stylesheets/pages/_profile.scss
+
 // Logo centered at top
 .profile-logo {
   position: absolute;
   top: 30px;
-  left: 50%; /* Cleaner than calc(50% + 8px) */
+  left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 100; // Toujours au-dessus de tout
   text-align: center;
-  width: 100%; /* Ensures centering */
+  width: 100%;
 
   .profile-logo-link {
     text-decoration: none;
@@ -18,26 +20,26 @@
     }
 
     .profile-logo-image {
-      height: 120px; /* Increase logo size (was 92px) */
+      height: 120px;
       width: auto;
       display: block;
     }
   }
 }
 
-// Background styling - FULL SCREEN FIXED
+// Background styling - PLEIN ÉCRAN FIXE
 .profile-background {
   position: relative;
-  height: 100vh;      /* Force exact screen height */
-  width: 100vw;       /* Force exact screen width */
-  overflow: hidden;   /* Prevents scrolling */
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 
-  /* Centers all content (the selector) vertically and horizontally */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
+  // L'IMAGE DE FOND (Niveau 0)
   &::before {
     content: "";
     position: absolute;
@@ -51,18 +53,15 @@
     background-position: center;
     background-repeat: no-repeat;
 
-    /* Very slight blur as requested */
     filter: blur(0.05px);
-
-    /* Slight zoom to avoid white edges from blur */
     transform: scale(1.05);
     z-index: 0;
   }
 
-  /* Very important: All content (logos, buttons) must be IN FRONT */
-  > * {
+  // LE CONTENU (Niveau 2) - SAUF L'EFFET GOOEY
+  > :not(.hooks-main) {
     position: relative;
-    z-index: 1;
+    z-index: 2; // Devant le gooey (qui est à 1)
   }
 }
 
@@ -73,13 +72,12 @@
   align-items: center;
   align-content: center;
   gap: 60px;
-  /* Removing calculated min-height because flexbox parent handles centering */
   flex-wrap: wrap;
   padding: 20px;
-  margin-top: 60px; /* Small offset to leave room for top logo */
+  margin-top: 60px;
 }
 
-// Profile container - wraps button and delete link
+// Profile container
 .profile-container {
   display: flex;
   flex-direction: column;
@@ -89,7 +87,7 @@
   align-self: flex-start;
 }
 
-// Profile button - transparent wrapper
+// Profile button
 .profile-btn {
   background: none !important;
   border: none !important;
@@ -97,7 +95,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px; /* More space between avatar and text */
+  gap: 20px;
   cursor: pointer;
   transition: all 0.3s ease;
 
@@ -112,9 +110,8 @@
     border: 4px solid transparent;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
-    /* AVATAR RESIZING */
-    width: 150px;  /* Was 150px */
-    height: 150px; /* Was 150px */
+    width: 150px;
+    height: 150px;
     object-fit: cover;
 
     &:hover {
@@ -123,7 +120,6 @@
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
-    // Diagonal sheen effect
     &::before {
       content: "";
       position: absolute;
@@ -144,7 +140,6 @@
       border-radius: 50%;
     }
 
-    // Hover state for sheen animation
     &:hover::before {
       opacity: 1;
       animation: holoSheen 4s infinite linear;
@@ -154,13 +149,13 @@
   p {
     margin: 0;
     font-weight: 700;
-    font-size: 1.6rem; /* Larger text (was 1.2rem) */
-    color: #fff; /* Changed to white for better visibility on dark background, revert to #333 if needed */
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Drop shadow for readability */
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
 }
 
-// Delete button styling
+// Delete button
 .profile-delete-btn {
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -195,7 +190,6 @@
     border: 2px solid rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
-    /* SAME RESIZING */
     width: 150px;
     height: 150px;
     object-fit: cover;
@@ -210,7 +204,6 @@
   }
 }
 
-// Diagonal sheen animation
 @keyframes holoSheen {
   0% { left: -150%; }
   20% { left: 150%; }
