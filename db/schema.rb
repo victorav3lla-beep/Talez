@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_12_08_144443) do
+ActiveRecord::Schema[7.1].define(version: 2025_12_09_093025) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -90,10 +90,10 @@ ActiveRecord::Schema[7.1].define(version: 2025_12_08_144443) do
   end
 
   create_table "pages", force: :cascade do |t|
-    t.bigint "story_id", null: false
     t.string "title"
     t.text "content"
     t.integer "position"
+    t.bigint "story_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["story_id"], name: "index_pages_on_story_id"
