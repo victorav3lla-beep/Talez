@@ -3,7 +3,7 @@ class CharactersController < ApplicationController
   SYSTEM_PROMPT = <<~PROMPT
     You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
 
-    I am a kid looking to create a story, and would appreciate assistance creating aesthetically pleasing stories in an organized way
+    I am a kid looking to create a story, and would appreciate assistance creating a aesthetically pleasing character for my stories
 
     Return in JSON format, keys should be ["name", "description"]
   PROMPT
@@ -19,17 +19,6 @@ class CharactersController < ApplicationController
   def new
     @character = @selected_profile.characters.build
   end
-
-  # def create
-  #   # @character = current_profile.characters.build(character_params)
-  #   # @character.is_custom = true
-
-  #   # if @character.save
-  #   #   redirect_to characters_path, notice: "Character created successfully!"
-  #   # else
-  #   #   render :new, status: :unprocessable_entity
-  #   # end
-  # end
 
   def create
     if character_params[:description].present?
@@ -57,7 +46,7 @@ class CharactersController < ApplicationController
         is_custom: true,
       )
 
-      image_prompt = "#{character_name}: #{character_description}"
+      image_prompt = "Animated, kid-friendly illustration of:#{character_name}: #{character_description}, \nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast"
       image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3")
 
       if image.url

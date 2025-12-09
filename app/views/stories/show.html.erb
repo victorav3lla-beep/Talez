@@ -1,18 +1,105 @@
 <div class="container story-show m-5-auto p-4 bg-light rounded">
+  <h1 class="text-center mb-4"><%= @story.title %></h1>
   <hr>
-  <h3><%= @story.title %></h3>
+
+  <!-- Pages Carousel with Cover -->
+  <% if @story.cover.attached? || @story.pages.any? %>
+    <div id="pagesCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="false">
+      <!-- Carousel Indicators -->
+      <div class="carousel-indicators">
+        <% if @story.cover.attached? %>
+          <button type="button"
+                  data-bs-target="#pagesCarousel"
+                  data-bs-slide-to="0"
+                  class="active"
+                  aria-label="Cover"></button>
+        <% end %>
+        <% @story.pages.order(:position).each_with_index do |page, index| %>
+          <button type="button"
+                  data-bs-target="#pagesCarousel"
+                  data-bs-slide-to="<%= @story.cover.attached? ? index + 1 : index %>"
+                  class="<%= 'active' if index == 0 && !@story.cover.attached? %>"
+                  aria-label="Page <%= page.position %>"></button>
+        <% end %>
+      </div>
+
+      <!-- Carousel Inner -->
+      <div class="carousel-inner">
+        <!-- Cover Slide -->
+        <% if @story.cover.attached? %>
+          <div class="carousel-item active">
+            <div class="cover-slide p-4 bg-white rounded text-center">
+              <%= image_tag @story.cover, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
+            </div>
+          </div>
+        <% elsif @story.images.attached? %>
+          <!-- Fallback for old stories -->
+          <div class="carousel-item active">
+            <div class="cover-slide p-4 bg-white rounded text-center">
+              <% @story.images.each do |image| %>
+                <%= image_tag image, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+
+        <!-- Page Slides -->
+        <% @story.pages.order(:position).each_with_index do |page, index| %>
+          <div class="carousel-item <%= 'active' if index == 0 && !@story.cover.attached? && !@story.images.attached? %>">
+            <div class="page-slide">
+              <% if page.image.attached? %>
+                <div class="page-image-container position-relative">
+                  <%= image_tag page.image, alt: page.title, class: "page-image w-100", loading: "lazy" %>
+                  <div class="page-text-overlay">
+                    <p><%= simple_format(page.content) %></p>
+                  </div>
+                </div>
+              <% else %>
+                <p><%= simple_format(page.content) %></p>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+
+      <!-- Carousel Controls -->
+    <hr>
+      <button class="carousel-control-prev" type="button" data-bs-target="#pagesCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#pagesCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  <% end %>
+
   <hr>
-  <div class="container">
-    <%= @story.content %>
-  </div>
-  <hr>
-  <div class="story-images-container">
-    <% @story.images.each do |image| %>
-      <%= image_tag image, alt: @story.title, class: "story-image", loading: "lazy" %>
-    <% end %>
-  </div>
+
+  <% if @story.pages.count < 3 %>
+    <div class="add-page-form p-4 bg-white rounded mb-4">
+      <h4>Continue your story...</h4>
+      <%= simple_form_for :page, local: true, url: add_page_story_path(@story), method: :post do |f| %>
+        <%= f.input :content,
+                    label: false,
+                    required: true,
+                    as: :text,
+                    input_html: {
+                      rows: 4,
+                      class: 'prompt-input',
+                      placeholder: 'What happens next?'
+                    } %>
+        <%= f.button :submit, "Add Page", class: "btn btn-success btn-lg w-100 mt-2" %>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="alert alert-info">Your story is complete! Check back for the cover.</p>
+  <% end %>
+
   <div class="d-flex justify-content-center gap-3">
     <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-warning btn-lg" %>
-    <%= link_to "Continue", new_story_path, class: "btn btn-success btn-lg" %>
+    <%= link_to "Create New Story", new_story_path, class: "btn btn-success btn-lg" %>
   </div>
 </div>

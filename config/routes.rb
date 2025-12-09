@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   resources :profiles, only: [:index, :show, :edit, :update, :destroy] do
     member do
       post :select # Creates: POST /profiles/:id/select
+      post :add_page
     end
   end
 
@@ -47,11 +48,12 @@ Rails.application.routes.draw do
   end
 
   # 6. Playing the Story
-  resources :stories, only: [ :new, :create, :show, :index ] do
+  resources :stories, only: [ :new, :create, :show, :index, :destroy ] do
     resources :chats, only: [:create, :show]
     member do
       post :bookmark
       get :print
+      post :add_page
     end
   end
 
