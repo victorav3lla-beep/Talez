@@ -15,11 +15,14 @@ export default class extends Controller {
       y: window.innerHeight / 2
     }))
 
-    // Original "Ultimate Liquid Gold" delays
-    // 0.20: Very responsive (the leader)
-    // 0.06: Medium delay (the follower)
-    // 0.012: Extremely slow (the heavy trailer)
-    this.delays = [0.20, 0.06, 0.012]
+    // "Ultimate Liquid Gold V3" - OPTION 1: Medium blob leads! (ADJUSTED)
+    // NOTE: Blobs are ordered b4→b3→b2→b1 in HTML (small to large)
+    // REVERSED HIERARCHY: The MEDIUM blob is fastest, all others SLOWED DOWN
+    // Index 0 (b4 - 150px): HEAVY TRAILER - MEGA slow, barely moving (0.006)
+    // Index 1 (b3 - 220px): TRAILER - Very slow, distant (0.009)
+    // Index 2 (b2 - 320px): THE LEADER! - ULTRA fast, sticks to cursor (0.15) - UNCHANGED
+    // Index 3 (b1 - 480px): BIG FOLLOWER - Much slower, heavy dragging (0.03)
+    this.delays = [0.006, 0.009, 0.15, 0.03]
 
     // Bind methods once for performance and correct `this` context.
     this.move = this.move.bind(this)

@@ -1,6 +1,9 @@
 // app/assets/stylesheets/components/_gooey_background.scss
 
-// Gooey Background Effect - "Ultimate Liquid Gold" Version
+// Gooey Background Effect - "Ultimate Liquid Gold V3 - TOTAL FUSION" Version
+// - MEGA NUCLEAR SVG filter (200, -80) + blur 70 for SINGLE ELEMENT fusion
+// - WHITE LIGHT effect at center of gradients for glowing look
+// - 4 blobs with extreme delays for viscous stretching
 
 .hooks-main {
   position: fixed !important; // Force la position fixe
@@ -34,35 +37,61 @@
   will-change: transform;
 
   // Opacité pleine nécessaire pour l'effet liquide
-  opacity: 1;
-  box-shadow: 0 0 20px rgba(245, 208, 97, 0.3);
+  opacity: 1 !important;
+  // Box-shadow removed - it can create visible outlines
 }
 
-// Couleurs Or
-$gold-light: #ffe58f;
-$gold-mid: #F5D061;
-$gold-dark: #cfa62e;
+// Couleurs Or avec effet de lumière blanche - EXTREME UNIFIED pour UN SEUL ELEMENT
+$white-light: #ffffff;        // Lumière blanche pure au centre
+$gold-ultra-light: #fffbeb;   // Or PRESQUE BLANC (quasi invisible du blanc)
+$gold-light: #fff8dc;         // Or TRÈS TRÈS clair (presque identique)
+$gold-mid: #fff4c8;           // Or moyen (encore quasi identique)
+$gold-dark: #ffedb5;          // Or foncé (minimal contraste)
 
+// TOUS les blobs utilisent le MÊME gradient ULTRA UNIFORME pour UN SEUL ELEMENT
+// Gradient EXTREME SUBTIL: ZERO différence visible entre blobs
+$unified-gradient: radial-gradient(
+  circle at 30% 30%,          // Position de la lumière (haut-gauche)
+  $white-light 0%,            // Lumière blanche PURE au centre
+  $white-light 20%,           // Blanc maintenu encore plus longtemps
+  $gold-ultra-light 50%,      // Transition INVISIBLE vers or quasi-blanc
+  $gold-light 70%,            // Or clair (presque identique)
+  $gold-mid 85%,              // Or moyen (zone massive, minimal contraste)
+  $gold-dark 100%             // Or foncé (presque invisible du mid)
+);
+
+// Blob 1: Le LEADER - Plus grand et rapide (480px, delay 0.03)
 .b1 {
   width: 480px;
   height: 480px;
   margin-left: -240px;
   margin-top: -240px;
-  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+  background: $unified-gradient;
 }
 
+// Blob 2: Le FOLLOWER - Taille moyenne (320px, delay 0.20)
 .b2 {
   width: 320px;
   height: 320px;
   margin-left: -160px;
   margin-top: -160px;
-  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+  background: $unified-gradient;
 }
 
+// Blob 3: Le TRAILER - Petit et lent (220px, delay 0.008)
 .b3 {
   width: 220px;
   height: 220px;
   margin-left: -110px;
   margin-top: -110px;
-  background: radial-gradient(circle at 30% 30%, $gold-light 0%, $gold-mid 60%, $gold-dark 100%);
+  background: $unified-gradient;
+}
+
+// Blob 4: Le HEAVY TRAILER - Très petit et TRÈS lent (150px, delay 0.006)
+.b4 {
+  width: 150px;
+  height: 150px;
+  margin-left: -75px;
+  margin-top: -75px;
+  background: $unified-gradient;
 }

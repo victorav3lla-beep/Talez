@@ -1,48 +1,69 @@
-<%# This partial contains the SVG filter and HTML elements for the gooey background effect. %>
-<%# It is controlled by the `gooey_controller.js` Stimulus controller. %>
-<%# The filter is applied via the `_gooey_background.scss` stylesheet. %>
+<%# Gooey Background Effect - ULTIMATE LIQUID GOLD V3 - ENHANCED TEXTURE %>
+<%# - MEGA NUCLEAR SVG filter (200, -80) for ABSOLUTE SINGLE ELEMENT fusion %>
+<%# - ENHANCED LIQUID TEXTURE with displacement for organic flow %>
+<%# - Blur 70 for COMPLETE elimination of all separation %>
+<%# - 4 blobs with extreme delays for heavy viscous stretching %>
+<%# - White light effect in gradients for glowing liquid gold %>
+<%# - Specular lighting for realistic liquid shine %>
 
-<%# The SVG filter is defined here. It's not rendered directly, but used by the CSS filter property. %>
+<%# SVG Filter Definition: Creates realistic liquid with perfect fusion %>
 <svg style="position: fixed; width: 0; height: 0; pointer-events: none;">
   <defs>
     <filter id="goo-liquid-textured">
-      <%# 1. Blur the source graphic significantly %>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="35" result="blur" />
+      <%# 1. Blur MEGA EXTREME - 70 for TOTAL fusion %>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="70" result="blur" />
 
-      <%# 2. Use a color matrix to increase contrast and create the "goo" effect. %>
-      <%# The last two values in the matrix (60 and -20) are key to the sharp, liquid feel. %>
+      <%# 2. MEGA NUCLEAR matrix (200, -80) = ABSOLUTE SINGLE UNIFIED BLOB %>
+      <%# This creates ONE SINGLE VISUAL ELEMENT - zero separation visible %>
       <feColorMatrix in="blur" mode="matrix" values="
         1 0 0 0 0
         0 1 0 0 0
         0 0 1 0 0
-        0 0 0 60 -20" result="goo" />
+        0 0 0 200 -80" result="goo" />
 
-      <%# 3. Generate fractal noise for texture %>
-      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+      <%# 3. Generate MULTI-LAYER fractal noise for realistic liquid texture %>
+      <%# baseFrequency 0.6 for larger organic patterns + 5 octaves for detail %>
+      <feTurbulence type="fractalNoise" baseFrequency="0.6 0.8" numOctaves="40" seed="1" result="noise" />
 
-      <%# 4. Make the noise subtle and apply it as a color %>
-      <feColorMatrix in="noise" type="matrix" values="
+      <%# 4. Create displacement map for organic liquid flow effect %>
+      <%# This makes the texture "flow" like real liquid %>
+      <feDisplacementMap in="goo" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+
+      <%# 5. Add subtle specular lighting for liquid shine %>
+      <%# Creates realistic light reflections on liquid surface %>
+      <feSpecularLighting in="displaced" surfaceScale="2" specularConstant="0.8" specularExponent="20" lighting-color="#ffffff" result="specular">
+        <fePointLight x="150" y="100" z="200" />
+      </feSpecularLighting>
+
+      <%# 6. Blend specular highlight with displaced texture (subtle) %>
+      <feComposite in="specular" in2="displaced" operator="atop" k1="0" k2="0.15" k3="0.85" k4="0" result="litGoo" />
+
+      <%# 7. Add fine grain texture on top %>
+      <feTurbulence type="turbulence" baseFrequency="2.5" numOctaves="3" seed="2" result="fineGrain" />
+      <feColorMatrix in="fineGrain" type="matrix" values="
         1 0 0 0 0
         0 1 0 0 0
         0 0 1 0 0
-        0 0 0 0.07 0" result="subtleNoise" />
+        0 0 0 0.08 0" result="subtleGrain" />
 
-      <%# 5. Composite the subtle noise on top of the goo effect %>
-      <feComposite in="subtleNoise" in2="goo" operator="atop" result="texturedGoo"/>
+      <%# 8. Final composite: lit goo + fine grain %>
+      <feComposite in="subtleGrain" in2="litGoo" operator="atop" result="texturedGoo"/>
 
-      <%# 6. Finally, composite the original source graphic on top of the textured goo. %>
+      <%# 9. Composite original source on top for color preservation %>
       <feComposite in="SourceGraphic" in2="texturedGoo" operator="atop"/>
     </filter>
   </defs>
 </svg>
 
-<%# This is the main container for the blobs that will be animated. %>
+<%# Main container for the animated blobs %>
 <div class="hooks-main">
   <div class="hooks-filter" data-controller="gooey">
-    <%# These are the individual blobs that will move around. %>
-    <%# The Stimulus controller will target these elements. %>
-    <div class="blob-item b1" data-gooey-target="blob"></div>
-    <div class="blob-item b2" data-gooey-target="blob"></div>
+    <%# 4 blobs in REVERSE order (small to large) %>
+    <%# This puts the LARGE blob on TOP visually (better depth effect) %>
+    <%# All use IDENTICAL gradients for seamless merging %>
+    <div class="blob-item b4" data-gooey-target="blob"></div>
     <div class="blob-item b3" data-gooey-target="blob"></div>
+    <div class="blob-item b2" data-gooey-target="blob"></div>
+    <div class="blob-item b1" data-gooey-target="blob"></div>
   </div>
 </div>
