@@ -38,7 +38,7 @@ class StoriesController < ApplicationController
       )
 
       # Generate and attach page image
-      page_image_prompt = "Animated, kid-friendly illustration of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
+      page_image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT OR DIALOGUE, of: #{response_text}\nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition"
       page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
       if page_image.url
@@ -110,7 +110,11 @@ class StoriesController < ApplicationController
   def destroy
     @story = Story.find(params[:id])
     @story.destroy
-    redirect_to stories_path, notice: "Story deleted successfully."
+
+    respond_to do |format|
+      format.turbo_stream { render turbo_stream: turbo_stream.remove("story_#{@story.id}") }
+      format.html { redirect_to stories_path, notice: "Story deleted successfully." }
+    end
   end
 
   private

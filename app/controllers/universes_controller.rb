@@ -60,7 +60,7 @@ end
       )
 
       # Generate image using DALL·E 3
-      image_prompt = "Animated, kid-friendly illustration of:#{universe_name}: #{universe_description}, \nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast"
+      image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT, of:#{universe_name}: #{universe_description}, \nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast"
       image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3")
 
       if image.url
