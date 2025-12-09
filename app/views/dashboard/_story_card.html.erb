@@ -1,4 +1,4 @@
-<div class="story-card" data-controller="story-card">
+<div class="story-card" data-controller="story-card" id="story_<%= story.id %>">
   <!-- Image (first AI-generated image from chat) -->
   <div class="card-img-wrapper">
     <% first_image = story.cover.attached? ? story.cover : story.pages.order(:position).first&.image %>
@@ -71,8 +71,7 @@
         <%= button_to story_path(story), method: :delete,
             data: { turbo_confirm: 'Are you sure you want to delete this story?' },
             class: 'btn-action btn-delete-action',
-            title: 'Delete Story',
-            form: { data: { turbo: false } } do %>
+            title: 'Delete Story' do %>
           <i class="fas fa-trash-alt"></i>
         <% end %>
       </div>

@@ -19,10 +19,10 @@
     <% @profiles.each do |profile| %>
       <div class="profile-container">
         <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
-          <% if profile.avatar_url.present? %>
-            <img class="avatar-xl" src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
+          <% if profile.image.attached? %>
+            <%= cl_image_tag profile.image.key, height: 300, width: 400, crop: :fill, class: "avatar-xl" %>
           <% else %>
-            <img class="avatar-xl" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar">
+            <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/Netflix-avatar_z4ahkh.png", width: 150, height: 150, class: "avatar-xl") %>
           <% end %>
           <p><%= profile.username %></p>
         <% end %>
@@ -34,7 +34,7 @@
     <% end %>
 
     <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
-      <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile">
+      <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286698/new_profile_boxuau.png", width: 150, height: 150, class: "avatar-xl") %>
       <p>Add profile</p>
     <% end %>
   </div>
