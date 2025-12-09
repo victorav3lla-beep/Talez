@@ -1,191 +1,218 @@
-// Logo in corner
+// Logo centered at top
 .profile-logo {
-    position: fixed;
-    top: 20px;
-    left: 30px;
-    z-index: 100;
+  position: absolute;
+  top: 30px;
+  left: 50%; /* Cleaner than calc(50% + 8px) */
+  transform: translateX(-50%);
+  z-index: 100;
+  text-align: center;
+  width: 100%; /* Ensures centering */
 
-    .profile-logo-link {
-        text-decoration: none;
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: #333;
-        font-family: 'Arial', sans-serif;
-        transition: color 0.3s ease;
+  .profile-logo-link {
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
 
-        &:hover {
-            color: #d4af37;
-        }
+    &:hover {
+      transform: scale(1.05);
     }
+
+    .profile-logo-image {
+      height: 120px; /* Increase logo size (was 92px) */
+      width: auto;
+      display: block;
+    }
+  }
 }
 
+// Background styling - FULL SCREEN FIXED
+.profile-background {
+  position: relative;
+  height: 100vh;      /* Force exact screen height */
+  width: 100vw;       /* Force exact screen width */
+  overflow: hidden;   /* Prevents scrolling */
+
+  /* Centers all content (the selector) vertically and horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-image: image-url('background.2.jpeg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    /* Very slight blur as requested */
+    filter: blur(0.05px);
+
+    /* Slight zoom to avoid white edges from blur */
+    transform: scale(1.05);
+    z-index: 0;
+  }
+
+  /* Very important: All content (logos, buttons) must be IN FRONT */
+  > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// Profile Selector Layout
 #profile-selector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    gap: 60px;
-    min-height: calc(100vh - 81px);
-    flex-wrap: wrap;
-    padding: 60px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  gap: 60px;
+  /* Removing calculated min-height because flexbox parent handles centering */
+  flex-wrap: wrap;
+  padding: 20px;
+  margin-top: 60px; /* Small offset to leave room for top logo */
 }
 
 // Profile container - wraps button and delete link
 .profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  position: relative;
+  align-self: flex-start;
 }
 
 // Profile button - transparent wrapper
 .profile-btn {
-    background: none !important;
-    border: none !important;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background: none !important;
+  border: none !important;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px; /* More space between avatar and text */
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .avatar-xl {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
+    border: 4px solid transparent;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    /* AVATAR RESIZING */
+    width: 150px;  /* Was 150px */
+    height: 150px; /* Was 150px */
+    object-fit: cover;
 
     &:hover {
-        transform: translateY(-3px);
+      transform: scale(1.05);
+      border: 4px solid #d4af37;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
     }
 
-    .avatar-xl {
-        position: relative;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        z-index: 1;
-        border: 4px solid transparent;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-
-        &:hover {
-            transform: scale(1.08);
-            border: 4px solid #d4af37;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        // Diagonal sheen effect
-        &::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -150%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                115deg,
-                transparent 40%,
-                rgba(255, 255, 255, 0.7) 50%,
-                transparent 60%
-            );
-            transform: scale(1.5);
-            z-index: 2;
-            pointer-events: none;
-            opacity: 0;
-            border-radius: 50%;
-        }
-
-        // Hover state for sheen animation
-        &:hover::before {
-            opacity: 1;
-            animation: holoSheen 4s infinite linear;
-        }
+    // Diagonal sheen effect
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        115deg,
+        transparent 40%,
+        rgba(255, 255, 255, 0.7) 50%,
+        transparent 60%
+      );
+      transform: scale(1.5);
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      border-radius: 50%;
     }
 
-    p {
-        margin: 0;
-        font-weight: 600;
-        font-size: 1.2rem;
-        color: #333;
+    // Hover state for sheen animation
+    &:hover::before {
+      opacity: 1;
+      animation: holoSheen 4s infinite linear;
     }
+  }
+
+  p {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.6rem; /* Larger text (was 1.2rem) */
+    color: #fff; /* Changed to white for better visibility on dark background, revert to #333 if needed */
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5); /* Drop shadow for readability */
+  }
 }
 
 // Delete button styling
 .profile-delete-btn {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    margin-top: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  margin-top: 5px;
 }
 
 .profile-container:hover .profile-delete-btn {
-    opacity: 1;
+  opacity: 1;
 }
 
 // Add profile section
 .add-profile-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  align-self: flex-start;
 
-    &:hover {
-        transform: translateY(-3px);
-
-        .avatar-xl {
-            transform: scale(1.08);
-        }
-    }
+  &:hover {
+    transform: translateY(-5px);
 
     .avatar-xl {
-        position: relative;
-        transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-        border: 2px solid rgba(0, 0, 0, 0.1);
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
+      transform: scale(1.05);
     }
+  }
 
-    p {
-        margin: 0;
-        font-weight: 600;
-        font-size: 1.2rem;
-        color: #333;
-    }
-}
+  .avatar-xl {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 
-// Breathing animation for gold frame
-@keyframes premiumPulse {
-    0% {
-        box-shadow:
-            inset 0 0 20px rgba(255, 223, 100, 0.4),
-            inset 0 0 0 4px #d4af37,
-            0 0 25px rgba(255, 215, 0, 0.5);
-    }
-    50% {
-        box-shadow:
-            inset 0 0 30px rgba(255, 236, 179, 0.6),
-            inset 0 0 0 4px #f1e5ac,
-            0 0 40px rgba(255, 215, 0, 0.8);
-    }
-    100% {
-        box-shadow:
-            inset 0 0 20px rgba(255, 223, 100, 0.4),
-            inset 0 0 0 4px #d4af37,
-            0 0 25px rgba(255, 215, 0, 0.5);
-    }
+    /* SAME RESIZING */
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+  }
+
+  p {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.6rem;
+    color: #fff;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
 }
 
 // Diagonal sheen animation
 @keyframes holoSheen {
-    0% {
-        left: -150%;
-    }
-    20% {
-        left: 150%;
-    }
-    100% {
-        left: 150%;
-    }
+  0% { left: -150%; }
+  20% { left: 150%; }
+  100% { left: 150%; }
 }

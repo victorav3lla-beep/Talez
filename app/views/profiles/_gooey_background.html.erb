@@ -1,0 +1,48 @@
+<%# This partial contains the SVG filter and HTML elements for the gooey background effect. %>
+<%# It is controlled by the `gooey_controller.js` Stimulus controller. %>
+<%# The filter is applied via the `_gooey_background.scss` stylesheet. %>
+
+<%# The SVG filter is defined here. It's not rendered directly, but used by the CSS filter property. %>
+<svg style="position: fixed; width: 0; height: 0; pointer-events: none;">
+  <defs>
+    <filter id="goo-liquid-textured">
+      <%# 1. Blur the source graphic significantly %>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="35" result="blur" />
+
+      <%# 2. Use a color matrix to increase contrast and create the "goo" effect. %>
+      <%# The last two values in the matrix (60 and -20) are key to the sharp, liquid feel. %>
+      <feColorMatrix in="blur" mode="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 60 -20" result="goo" />
+
+      <%# 3. Generate fractal noise for texture %>
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" result="noise" />
+
+      <%# 4. Make the noise subtle and apply it as a color %>
+      <feColorMatrix in="noise" type="matrix" values="
+        1 0 0 0 0
+        0 1 0 0 0
+        0 0 1 0 0
+        0 0 0 0.07 0" result="subtleNoise" />
+
+      <%# 5. Composite the subtle noise on top of the goo effect %>
+      <feComposite in="subtleNoise" in2="goo" operator="atop" result="texturedGoo"/>
+
+      <%# 6. Finally, composite the original source graphic on top of the textured goo. %>
+      <feComposite in="SourceGraphic" in2="texturedGoo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
+<%# This is the main container for the blobs that will be animated. %>
+<div class="hooks-main">
+  <div class="hooks-filter" data-controller="gooey">
+    <%# These are the individual blobs that will move around. %>
+    <%# The Stimulus controller will target these elements. %>
+    <div class="blob-item b1" data-gooey-target="blob"></div>
+    <div class="blob-item b2" data-gooey-target="blob"></div>
+    <div class="blob-item b3" data-gooey-target="blob"></div>
+  </div>
+</div>
