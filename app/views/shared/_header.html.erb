@@ -29,8 +29,8 @@
     <!-- Profile Dropdown -->
     <div class="profile-dropdown" data-controller="dropdown">
       <button class="profile-trigger" data-action="click->dropdown#toggle">
-        <% if profile.avatar_url.present? %>
-          <%= image_tag profile.avatar_url, alt: profile.name, class: 'avatar-img' %>
+        <% if profile.image.attached? %>
+          <%= cl_image_tag profile.image.key, alt: profile.name, class: 'avatar-img' %>
         <% else %>
           <div class="avatar-placeholder">
             <%= profile.name.first.upcase %>
