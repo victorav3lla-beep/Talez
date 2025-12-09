@@ -1,0 +1,24 @@
+// ==========================================================
+// Characters Page Background
+// ==========================================================
+
+// Remove body background when characters page is active
+body:has(.characters-page-wrapper) {
+  background: none !important;
+}
+
+.characters-page-wrapper {
+  min-height: 100vh;
+  background-image: url('/images/backgrounds/background.9.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  position: relative;
+  z-index: 1;
+}
+
+// Make inner wrapper transparent
+.page-wrapper {
+  background: transparent !important;
+}

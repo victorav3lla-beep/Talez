@@ -1,0 +1,16 @@
+// ==========================================================
+// Universes Page Background
+// ==========================================================
+
+body.universes-index {
+  background-image: url('/images/backgrounds/background.10.jpg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+// Ensure inner wrapper is transparent if needed
+.page-wrapper {
+  background: transparent !important;
+}

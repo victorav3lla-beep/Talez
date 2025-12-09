@@ -1,15 +1,16 @@
-<!-- TALEZ Logo - Top Left -->
-<div class="page-logo" data-controller="logo-switcher">
-  <%= link_to dashboard_path, class: "logo-link" do %>
-    <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
-    <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
-  <% end %>
-</div>
+<div class="characters-page-wrapper" style="background-image: url('/images/backgrounds/background.9.jpg');">
+  <!-- TALEZ Logo - Top Left -->
+  <div class="page-logo" data-controller="logo-switcher">
+    <%= link_to dashboard_path, class: "logo-link" do %>
+      <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
+      <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
+    <% end %>
+  </div>
 
-<!-- Theme Toggle - Top Right -->
-<%= render 'shared/theme_toggle' %>
+  <!-- Theme Toggle - Top Right -->
+  <%= render 'shared/theme_toggle' %>
 
-<div class="page-wrapper">
+  <div class="page-wrapper">
   <div class="container py-5" data-controller="selection">
     <!-- Simple magical title -->
     <div class="magical-title-section">
@@ -112,4 +113,5 @@
 
 
   </div>
+</div>
 </div>
