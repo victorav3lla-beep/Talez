@@ -48,15 +48,17 @@ Rails.application.routes.draw do
   end
 
   # 6. Playing the Story
-  resources :stories, only: [ :new, :create, :show, :index, :destroy ] do
+  resources :stories, only: [ :new, :create, :show, :index, :destroy, :update ] do
     resources :chats, only: [:create, :show]
     member do
       post :bookmark
       get :print
       post :add_page
     end
+    resources :likes, only: [:create]
   end
 
+  resources :likes, only: [:destroy]
   resources :bookmarks, only: [:create, :destroy]
 
   # 7. System

@@ -12,7 +12,22 @@ class StoriesController < ApplicationController
   end
 
   def index
-    @stories = current_profile.stories
+    # Featured carousel - 5 most-liked public stories
+    @featured_stories = Story.where(public: true).order(likes_count: :desc).limit(5)
+
+    # Filter logic
+    filter = params[:filter] || 'popular'
+
+    case filter
+    when 'recent'
+      @stories = Story.where(public: true).order(created_at: :desc)
+    when 'my_stories'
+      @stories = current_profile.stories.order(updated_at: :desc)
+    else # popular
+      @stories = Story.where(public: true).order(likes_count: :desc, updated_at: :desc)
+    end
+
+    @current_filter = filter
   end
 
   def create
@@ -62,6 +77,20 @@ class StoriesController < ApplicationController
 
   def show
     @story = Story.find(params[:id])
+  end
+
+  def update
+    @story = Story.find(params[:id])
+
+    if @story.profile == current_profile
+      if @story.update(story_update_params)
+        redirect_back(fallback_location: stories_path, notice: "Story updated successfully!")
+      else
+        redirect_back(fallback_location: stories_path, alert: "Could not update story")
+      end
+    else
+      redirect_back(fallback_location: stories_path, alert: "Unauthorized")
+    end
   end
 
   def add_page
@@ -127,6 +156,10 @@ class StoriesController < ApplicationController
 
   def story_params
     params.require(:story).permit(:content)
+  end
+
+  def story_update_params
+    params.require(:story).permit(:public)
   end
 
   def instructions(character, universe)

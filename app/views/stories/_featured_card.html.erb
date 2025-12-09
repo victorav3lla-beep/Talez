@@ -1,0 +1,31 @@
+<% user_liked = story.likes.exists?(profile: current_profile) %>
+<% user_like = story.likes.find_by(profile: current_profile) %>
+<% is_owner = story.profile == current_profile %>
+
+<div class="featured-story-card">
+  <div class="story-thumb-wrapper">
+    <% first_image = story.cover.attached? ? story.cover : story.pages.order(:position).first&.image %>
+    <% if first_image&.attached? %>
+      <%= image_tag first_image, class: 'story-thumb' %>
+    <% else %>
+      <%= image_tag 'default-story.png', class: 'story-thumb', alt: 'Default story' %>
+    <% end %>
+
+    <!-- Like Badge Overlay -->
+    <div class="like-badge">
+      <i class="fas fa-heart"></i>
+      <%= story.likes_count %>
+    </div>
+  </div>
+
+  <div class="story-info">
+    <p class="story-title"><%= link_to story.title || 'Untitled Story', story_path(story) %></p>
+
+    <div class="story-actions">
+      <%= link_to story_path(story), class: 'btn btn-sm btn-read-featured' do %>
+        <i class="fas fa-book-open"></i>
+        Read
+      <% end %>
+    </div>
+  </div>
+</div>
