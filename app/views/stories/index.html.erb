@@ -1,30 +1,92 @@
-<div class="container py-5">
-  <h1 class="mb-5 text-center">Your Story Library</h1>
+<div class="stories-library-container">
+  <!-- Sidebar -->
+  <%= render 'shared/sidebar', active: 'library' %>
 
-  <!-- STORY CAROUSEL -->
-  <div id="storyCarousel" class="carousel slide mb-5" data-bs-ride="carousel">
-    <div class="carousel-inner">
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Header -->
+    <%= render 'shared/header', profile: current_profile %>
 
-      <% @stories.each_slice(3).with_index do |group, index| %>
-        <div class="carousel-item <%= 'active' if index == 0 %>">
-          <div class="d-flex justify-content-center gap-4">
-            <%= render partial: "stories/card", collection: group, as: :story %>
+    <!-- Library Hero Section -->
+    <section class="library-hero-section">
+      <div class="library-hero-content">
+        <h1 class="library-title">
+          <i class="fas fa-book-open"></i>
+          Story Library
+        </h1>
+        <p class="library-subtitle">Discover and like amazing stories from the community</p>
+      </div>
+    </section>
+
+    <!-- Featured Stories Carousel -->
+    <% if @featured_stories.any? %>
+      <section class="featured-carousel-section">
+        <h2 class="section-title">
+          <i class="fas fa-fire"></i>
+          Most Popular Stories
+        </h2>
+        <div class="stories-scroll-wrapper" data-controller="stories-carousel">
+          <button class="scroll-arrow scroll-arrow-left" data-action="click->stories-carousel#scrollLeft">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+
+          <div class="stories-scroll-container">
+            <% @featured_stories.each do |story| %>
+              <%= render 'stories/featured_card', story: story, current_profile: current_profile %>
+            <% end %>
           </div>
+
+          <button class="scroll-arrow scroll-arrow-right" data-action="click->stories-carousel#scrollRight">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </section>
+    <% end %>
+
+    <!-- Filter Tabs + Stories List -->
+    <section class="stories-list-section">
+      <!-- Filter Tabs -->
+      <div class="filter-tabs">
+        <%= link_to stories_path(filter: 'popular'), class: "filter-tab #{@current_filter == 'popular' ? 'active' : ''}" do %>
+          <i class="fas fa-fire"></i>
+          Popular
+        <% end %>
+        <%= link_to stories_path(filter: 'recent'), class: "filter-tab #{@current_filter == 'recent' ? 'active' : ''}" do %>
+          <i class="fas fa-clock"></i>
+          Recent
+        <% end %>
+        <%= link_to stories_path(filter: 'my_stories'), class: "filter-tab #{@current_filter == 'my_stories' ? 'active' : ''}" do %>
+          <i class="fas fa-user"></i>
+          My Stories
+        <% end %>
+      </div>
+
+      <!-- Stories List -->
+      <% if @stories.any? %>
+        <div class="stories-list">
+          <% @stories.each do |story| %>
+            <%= render 'stories/row_card', story: story, current_profile: current_profile %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="empty-state-simple">
+          <div class="empty-icon">📚</div>
+          <h3>No stories found</h3>
+          <p>
+            <% if @current_filter == 'my_stories' %>
+              You haven't created any stories yet.
+            <% else %>
+              No stories available at the moment.
+            <% end %>
+          </p>
+          <% if @current_filter == 'my_stories' %>
+            <%= link_to characters_path, class: 'btn-create' do %>
+              <i class="fas fa-plus-circle"></i>
+              Create Your First Story
+            <% end %>
+          <% end %>
         </div>
       <% end %>
-
-    </div>
-
-    <% if @stories.size > 3 %>
-      <!-- Carousel controls -->
-      <button class="carousel-control-prev" type="button" data-bs-target="#storyCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#storyCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    <% end %>
+    </section>
   </div>
 </div>

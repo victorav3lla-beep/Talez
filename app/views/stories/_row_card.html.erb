@@ -1,0 +1,61 @@
+<% user_liked = story.likes.exists?(profile: current_profile) %>
+<% user_like = story.likes.find_by(profile: current_profile) %>
+<% is_owner = story.profile == current_profile %>
+<% excerpt = story.pages.order(:position).first&.content || '' %>
+<% truncated_excerpt = excerpt.truncate(100, separator: ' ', omission: '...') %>
+
+<div class="story-row-card">
+  <!-- Thumbnail -->
+  <div class="row-thumbnail">
+    <% first_image = story.cover.attached? ? story.cover : story.pages.order(:position).first&.image %>
+    <% if first_image&.attached? %>
+      <%= image_tag first_image, class: 'thumbnail-img' %>
+    <% else %>
+      <%= image_tag 'default-story.png', class: 'thumbnail-img', alt: 'Default story' %>
+    <% end %>
+  </div>
+
+  <!-- Content -->
+  <div class="row-content">
+    <h3 class="row-title">
+      <%= link_to story.title || 'Untitled Story', story_path(story) %>
+    </h3>
+    <p class="row-excerpt"><%= truncated_excerpt %></p>
+  </div>
+
+  <!-- Actions -->
+  <div class="row-actions">
+    <!-- Privacy Badge -->
+    <% if is_owner %>
+      <span class="privacy-badge <%= story.public? ? 'public' : 'private' %>">
+        <i class="fas <%= story.public? ? 'fa-globe' : 'fa-lock' %>"></i>
+        <%= story.public? ? 'Public' : 'Private' %>
+      </span>
+    <% end %>
+
+    <!-- Like Button -->
+    <% if user_liked %>
+      <%= button_to like_path(user_like), method: :delete,
+          class: 'btn-like liked',
+          title: 'Unlike',
+          form: { data: { turbo: false } } do %>
+        <i class="fas fa-heart"></i>
+        <span class="like-count"><%= story.likes_count %></span>
+      <% end %>
+    <% else %>
+      <%= button_to story_likes_path(story), method: :post,
+          class: 'btn-like',
+          title: 'Like',
+          form: { data: { turbo: false } } do %>
+        <i class="far fa-heart"></i>
+        <span class="like-count"><%= story.likes_count %></span>
+      <% end %>
+    <% end %>
+
+    <!-- Read Button -->
+    <%= link_to story_path(story), class: 'btn-read' do %>
+      <i class="fas fa-book-open"></i>
+      Read Story
+    <% end %>
+  </div>
+</div>
