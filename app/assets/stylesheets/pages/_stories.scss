@@ -9,14 +9,19 @@
 
   .main-content {
     flex: 1;
-    margin-left: 280px;
+    margin-left: 220px;
     padding: 0;
     overflow-y: auto;
+    overflow-x: hidden;
     min-height: 100vh;
 
     @media (max-width: 768px) {
-      margin-left: 0;
-      padding-top: 60px;
+      margin-left: 80px;
+      padding-top: 0;
+    }
+
+    @media (max-width: 480px) {
+      margin-left: 70px;
     }
   }
 }
@@ -32,6 +37,10 @@
 
   @media (max-width: 768px) {
     padding: 30px 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 24px 16px;
   }
 
   .library-hero-content {
@@ -84,6 +93,10 @@
 
   @media (max-width: 768px) {
     padding: 30px 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 24px 16px;
   }
 
   .section-title {
@@ -150,7 +163,7 @@
       justify-content: center;
       z-index: 10;
       transition: all 0.3s ease;
-      opacity: 0;
+      opacity: 0.6;
       flex-shrink: 0;
 
       i {
@@ -167,6 +180,7 @@
       @media (max-width: 768px) {
         width: 40px;
         height: 40px;
+        opacity: 0.8;
 
         i {
           font-size: 20px;
@@ -306,6 +320,10 @@
   @media (max-width: 768px) {
     padding: 0 20px 30px 20px;
   }
+
+  @media (max-width: 480px) {
+    padding: 0 16px 24px 16px;
+  }
 }
 
 // Filter Tabs
@@ -384,6 +402,12 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 16px;
+    padding: 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 14px;
+    gap: 12px;
   }
 
   &:hover {

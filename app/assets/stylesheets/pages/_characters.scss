@@ -15,10 +15,12 @@ body:has(.characters-page-wrapper) {
   background-repeat: no-repeat !important;
   background-attachment: fixed !important;
   position: relative;
-  z-index: 1;
+  z-index: auto; /* Allow children to stack naturally */
 }
 
 // Make inner wrapper transparent
 .page-wrapper {
   background: transparent !important;
+  position: relative;
+  z-index: 2; /* Above floating background */
 }

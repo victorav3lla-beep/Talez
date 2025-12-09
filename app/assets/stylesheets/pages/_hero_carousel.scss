@@ -99,12 +99,16 @@
   border-radius: 0;
   overflow: visible;
   background-image: url('/assets/images/background.jpg');
-  background-size: cover; 
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 
   @media (max-width: 768px) {
     padding: 20px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
   }
 }
 
@@ -261,6 +265,10 @@
     @media (max-width: 768px) {
       font-size: 1.2rem;
     }
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 
   .carousel-subtitle {
@@ -271,6 +279,10 @@
 
     @media (max-width: 768px) {
       font-size: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 0.7rem;
     }
   }
 }

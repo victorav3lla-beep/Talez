@@ -81,6 +81,10 @@ body:has(.dashboard-page-wrapper) {
   @media (max-width: 768px) {
     margin-left: 80px;
   }
+
+  @media (max-width: 480px) {
+    margin-left: 70px;
+  }
 }
 
 // ==========================================================
@@ -100,6 +104,16 @@ body:has(.dashboard-page-wrapper) {
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
   z-index: 1001;
   transition: $transition-base;
+
+  @media (max-width: 768px) {
+    width: 80px;
+    padding: 16px 8px;
+  }
+
+  @media (max-width: 480px) {
+    width: 70px;
+    padding: 12px 6px;
+  }
 
   // Logo Section
   .sidebar-logo {
@@ -283,10 +297,28 @@ body:has(.dashboard-page-wrapper) {
   box-shadow: $shadow-sm;
   z-index: 10;
 
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
   // Search Wrapper
   .search-wrapper {
     flex: 1;
     max-width: 500px;
+
+    @media (max-width: 768px) {
+      order: 3;
+      flex: 100%;
+      max-width: 100%;
+      margin-top: 8px;
+    }
 
     .search-form {
       position: relative;
@@ -410,6 +442,10 @@ body:has(.dashboard-page-wrapper) {
         font-weight: 600;
         color: $text-dark;
         font-size: 14px;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
 
       .dropdown-arrow {
@@ -683,6 +719,19 @@ body:has(.dashboard-page-wrapper) {
       color: $primary-coral;
       font-size: 24px;
     }
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 20px;
+      gap: 8px;
+
+      i {
+        font-size: 20px;
+      }
+    }
   }
 
   .stories-header {
@@ -695,6 +744,12 @@ body:has(.dashboard-page-wrapper) {
   @media (max-width: 768px) {
     padding: 20px 16px;
     margin: 0 16px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+    margin: 0 12px 12px;
+    border-radius: 16px;
   }
 }
 
@@ -732,6 +787,7 @@ body:has(.dashboard-page-wrapper) {
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
   }
 
   @media (max-width: 768px) {
@@ -741,6 +797,7 @@ body:has(.dashboard-page-wrapper) {
 
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 

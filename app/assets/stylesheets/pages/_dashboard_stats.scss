@@ -25,6 +25,13 @@
     padding: 20px 16px;
     margin: 0 16px 16px;
   }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+    margin: 0 12px 12px;
+    gap: 20px;
+    border-radius: 16px;
+  }
 }
 
 .stories-section-main {

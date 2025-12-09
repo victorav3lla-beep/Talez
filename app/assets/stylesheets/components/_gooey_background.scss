@@ -1,24 +1,22 @@
-// app/assets/stylesheets/components/_gooey_background.scss
-
-// Gooey Background Effect - "Ultimate Liquid Gold V3 - TOTAL FUSION" Version
-// - MEGA NUCLEAR SVG filter (200, -80) + blur 70 for SINGLE ELEMENT fusion
-// - WHITE LIGHT effect at center of gradients for glowing look
-// - 4 blobs with extreme delays for viscous stretching
+// Gooey Background Effect - Liquid Gold Version
+// SVG filter (200, -80) + blur 70 for smooth blob fusion
+// White light gradient center for glow effect
+// 4 blobs with different speeds for viscous movement
 
 .hooks-main {
-  position: fixed !important; // Force la position fixe
+  position: fixed !important;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
 
-  // NIVEAU 1 : Entre l'image (0) et le contenu (2)
+  // Layer 1: Between background image (0) and content (2)
   z-index: 1;
 
   pointer-events: none;
   overflow: hidden;
 
-  // TRANSPARENT : Pour voir l'image rouge derrière
+  // Transparent to show background
   background-color: transparent;
 }
 
@@ -36,31 +34,30 @@
   border-radius: 50%;
   will-change: transform;
 
-  // Opacité pleine nécessaire pour l'effet liquide
+  // Full opacity needed for liquid effect
   opacity: 1 !important;
-  // Box-shadow removed - it can create visible outlines
+  // Box-shadow removed - creates visible outlines
 }
 
-// Couleurs Or avec effet de lumière blanche - EXTREME UNIFIED pour UN SEUL ELEMENT
-$white-light: #ffffff;        // Lumière blanche pure au centre
-$gold-ultra-light: #fffbeb;   // Or PRESQUE BLANC (quasi invisible du blanc)
-$gold-light: #fff8dc;         // Or TRÈS TRÈS clair (presque identique)
-$gold-mid: #fff4c8;           // Or moyen (encore quasi identique)
-$gold-dark: #ffedb5;          // Or foncé (minimal contraste)
+// Gold colors with white light effect for unified look
+$white-light: #ffffff;
+$gold-ultra-light: #fffbeb;
+$gold-light: #fff8dc;
+$gold-mid: #fff4c8;
+$gold-dark: #ffedb5;
 
-// TOUS les blobs utilisent le MÊME gradient ULTRA UNIFORME pour UN SEUL ELEMENT
-// Gradient EXTREME SUBTIL: ZERO différence visible entre blobs
+// All blobs use same gradient for seamless fusion
 $unified-gradient: radial-gradient(
-  circle at 30% 30%,          // Position de la lumière (haut-gauche)
-  $white-light 0%,            // Lumière blanche PURE au centre
-  $white-light 20%,           // Blanc maintenu encore plus longtemps
-  $gold-ultra-light 50%,      // Transition INVISIBLE vers or quasi-blanc
-  $gold-light 70%,            // Or clair (presque identique)
-  $gold-mid 85%,              // Or moyen (zone massive, minimal contraste)
-  $gold-dark 100%             // Or foncé (presque invisible du mid)
+  circle at 30% 30%,
+  $white-light 0%,
+  $white-light 20%,
+  $gold-ultra-light 50%,
+  $gold-light 70%,
+  $gold-mid 85%,
+  $gold-dark 100%
 );
 
-// Blob 1: Le LEADER - Plus grand et rapide (480px, delay 0.03)
+// Blob 1: Leader - largest and fastest (480px, delay 0.03)
 .b1 {
   width: 480px;
   height: 480px;
@@ -69,7 +66,7 @@ $unified-gradient: radial-gradient(
   background: $unified-gradient;
 }
 
-// Blob 2: Le FOLLOWER - Taille moyenne (320px, delay 0.20)
+// Blob 2: Follower - medium size (320px, delay 0.20)
 .b2 {
   width: 320px;
   height: 320px;
@@ -78,7 +75,7 @@ $unified-gradient: radial-gradient(
   background: $unified-gradient;
 }
 
-// Blob 3: Le TRAILER - Petit et lent (220px, delay 0.008)
+// Blob 3: Trailer - small and slow (220px, delay 0.008)
 .b3 {
   width: 220px;
   height: 220px;
@@ -87,7 +84,7 @@ $unified-gradient: radial-gradient(
   background: $unified-gradient;
 }
 
-// Blob 4: Le HEAVY TRAILER - Très petit et TRÈS lent (150px, delay 0.006)
+// Blob 4: Heavy trailer - smallest and slowest (150px, delay 0.006)
 .b4 {
   width: 150px;
   height: 150px;
