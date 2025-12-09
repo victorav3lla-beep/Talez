@@ -3,6 +3,9 @@
 <!-- 1. J'ouvre le background au tout début pour qu'il contienne tout -->
 <div class="profile-background">
 
+  <!-- Gooey blob effect -->
+  <%= render 'gooey_background' %>
+
   <!-- 2. Votre contenu Logo -->
   <div class="profile-logo" data-controller="logo-switcher">
     <%= link_to root_path, class: "profile-logo-link" do %>
