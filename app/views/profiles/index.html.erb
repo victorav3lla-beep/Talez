@@ -1,28 +1,37 @@
-<div class="profile-logo" data-controller="logo-switcher">
-  <%= link_to root_path, class: "profile-logo-link" do %>
-    <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'profile-logo-image', data: { logo_switcher_target: 'logo1' } %>
-    <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'profile-logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
-  <% end %>
-</div>
+<!-- app/views/profiles/index.html.erb -->
 
-<div id="profile-selector">
+<!-- 1. J'ouvre le background au tout début pour qu'il contienne tout -->
+<div class="profile-background">
 
-  <% @profiles.each do |profile| %>
-    <div class="profile-container">
-      <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
-        <% if profile.avatar_url.present? %>
-          <img class="avatar-xl" src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
-        <% else %>
-          <img class="avatar-xl" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar">
+  <!-- 2. Votre contenu Logo -->
+  <div class="profile-logo" data-controller="logo-switcher">
+    <%= link_to root_path, class: "profile-logo-link" do %>
+      <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'profile-logo-image', data: { logo_switcher_target: 'logo1' } %>
+      <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'profile-logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
+    <% end %>
+  </div>
+
+  <!-- 3. Votre sélecteur de profils -->
+  <div id="profile-selector">
+    <% @profiles.each do |profile| %>
+      <div class="profile-container">
+        <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
+          <% if profile.avatar_url.present? %>
+            <img class="avatar-xl" src="<%= profile.avatar_url %>" alt="<%= profile.username %> avatar">
+          <% else %>
+            <img class="avatar-xl" src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Netflix-avatar.png" alt="Default avatar">
+          <% end %>
+          <p><%= profile.username %></p>
         <% end %>
-        <p><%= profile.username %></p>
-      <% end %>
-      <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger profile-delete-btn" %>
-    </div>
-  <% end %>
+        <%= link_to "Delete", profile_path(profile), data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}, class: "btn btn-sm btn-danger profile-delete-btn" %>
+      </div>
+    <% end %>
 
-  <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
-    <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile">
-    <p>Add profile</p>
-  <% end %>
+    <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
+      <img class="avatar-xl" src="https://png.pngtree.com/png-vector/20190501/ourmid/pngtree-add-icon-design-png-image_1014970.png" alt="Add a new profile">
+      <p>Add profile</p>
+    <% end %>
+  </div>
+
+<!-- 4. Je ferme le background tout à la fin -->
 </div>
