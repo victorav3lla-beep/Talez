@@ -1,114 +1,114 @@
-<!-- TALEZ Logo - Top Left -->
-<div class="page-logo" data-controller="logo-switcher">
-  <%= link_to dashboard_path, class: "logo-link" do %>
-    <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
-    <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
-  <% end %>
-</div>
+<div class="universes-page-wrapper" style="background-image: url('/images/backgrounds/background.10.jpg');">
+  <!-- TALEZ Logo - Top Left -->
+  <div class="page-logo" data-controller="logo-switcher">
+    <%= link_to dashboard_path, class: "logo-link" do %>
+      <%= image_tag 'logo_talez_1.png', alt: 'TALEZ', class: 'logo-image', data: { logo_switcher_target: 'logo1' } %>
+      <%= image_tag 'logo_talez_2.png', alt: 'TALEZ', class: 'logo-image', style: 'display: none;', data: { logo_switcher_target: 'logo2' } %>
+    <% end %>
+  </div>
 
+  <div class="page-wrapper">
+    <div class="container py-5" data-controller="selection">
+      <!-- Simple magical title -->
+      <div class="magical-title-section">
+        <h1 class="magical-title">
+          <span class="sparkle">🌍</span> Where Will Your Story Unfold? <span class="sparkle">🌍</span>
+        </h1>
+      </div>
 
+      <%= form_with url: select_universes_path, method: :post, data: { turbo: false } do |f| %>
+        <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
 
-<div class="page-wrapper">
-  <div class="container py-5" data-controller="selection">
-    <!-- Simple magical title -->
-    <div class="magical-title-section">
-      <h1 class="magical-title">
-        <span class="sparkle">🌍</span> Where Will Your Story Unfold? <span class="sparkle">🌍</span>
-      </h1>
-    </div>
-
-    <%= form_with url: select_universes_path, method: :post, data: { turbo: false } do |f| %>
-      <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
-
-      <!-- Universes Showcase: 4 cards max (3 universes + 1 Create) -->
-      <div class="characters-showcase">
-        <div class="row g-4 justify-content-center">
-          <!-- Universe 1: Enchanted Forest -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="universe-card"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_universes.first&.id || 1 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'enchanted_forest.jpg', alt: 'Enchanted Forest' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Enchanted Forest</h5>
-                <p class="character-description">A magical woodland filled with ancient trees and wonder!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Universe 2: Galaxy Beyond -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="universe-card"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_universes.second&.id || 2 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'galaxy_beyond.jpg', alt: 'Galaxy Beyond' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Galaxy Beyond</h5>
-                <p class="character-description">A vast cosmos of stars, planets, and endless adventures!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Universe 3: Future City -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="universe-card"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_universes.third&.id || 3 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'future_city.jpeg', alt: 'Future City' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Future City</h5>
-                <p class="character-description">A bustling metropolis of technology and innovation!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Create Your Own Card -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <%= link_to new_universe_path, class: "text-decoration-none" do %>
-              <div class="create-own-card" data-tilt-target="card">
-                <div class="create-content-wrapper">
-                  <div class="create-icon">
-                    <i class="bi bi-plus-circle"></i>
-                  </div>
-                  <h5 class="create-text">Create Your Own</h5>
-                  <p class="create-subtext">Design your own world!</p>
+        <!-- Universes Showcase: 4 cards max (3 universes + 1 Create) -->
+        <div class="characters-showcase">
+          <div class="row g-4 justify-content-center">
+            <!-- Universe 1: Enchanted Forest -->
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <div class="universe-card"
+                   data-tilt-target="card"
+                   data-selection-target="card"
+                   data-id="<%= @default_universes.first&.id || 1 %>"
+                   data-action="click->selection#select">
+                <div class="character-image-wrapper">
+                  <%= image_tag 'enchanted_forest.jpg', alt: 'Enchanted Forest' %>
+                </div>
+                <div class="character-content">
+                  <h5 class="character-name">Enchanted Forest</h5>
+                  <p class="character-description">A magical woodland filled with ancient trees and wonder!</p>
                 </div>
               </div>
+            </div>
+
+            <!-- Universe 2: Galaxy Beyond -->
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <div class="universe-card"
+                   data-tilt-target="card"
+                   data-selection-target="card"
+                   data-id="<%= @default_universes.second&.id || 2 %>"
+                   data-action="click->selection#select">
+                <div class="character-image-wrapper">
+                  <%= image_tag 'galaxy_beyond.jpg', alt: 'Galaxy Beyond' %>
+                </div>
+                <div class="character-content">
+                  <h5 class="character-name">Galaxy Beyond</h5>
+                  <p class="character-description">A vast cosmos of stars, planets, and endless adventures!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Universe 3: Future City -->
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <div class="universe-card"
+                   data-tilt-target="card"
+                   data-selection-target="card"
+                   data-id="<%= @default_universes.third&.id || 3 %>"
+                   data-action="click->selection#select">
+                <div class="character-image-wrapper">
+                  <%= image_tag 'future_city.jpeg', alt: 'Future City' %>
+                </div>
+                <div class="character-content">
+                  <h5 class="character-name">Future City</h5>
+                  <p class="character-description">A bustling metropolis of technology and innovation!</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Create Your Own Card -->
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <%= link_to new_universe_path, class: "text-decoration-none" do %>
+                <div class="create-own-card" data-tilt-target="card">
+                  <div class="create-content-wrapper">
+                    <div class="create-icon">
+                      <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <h5 class="create-text">Create Your Own</h5>
+                    <p class="create-subtext">Design your own world!</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="universe-showcase mt-4">
+          <div class="row g-4 justify-content-center">
+            <% @custom_universes.each do |universe| %>
+              <%= render partial: "card", locals: { universe: universe } %>
             <% end %>
           </div>
         </div>
-      </div>
 
-
-      <div class="universe-showcase mt-4">
-        <div class="row g-4 justify-content-center">
-          <% @custom_universes.each do |universe| %>
-            <%= render partial: "card", locals: { universe: universe } %>
-          <% end %>
+        <!-- Continue Button - Fixed at Bottom -->
+        <div class="continue-button-wrapper">
+          <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
         </div>
-      </div>
+      <% end %>
 
-      <!-- Continue Button - Fixed at Bottom -->
-      <div class="continue-button-wrapper">
-        <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
-      </div>
-    <% end %>
-
-    <!-- Back Button - At Bottom Left -->
-    <%= link_to characters_path, class: "back-button" do %>
-      <i class="fas fa-arrow-left me-2"></i>Back to Characters
-    <% end %>
+      <!-- Back Button - At Bottom Left -->
+      <%= link_to characters_path, class: "back-button" do %>
+        <i class="fas fa-arrow-left me-2"></i>Back to Characters
+      <% end %>
+    </div>
   </div>
 </div>
