@@ -54,6 +54,7 @@ Rails.application.routes.draw do
       post :bookmark
       get :print
       post :add_page
+      patch :toggle_visibility
     end
     resources :likes, only: [:create]
   end

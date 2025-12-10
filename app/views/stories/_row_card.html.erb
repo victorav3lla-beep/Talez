@@ -25,12 +25,9 @@
 
   <!-- Actions -->
   <div class="row-actions">
-    <!-- Privacy Badge -->
+    <!-- Privacy Toggle (clickable) -->
     <% if is_owner %>
-      <span class="privacy-badge <%= story.public? ? 'public' : 'private' %>">
-        <i class="fas <%= story.public? ? 'fa-globe' : 'fa-lock' %>"></i>
-        <%= story.public? ? 'Public' : 'Private' %>
-      </span>
+      <%= render partial: "stories/visibility_toggle", locals: { story: story } %>
     <% end %>
 
     <!-- Like Button -->
