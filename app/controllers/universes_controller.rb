@@ -59,10 +59,13 @@ end
         is_custom: true
       )
 
+      character = Character.find(session[:selected_character_id])
+      universe = Universe.find(session[:selected_universe_id])
       # Generate image using DALL·E 3
       image_prompt = <<~PROMPT
       Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
       Wide cinematic landscape view, 16:9 composition, no borders, no text, no UI.
+      The main character: #{character.name} - #{character.description} - image: #{character.image.url}
       Setting: #{universe_name} – #{universe_description}.
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
