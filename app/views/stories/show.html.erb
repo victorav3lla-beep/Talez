@@ -1,105 +1,206 @@
-<div class="container story-show m-5-auto p-4 bg-light rounded">
-  <h1 class="text-center mb-4"><%= @story.title %></h1>
-  <hr>
+<div class="story-show-page-wrapper">
+  <div class="story-show-container">
+    <!-- Sidebar -->
+    <%= render 'shared/sidebar', active: 'stories' %>
 
-  <!-- Pages Carousel with Cover -->
-  <% if @story.cover.attached? || @story.pages.any? %>
-    <div id="pagesCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="false">
-      <!-- Carousel Indicators -->
-      <div class="carousel-indicators">
-        <% if @story.cover.attached? %>
-          <button type="button"
-                  data-bs-target="#pagesCarousel"
-                  data-bs-slide-to="0"
-                  class="active"
-                  aria-label="Cover"></button>
-        <% end %>
-        <% @story.pages.order(:position).each_with_index do |page, index| %>
-          <button type="button"
-                  data-bs-target="#pagesCarousel"
-                  data-bs-slide-to="<%= @story.cover.attached? ? index + 1 : index %>"
-                  class="<%= 'active' if index == 0 && !@story.cover.attached? %>"
-                  aria-label="Page <%= page.position %>"></button>
-        <% end %>
-      </div>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Header -->
+      <%= render 'shared/header', profile: current_profile %>
 
-      <!-- Carousel Inner -->
-      <div class="carousel-inner">
-        <!-- Cover Slide -->
-        <% if @story.cover.attached? %>
-          <div class="carousel-item active">
-            <div class="cover-slide p-4 bg-white rounded text-center">
-              <%= image_tag @story.cover, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
+      <!-- Story Book Section -->
+      <section class="story-book-section">
+        <!-- Floating Sparkles -->
+        <div class="sparkle sparkle-1"></div>
+        <div class="sparkle sparkle-2"></div>
+        <div class="sparkle sparkle-3"></div>
+
+        <!-- Story Book Container -->
+        <div class="story-book-container">
+          <!-- Book Header -->
+          <div class="book-header">
+            <div class="book-title-badge">
+              <i class="fas fa-book-open"></i>
+              <span>Story Book</span>
             </div>
-          </div>
-        <% elsif @story.images.attached? %>
-          <!-- Fallback for old stories -->
-          <div class="carousel-item active">
-            <div class="cover-slide p-4 bg-white rounded text-center">
-              <% @story.images.each do |image| %>
-                <%= image_tag image, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
+            <h1 class="book-title"><%= @story.title || "Untitled Story" %></h1>
+
+            <!-- Story Meta -->
+            <div class="story-meta-info">
+              <% if @story.characters.any? %>
+                <span class="meta-tag">
+                  <i class="fas fa-user-astronaut"></i>
+                  <%= @story.characters.first.name %>
+                </span>
               <% end %>
+              <% if @story.universes.any? %>
+                <span class="meta-tag">
+                  <i class="fas fa-globe-americas"></i>
+                  <%= @story.universes.first.name %>
+                </span>
+              <% end %>
+              <span class="meta-tag">
+                <i class="fas fa-file-alt"></i>
+                <%= @story.pages.count %> / 3 pages
+              </span>
             </div>
           </div>
-        <% end %>
 
-        <!-- Page Slides -->
-        <% @story.pages.order(:position).each_with_index do |page, index| %>
-          <div class="carousel-item <%= 'active' if index == 0 && !@story.cover.attached? && !@story.images.attached? %>">
-            <div class="page-slide">
-              <% if page.image.attached? %>
-                <div class="page-image-container position-relative">
-                  <%= image_tag page.image, alt: page.title, class: "page-image w-100", loading: "lazy" %>
-                  <div class="page-text-overlay">
-                    <p><%= simple_format(page.content) %></p>
-                  </div>
+          <!-- Book Carousel -->
+          <% if @story.cover.attached? || @story.pages.any? %>
+            <div class="book-carousel-wrapper">
+              <div id="storyBookCarousel" class="carousel slide carousel-fade" data-bs-ride="false">
+                <!-- Page Indicators -->
+                <div class="page-indicators">
+                  <% if @story.cover.attached? %>
+                    <button type="button"
+                            data-bs-target="#storyBookCarousel"
+                            data-bs-slide-to="0"
+                            class="page-dot active"
+                            aria-label="Cover">
+                      <i class="fas fa-star"></i>
+                    </button>
+                  <% end %>
+                  <% @story.pages.order(:position).each_with_index do |page, index| %>
+                    <button type="button"
+                            data-bs-target="#storyBookCarousel"
+                            data-bs-slide-to="<%= @story.cover.attached? ? index + 1 : index %>"
+                            class="page-dot <%= 'active' if index == 0 && !@story.cover.attached? %>"
+                            aria-label="Page <%= page.position %>">
+                      <%= page.position %>
+                    </button>
+                  <% end %>
                 </div>
-              <% else %>
-                <p><%= simple_format(page.content) %></p>
+
+                <!-- Carousel Inner -->
+                <div class="carousel-inner book-pages">
+                  <!-- Cover Slide -->
+                  <% if @story.cover.attached? %>
+                    <div class="carousel-item active">
+                      <div class="book-page cover-page">
+                        <div class="page-image-wrapper">
+                          <%= image_tag @story.cover, alt: @story.title, class: "page-img", loading: "lazy" %>
+                          <div class="cover-overlay">
+                            <h2 class="cover-title"><%= @story.title %></h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  <% elsif @story.images.attached? %>
+                    <div class="carousel-item active">
+                      <div class="book-page cover-page">
+                        <div class="page-image-wrapper">
+                          <% @story.images.each do |image| %>
+                            <%= image_tag image, alt: @story.title, class: "page-img", loading: "lazy" %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </div>
+                  <% end %>
+
+                  <!-- Story Pages -->
+                  <% @story.pages.order(:position).each_with_index do |page, index| %>
+                    <div class="carousel-item <%= 'active' if index == 0 && !@story.cover.attached? && !@story.images.attached? %>">
+                      <div class="book-page story-page">
+                        <% if page.image.attached? %>
+                          <div class="page-image-wrapper">
+                            <%= image_tag page.image, alt: page.title, class: "page-img", loading: "lazy" %>
+                          </div>
+                          <div class="page-text-container">
+                            <div class="page-number-badge">Page <%= page.position %></div>
+                            <p class="page-story-text"><%= page.content %></p>
+                          </div>
+                        <% else %>
+                          <div class="page-text-only">
+                            <div class="page-number">Page <%= page.position %></div>
+                            <p class="page-content"><%= page.content %></p>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button class="book-nav book-nav-prev" type="button" data-bs-target="#storyBookCarousel" data-bs-slide="prev">
+                  <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="book-nav book-nav-next" type="button" data-bs-target="#storyBookCarousel" data-bs-slide="next">
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+          <% end %>
+
+          <!-- Continue Story Section -->
+          <% if @story.pages.count < 3 %>
+            <div class="continue-story-section">
+              <div class="continue-header">
+                <i class="fas fa-pen-fancy"></i>
+                <h3>Continue Your Story</h3>
+                <p>What happens next in your adventure?</p>
+              </div>
+
+              <%= simple_form_for :page, url: add_page_story_path(@story), method: :post, html: { class: 'continue-form' } do |f| %>
+                <div class="form-wrapper">
+                  <%= f.input :content,
+                              label: false,
+                              required: true,
+                              as: :text,
+                              input_html: {
+                                rows: 3,
+                                class: 'story-input',
+                                placeholder: "Describe what happens next... (e.g., 'The hero discovers a hidden treasure!')"
+                              } %>
+                  <button type="submit" class="btn-add-page">
+                    <i class="fas fa-magic"></i>
+                    <span>Generate Next Page</span>
+                  </button>
+                </div>
+              <% end %>
+
+              <div class="story-progress">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: <%= (@story.pages.count / 3.0 * 100).to_i %>%"></div>
+                </div>
+                <span class="progress-text"><%= @story.pages.count %> of 3 pages complete</span>
+              </div>
+            </div>
+          <% else %>
+            <div class="story-complete-section">
+              <div class="complete-badge">
+                <i class="fas fa-check-circle"></i>
+                <span>Story Complete!</span>
+              </div>
+              <p>Your adventure is complete. Share it with the world!</p>
+
+              <% if @story.profile == current_profile %>
+                <div class="complete-actions">
+                  <%= render partial: "stories/visibility_toggle", locals: { story: @story } %>
+                </div>
               <% end %>
             </div>
+          <% end %>
+
+          <!-- Action Buttons -->
+          <div class="book-actions">
+            <%= link_to dashboard_path, class: "book-btn book-btn-secondary" do %>
+              <i class="fas fa-home"></i>
+              Dashboard
+            <% end %>
+
+            <%= link_to print_story_path(@story), class: "book-btn book-btn-accent", target: "_blank" do %>
+              <i class="fas fa-print"></i>
+              Print
+            <% end %>
+
+            <%= link_to new_story_path, class: "book-btn book-btn-primary" do %>
+              <i class="fas fa-plus"></i>
+              New Story
+            <% end %>
           </div>
-        <% end %>
-      </div>
-
-
-      <!-- Carousel Controls -->
-    <hr>
-      <button class="carousel-control-prev" type="button" data-bs-target="#pagesCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#pagesCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+        </div>
+      </section>
     </div>
-  <% end %>
-
-  <hr>
-
-  <% if @story.pages.count < 3 %>
-    <div class="add-page-form p-4 bg-white rounded mb-4">
-      <h4>Continue your story...</h4>
-      <%= simple_form_for :page, local: true, url: add_page_story_path(@story), method: :post do |f| %>
-        <%= f.input :content,
-                    label: false,
-                    required: true,
-                    as: :text,
-                    input_html: {
-                      rows: 4,
-                      class: 'prompt-input',
-                      placeholder: 'What happens next?'
-                    } %>
-        <%= f.button :submit, "Add Page", class: "btn btn-success btn-lg w-100 mt-2" %>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="alert alert-info">Your story is complete! Check back for the cover.</p>
-  <% end %>
-
-  <div class="d-flex justify-content-center gap-3">
-    <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-warning btn-lg" %>
-    <%= link_to "Create New Story", new_story_path, class: "btn btn-success btn-lg" %>
   </div>
 </div>

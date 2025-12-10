@@ -1,26 +1,120 @@
-<div class="universe-show-container text-center py-5">
-  <h1 class="mb-3"><%= @universe.name || "Your Universe" %></h1>
-  <p class="mb-4"><%= @universe.description %></p>
+<div class="universe-show-page-wrapper">
+  <div class="universe-show-container">
+    <!-- Sidebar -->
+    <%= render 'shared/sidebar', active: 'create' %>
 
-  <% if @universe.image.attached? %>
-    <%= image_tag url_for(@universe.image), class: "img-fluid rounded shadow mb-4", style: "max-height: 500px; object-fit: cover;" %>
-  <% end %>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Header -->
+      <%= render 'shared/header', profile: current_profile %>
 
+      <!-- Universe Hero Section -->
+      <section class="universe-hero-section">
+        <!-- Floating Sparkles -->
+        <div class="sparkle sparkle-1"></div>
+        <div class="sparkle sparkle-2"></div>
+        <div class="sparkle sparkle-3"></div>
+        <div class="sparkle sparkle-4"></div>
 
-  <%= link_to universes_path, class: "back-button" do %>
-    <i class="fas fa-arrow-left me-2"></i>Back
-  <% end %>
+        <!-- Universe Showcase Card (Landscape Layout) -->
+        <div class="universe-showcase-card">
+          <!-- Universe Image (Landscape - Full Width Top) -->
+          <div class="universe-image-wrapper">
+            <% if @universe.image.attached? %>
+              <%= image_tag url_for(@universe.image), class: "universe-hero-image", alt: @universe.name %>
+            <% else %>
+              <div class="universe-placeholder-image">
+                <i class="fas fa-globe-americas"></i>
+              </div>
+            <% end %>
+            <div class="image-overlay"></div>
+            <div class="image-glow"></div>
+          </div>
 
-  <div class="d-flex justify-content-center gap-3 mt-3">
-    <%= button_to "Delete Universe", universe_path(@universe),
-          method: :delete,
-          data: { turbo_confirm: "Are you sure you want to delete this universe?" },
-          class: "btn btn-danger btn-lg" %>
-  </div>
+          <!-- Universe Info (Below Image) -->
+          <div class="universe-info-panel">
+            <div class="universe-badge">
+              <i class="fas fa-magic"></i>
+              Your Universe
+            </div>
 
+            <h1 class="universe-name"><%= @universe.name || "Unnamed World" %></h1>
 
-  <div class="d-flex justify-content-center gap-3">
-    <%= link_to "Try Again", new_universe_path(description: @universe.description), class: "btn btn-warning btn-lg" %>
-    <%= link_to "Continue", new_story_path, class: "btn btn-success btn-lg" %>
+            <% if @universe.description.present? %>
+              <div class="universe-description">
+                <p><%= @universe.description %></p>
+              </div>
+            <% end %>
+
+            <!-- Universe Stats -->
+            <div class="universe-stats">
+              <div class="stat-item breathing-slow">
+                <div class="stat-icon">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value"><%= @universe.stories.count %></span>
+                  <span class="stat-label">Stories</span>
+                </div>
+              </div>
+
+              <div class="stat-item breathing-medium">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-alt"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value"><%= @universe.created_at.strftime("%b %d") %></span>
+                  <span class="stat-label">Created</span>
+                </div>
+              </div>
+
+              <% if @universe.profile %>
+                <div class="stat-item breathing-fast">
+                  <div class="stat-icon">
+                    <i class="fas fa-user"></i>
+                  </div>
+                  <div class="stat-info">
+                    <span class="stat-value"><%= @universe.profile.name&.truncate(12) || "Creator" %></span>
+                    <span class="stat-label">Creator</span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="universe-actions">
+              <%= link_to new_story_path, class: "uni-btn uni-btn-coral" do %>
+                <i class="fas fa-pen-fancy"></i>
+                Create Story
+              <% end %>
+
+              <%= link_to new_universe_path(description: @universe.description), class: "uni-btn uni-btn-teal" do %>
+                <i class="fas fa-sync-alt"></i>
+                Regenerate
+              <% end %>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+              <%= button_to universe_path(@universe),
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure you want to delete #{@universe.name || 'this universe'}?" },
+                    class: "btn-delete" do %>
+                <i class="fas fa-trash-alt"></i>
+                <span>Delete Universe</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back Navigation -->
+        <div class="back-navigation">
+          <%= link_to universes_path, class: "btn-back" do %>
+            <i class="fas fa-arrow-left"></i>
+            <span>All Universes</span>
+          <% end %>
+        </div>
+      </section>
+    </div>
   </div>
 </div>
