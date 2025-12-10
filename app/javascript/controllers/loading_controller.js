@@ -170,3 +170,16 @@ document.addEventListener("turbo:load", () => {
     setTimeout(hide, MAX_WAIT_MS)
   }, waitMin)
 })
+
+document.addEventListener("turbo:load", () => {
+  const overlay = document.getElementById("loadingOverlay")
+  if (!overlay) return
+
+  // Check if we're on a show page (character, universe, or story)
+  const isShowPage = window.location.pathname.match(/\/(characters|universes|stories)\/\d+$/)
+
+  if (isShowPage) {
+    overlay.style.display = "block"
+    overlay.style.pointerEvents = "none" // Don't block clicks
+  }
+})
