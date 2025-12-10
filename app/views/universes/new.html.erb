@@ -13,6 +13,7 @@
       <p class="prompt-subtitle">Describe the world where the story happens</p>
     </div>
 
+
     <%= simple_form_for @universe do |f| %>
       <%= f.error_notification %>
       <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
