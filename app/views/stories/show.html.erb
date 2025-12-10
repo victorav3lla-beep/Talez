@@ -2,10 +2,12 @@
   <div class="story-show-container">
     <!-- Sidebar -->
     <%= render 'shared/sidebar', active: 'stories' %>
+
     <!-- Main Content -->
     <div class="main-content">
       <!-- Top Header -->
       <%= render 'shared/header', profile: current_profile %>
+
       <!-- Story Book Section -->
       <section class="story-book-section">
         <!-- Floating Sparkles -->
@@ -14,6 +16,7 @@
         <div class="sparkle sparkle-3"></div>
         <div class="sparkle sparkle-4"></div>
         <div class="sparkle sparkle-5"></div>
+
         <!-- Story Book Container -->
         <div class="story-book-container">
           <!-- Book Header -->
@@ -24,6 +27,7 @@
                 <span>Story Book</span>
               </div>
               <h1 class="book-title"><%= @story.title || "Untitled Story" %></h1>
+
               <!-- Story Meta -->
               <div class="story-meta-info">
                 <% if @story.characters.any? %>
@@ -43,6 +47,7 @@
                   <%= @story.pages.count %> / 3 pages
                 </span>
               </div>
+
               <!-- Author Info -->
               <% if @story.profile %>
                 <div class="story-author-info">
@@ -52,6 +57,7 @@
               <% end %>
             </div>
           </div>
+
           <!-- Book Carousel -->
           <% if @story.cover.attached? || @story.pages.any? %>
             <div class="book-carousel-wrapper">
@@ -77,6 +83,7 @@
                     </button>
                   <% end %>
                 </div>
+
                 <!-- Carousel Inner -->
                 <div class="carousel-inner book-pages">
                   <!-- Cover Slide -->
@@ -102,6 +109,7 @@
                       </div>
                     </div>
                   <% end %>
+
                   <!-- Story Pages -->
                   <% @story.pages.order(:position).each_with_index do |page, index| %>
                     <div class="carousel-item <%= 'active' if index == 0 && !@story.cover.attached? && !@story.images.attached? %>">
@@ -124,6 +132,7 @@
                     </div>
                   <% end %>
                 </div>
+
                 <!-- Navigation Arrows -->
                 <button class="book-nav book-nav-prev" type="button" data-bs-target="#storyBookCarousel" data-bs-slide="prev">
                   <i class="fas fa-chevron-left"></i>
@@ -134,14 +143,16 @@
               </div>
             </div>
           <% end %>
+
           <!-- Continue Story Section -->
           <% if @story.pages.count < 3 %>
-            <div class="story-complete-section" id="story-complete-section">
+            <div class="continue-story-section">
               <div class="continue-header">
                 <i class="fas fa-pen-fancy"></i>
                 <h3>Continue Your Story</h3>
                 <p>What happens next in your adventure?</p>
               </div>
+
               <%= simple_form_for :page, url: add_page_story_path(@story), method: :post, html: { class: 'continue-form' } do |f| %>
                 <div class="form-wrapper">
                   <%= f.input :content,
@@ -159,6 +170,7 @@
                   </button>
                 </div>
               <% end %>
+
               <div class="story-progress">
                 <div class="progress-bar">
                   <div class="progress-fill" style="width: <%= (@story.pages.count / 3.0 * 100).to_i %>%"></div>
@@ -167,45 +179,17 @@
               </div>
             </div>
           <% else %>
-            <div class="story-complete-section" id="story-complete-section">
+            <div class="story-complete-section">
               <div class="complete-badge">
                 <i class="fas fa-check-circle"></i>
                 <span>Story Complete!</span>
               </div>
               <p>Your adventure is complete. Share it with the world!</p>
+
               <% if @story.profile == current_profile %>
                 <div class="complete-actions">
                   <%= render partial: "stories/visibility_toggle", locals: { story: @story } %>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
-
-          <!-- Add More Pages Section -->
-          <% if @story.profile == current_profile && @story.pages.count >= 3 && @story.pages.count < 12 %>
-            <div id="add-more-form-section" style="display: none;">
-              <div class="continue-header mt-4">
-                <i class="fas fa-pen-fancy"></i>
-                <h3>Add More Pages</h3>
-                <p>Extend your adventure with a new page!</p>
-              </div>
-              <%= simple_form_for :page, url: add_page_story_path(@story), method: :post, html: { class: 'continue-form' } do |f| %>
-                <div class="form-wrapper">
-                  <%= f.input :content,
-                              label: false,
-                              required: true,
-                              as: :text,
-                              input_html: {
-                                rows: 3,
-                                class: 'story-input',
-                                placeholder: "Describe what happens next in your extended adventure..."
-                              } %>
-                  <%= f.button :submit, "Add Page", class: "book-btn book-btn-success btn-lg w-100 mt-2" %>
-                </div>
-              <button id="finish-add-more-btn" class="book-btn book-btn-secondary btn-lg mt-2" type="button">
-                <i class="fas fa-check"></i>
-                <span>Finish</span>
-              </button>
               <% end %>
             </div>
           <% end %>
@@ -216,31 +200,22 @@
               <i class="fas fa-book"></i>
               <span>Library</span>
             <% end %>
+
             <%= link_to print_story_path(@story), class: "book-btn book-btn-accent", target: "_blank" do %>
               <i class="fas fa-print"></i>
               <span>Print Story</span>
             <% end %>
+
             <% if @story.profile == current_profile %>
               <%= link_to story_path(@story), method: :delete, data: { confirm: 'Are you sure you want to delete this story?' }, class: "book-btn book-btn-danger" do %>
                 <i class="fas fa-trash-alt"></i>
                 <span>Delete</span>
               <% end %>
             <% end %>
+
             <%= link_to new_story_path, class: "book-btn book-btn-primary" do %>
               <i class="fas fa-wand-magic-sparkles"></i>
               <span>New Story</span>
-            <% end %>
-            <% if @story.profile == current_profile && @story.pages.count >= 1 %>
-              <%= button_to generate_story_cover_story_path(@story), method: :post, class: "book-btn book-btn-primary" do %>
-                <i class="fas fa-image"></i>
-                <span><%= @story.cover.attached? ? "Regenerate Cover" : "Generate Cover" %></span>
-              <% end %>
-            <% end %>
-            <% if @story.profile == current_profile && @story.pages.count >= 3 && @story.pages.count < 12 %>
-              <button id="add-more-btn" class="book-btn book-btn-primary" type="button">
-                <i class="fas fa-plus"></i>
-                <span>Add More</span>
-              </button>
             <% end %>
           </div>
 
@@ -278,25 +253,3 @@
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var addMoreBtn = document.getElementById("add-more-btn");
-    var addMoreForm = document.getElementById("add-more-form-section");
-    var storyComplete = document.getElementById("story-complete-section");
-    var finishBtn = document.getElementById("finish-add-more-btn");
-    if(addMoreBtn && addMoreForm && storyComplete) {
-      addMoreBtn.addEventListener("click", function() {
-        addMoreForm.style.display = "block";
-        storyComplete.style.display = "none";
-        addMoreBtn.style.display = "none";
-      });
-    }
-    if(finishBtn && addMoreForm && storyComplete && addMoreBtn) {
-      finishBtn.addEventListener("click", function() {
-        addMoreForm.style.display = "none";
-        storyComplete.style.display = "block";
-        addMoreBtn.style.display = "inline-block";
-      });
-    }
-  });
-</script>
