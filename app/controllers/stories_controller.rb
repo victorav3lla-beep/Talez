@@ -132,26 +132,21 @@ class StoriesController < ApplicationController
     end
   end
 
+  # ...existing code...
+
   def add_page
     @story = Story.find(params[:id])
 
-    # Validate content FIRST before doing anything
-    if params[:page][:content].blank?
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.update("page-error",
-                                                   "<span class='error-message text-danger'>Please describe what happens next</span>")
-        end
-        format.html do
-          flash[:alert] = "Please describe what happens next"
-          redirect_to story_path(@story)
-        end
-      end
+    # 12-page restriction
+    if @story.pages.count >= 12
+      flash[:alert] = "You can't add more than 12 pages to a story."
+      redirect_to story_path(@story)
       return
     end
 
-    if @story.pages.count >= 12
-      flash[:alert] = "You can't add more than 12 pages to a story."
+    # Validation
+    if params[:page][:content].blank?
+      flash[:alert] = "Please describe what happens next"
       redirect_to story_path(@story)
       return
     end
@@ -166,7 +161,6 @@ class StoriesController < ApplicationController
 
     @ruby_llm = RubyLLM.chat
 
-    # Determine which part of the story we're adding
     next_position = @story.pages.count + 1
     story_part = case next_position
       when 2 then "problem"
@@ -177,18 +171,16 @@ class StoriesController < ApplicationController
     response = @ruby_llm.with_instructions(continuation_instructions(character, universe, story_part)).ask(page_params[:content])
     response = parse_json_response(response.content)
 
-    # Create the new page
     page = @story.pages.create(
       title: response["title"],
       content: response["content"],
       position: next_position,
     )
 
-    # Generate and attach page image
     page_image_prompt = "Animated, kid-friendly illustration of: #{response["content"]}\nStyle: professional kids storybook, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
-                      IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
-                      The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-                      The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
+                    IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
+                    The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+                    The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
     page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
     if page_image.url
@@ -205,7 +197,6 @@ class StoriesController < ApplicationController
       generate_cover(character, universe)
     end
 
-    # Redirect with the slide index to show the new page
     slide_index = @story.cover.attached? ? next_position : next_position - 1
     redirect_to story_path(@story, slide: slide_index), notice: "Page added successfully!"
   end
@@ -218,11 +209,6 @@ class StoriesController < ApplicationController
       return
     end
 
-    if @story.cover.attached?
-      redirect_to story_path(@story), alert: "Cover already exists"
-      return
-    end
-
     character = Character.find_by(id: session[:selected_character_id])
     universe = Universe.find_by(id: session[:selected_universe_id])
 
@@ -231,9 +217,28 @@ class StoriesController < ApplicationController
       return
     end
 
-    generate_cover(character, universe)
+    # Regenerate cover (purge old if exists)
+    @story.cover.purge if @story.cover.attached?
 
-    redirect_to story_path(@story), notice: "Cover generated successfully!"
+    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title} (show the title in the image)
+                  The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+                  The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
+                  Story content: #{@story.pages.order(:position).pluck(:content).join(" ")}
+                  \nStyle: similar to the character and universe style, professional book cover layout with the story title visible\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image
+                  IMPORTANT: The story title \"#{@story.title}\" should be clearly visible in the cover image. Keep the style consistent with the character and universe images provided and don't use any book margins or layouts, just the image."
+    cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
+
+    if cover_image.url
+      cover_data = URI.open(cover_image.url)
+      @story.cover.attach(
+        io: cover_data,
+        filename: "cover-#{SecureRandom.hex(4)}.png",
+        content_type: "image/png",
+      )
+      redirect_to story_path(@story), notice: "Cover generated successfully!"
+    else
+      redirect_to story_path(@story), alert: "Failed to generate cover."
+    end
   end
 
   def destroy
