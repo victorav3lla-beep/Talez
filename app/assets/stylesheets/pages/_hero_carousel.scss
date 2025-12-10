@@ -239,7 +239,7 @@
   bottom: 2.5rem;
   left: 2.5rem;
   background: rgba(255, 255, 255, 0.9);
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 12px;
   backdrop-filter: 0,2;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
@@ -485,7 +485,7 @@
 
   .btn-text {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     transition: opacity 0.3s ease;
     white-space: nowrap;
   }
@@ -529,6 +529,96 @@
   &:focus {
     outline: 3px solid rgba($primary-coral, 0.5);
     outline-offset: 4px;
+  }
+}
+
+// ==========================================================
+// Big Hero CTA Button (Below Carousel)
+// ==========================================================
+
+.hero-cta-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 1.5rem 1rem;
+}
+
+.btn-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.25rem 3rem;
+  background: linear-gradient(135deg, $primary-coral 0%, darken($primary-coral, 10%) 100%);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-decoration: none;
+  border-radius: 60px;
+  box-shadow: 0 8px 30px rgba($primary-coral, 0.4),
+              0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%);
+    transition: left 0.5s ease;
+  }
+
+  .btn-hero-icon {
+    font-size: 1.75rem;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-hero-text {
+    letter-spacing: 0.5px;
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 40px rgba($primary-coral, 0.5),
+                0 6px 20px rgba(0, 0, 0, 0.15);
+    color: white;
+
+    &::before {
+      left: 100%;
+    }
+
+    .btn-hero-icon {
+      transform: translateX(4px) rotate(-15deg);
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px) scale(0.98);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1.25rem;
+    padding: 1rem 2rem;
+    gap: 0.75rem;
+
+    .btn-hero-icon {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1.1rem;
+    padding: 0.9rem 1.75rem;
+
+    .btn-hero-icon {
+      font-size: 1.25rem;
+    }
   }
 }
 
