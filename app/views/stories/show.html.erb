@@ -2,11 +2,10 @@
 <div class="container story-show m-5-auto p-4 bg-light rounded">
   <h1 class="text-center mb-4"><%= @story.title %></h1>
   <hr>
-
   <%= render 'shared/flashes' %>
-
   <!-- Pages Carousel with Cover -->
   <% if @story.cover.attached? || @story.pages.any? %>
+    <% active_slide = params[:slide].to_i %>
     <div id="pagesCarousel" class="carousel slide carousel-fade mb-4" data-bs-ride="false">
       <!-- Carousel Indicators -->
       <div class="carousel-indicators">
@@ -14,30 +13,30 @@
           <button type="button"
                   data-bs-target="#pagesCarousel"
                   data-bs-slide-to="0"
-                  class="active"
+                  class="<%= 'active' if active_slide == 0 %>"
                   aria-label="Cover"></button>
         <% end %>
         <% @story.pages.order(:position).each_with_index do |page, index| %>
+          <% slide_number = @story.cover.attached? ? index + 1 : index %>
           <button type="button"
                   data-bs-target="#pagesCarousel"
-                  data-bs-slide-to="<%= @story.cover.attached? ? index + 1 : index %>"
-                  class="<%= 'active' if index == 0 && !@story.cover.attached? %>"
+                  data-bs-slide-to="<%= slide_number %>"
+                  class="<%= 'active' if active_slide == slide_number %>"
                   aria-label="Page <%= page.position %>"></button>
         <% end %>
       </div>
-
       <!-- Carousel Inner -->
       <div class="carousel-inner">
         <!-- Cover Slide -->
         <% if @story.cover.attached? %>
-          <div class="carousel-item active">
+          <div class="carousel-item <%= 'active' if active_slide == 0 %>">
             <div class="cover-slide p-4 bg-white rounded text-center">
               <%= image_tag @story.cover, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
             </div>
           </div>
         <% elsif @story.images.attached? %>
           <!-- Fallback for old stories -->
-          <div class="carousel-item active">
+          <div class="carousel-item <%= 'active' if active_slide == 0 %>">
             <div class="cover-slide p-4 bg-white rounded text-center">
               <% @story.images.each do |image| %>
                 <%= image_tag image, alt: @story.title, class: "cover-image w-100", loading: "lazy" %>
@@ -45,10 +44,10 @@
             </div>
           </div>
         <% end %>
-
         <!-- Page Slides -->
         <% @story.pages.order(:position).each_with_index do |page, index| %>
-          <div class="carousel-item <%= 'active' if index == 0 && !@story.cover.attached? && !@story.images.attached? %>">
+          <% slide_number = @story.cover.attached? ? index + 1 : index %>
+          <div class="carousel-item <%= 'active' if active_slide == slide_number || (active_slide == 0 && index == 0 && !@story.cover.attached? && !@story.images.attached?) %>">
             <div class="page-slide">
               <% if page.image.attached? %>
                 <div class="page-image-container position-relative">
@@ -64,10 +63,8 @@
           </div>
         <% end %>
       </div>
-
-
       <!-- Carousel Controls -->
-    <hr>
+      <hr>
       <button class="carousel-control-prev" type="button" data-bs-target="#pagesCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Previous</span>
@@ -78,14 +75,29 @@
       </button>
     </div>
   <% end %>
-
   <hr>
-
-  <% if @story.pages.count < 3 %>
-    <div class="add-page-form p-4 bg-white rounded mb-4">
-      <h4>Continue your story...</h4>
-      <%= simple_form_for :page, local: true, url: add_page_story_path(@story), method: :post, error_notification: false do |f| %>
-        <%= f.input :content,
+  <!-- Story Actions (only for story owner) -->
+  <% if @story.profile == current_profile %>
+    <% if @story.pages.count < 12 %>
+      <!-- Add Page Form - available until 12 pages -->
+      <div class="add-page-form p-4 bg-white rounded mb-4" id="add-page-form">
+        <h4>Continue your story...</h4>
+        <% if @story.pages.count < 3 %>
+          <p class="text-muted">
+            <% case @story.pages.count %>
+            <% when 1 %>
+              <i class="bi bi-info-circle"></i> Page 1 done! Now describe the <strong>problem</strong> your character faces.
+            <% when 2 %>
+              <i class="bi bi-info-circle"></i> Page 2 done! Now describe the <strong>conclusion</strong> to finish your story and get a cover!
+            <% end %>
+          </p>
+        <% else %>
+          <p class="text-muted">
+            <i class="bi bi-plus-circle"></i> Your story has a cover! You can still add more pages if you want.
+          </p>
+        <% end %>
+        <%= simple_form_for :page, local: true, url: add_page_story_path(@story), method: :post, error_notification: false, data: { turbo: true } do |f| %>
+          <%= f.input :content,
                     label: false,
                     required: true,
                     as: :text,
@@ -94,15 +106,39 @@
                       class: 'prompt-input',
                       placeholder: 'What happens next?'
                     } %>
-        <%= f.button :submit, "Add Page", class: "btn btn-success btn-lg w-100 mt-2" %>
-      <% end %>
-    </div>
-  <% else %>
-    <p class="alert alert-info">Your story is complete! Check back for the cover.</p>
+          <div id="page-error">
+            <% if flash[:alert] %>
+              <span class="error-message text-danger"><%= flash[:alert] %></span>
+            <% end %>
+          </div>
+          <%= f.button :submit, "Add Page", class: "btn btn-success btn-lg w-100 mt-2" %>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-warning mb-4">
+        <i class="bi bi-exclamation-triangle"></i> You have reached the maximum of 12 pages for this story.
+      </div>
+    <% end %>
+    <!-- Generate/Regenerate Cover Button - always available after 1 page -->
+    <% if @story.pages.count >= 1 %>
+      <div class="generate-cover-section p-4 bg-white rounded mb-4">
+        <h4><%= @story.cover.attached? ? "Regenerate Cover" : "Ready for a cover?" %></h4>
+        <p class="text-muted">
+          <% if @story.pages.count < 3 %>
+            <i class="bi bi-exclamation-triangle"></i> We recommend at least 3 pages (beginning, problem, conclusion) before generating a cover.
+          <% else %>
+            <i class="bi bi-check-circle"></i> Your story has enough pages! Generate or update your cover now.
+          <% end %>
+        </p>
+        <%= button_to (@story.cover.attached? ? "Regenerate Cover" : "Generate Cover"), generate_story_cover_story_path(@story), method: :post, class: "btn btn-primary btn-lg w-100" %>
+      </div>
+    <% end %>
   <% end %>
-
   <div class="d-flex justify-content-center gap-3">
     <%= link_to "Back to Dashboard", dashboard_path, class: "btn btn-warning btn-lg" %>
     <%= link_to "Create New Story", new_story_path, class: "btn btn-success btn-lg" %>
+    <% if @story.cover.attached? %>
+      <%= button_to "Make #{@story.public? ? 'Private' : 'Public'}", story_path(@story, story: { public: !@story.public? }), method: :patch, class: "btn btn-outline-secondary btn-lg" %>
+    <% end %>
   </div>
 </div>

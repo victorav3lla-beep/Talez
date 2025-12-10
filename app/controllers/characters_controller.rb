@@ -50,6 +50,7 @@ class CharactersController < ApplicationController
       A full-body portrait of a character named #{@character.name}, described as follows: #{@character.description}.
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
+      IMPORTANT: create only one character
     PROMPT
     image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 

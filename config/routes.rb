@@ -13,14 +13,12 @@ Rails.application.routes.draw do
   end
 
   # Standard routes for managing profiles + Selection logic
-  # I merged your two 'resources :profiles' blocks here:
   resources :profiles, only: [:index, :show, :edit, :update, :destroy] do
     member do
-      post :select # Creates: POST /profiles/:id/select
+      post :select
       post :add_page
     end
   end
-
 
   resources :characters do
     get :try_again, on: :member
@@ -34,28 +32,28 @@ Rails.application.routes.draw do
   get 'dashboard', to: 'dashboard#index'
 
   # 5. Game Flow (Story Creation)
-  # We use 'collection' for select because we submit a form with a hidden ID
   resources :characters, only: [:index, :show, :new, :create, :destroy] do
     collection do
-      post :select # Creates: POST /characters/select
+      post :select
     end
   end
 
   resources :universes, only: [:index, :show, :new, :create, :destroy] do
     collection do
-      post :select # Creates: POST /universes/select
+      post :select
     end
   end
 
   # 6. Playing the Story
-  resources :stories, only: [ :new, :create, :show, :index, :destroy, :update ] do
+  resources :stories, only: [:index, :show, :new, :create, :edit, :update, :destroy] do
     resources :chats, only: [:create, :show]
+    resources :likes, only: [:create]
     member do
       post :bookmark
       get :print
       post :add_page
+      post :generate_story_cover
     end
-    resources :likes, only: [:create]
   end
 
   resources :likes, only: [:destroy]

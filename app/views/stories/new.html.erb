@@ -1,4 +1,4 @@
-
+<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/stories/new.html.erb -->
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
   <!-- Back Button -->
   <div class="prompt-back-button">
@@ -13,10 +13,7 @@
       <p class="prompt-subtitle">Tell me how your story begins...</p>
     </div>
 
-    <%= simple_form_for @story do |f| %>
-      <%= f.error_notification %>
-      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
-
+    <%= simple_form_for @story, error_notification: false do |f| %>
       <div class="form-inputs">
         <%= f.input :content,
                     label: false,
@@ -27,6 +24,9 @@
                       class: 'prompt-input',
                       placeholder: 'Write your story prompt here...'
                     } %>
+        <% if flash[:alert] %>
+          <span class="error-message text-danger"><%= flash[:alert] %></span>
+        <% end %>
       </div>
 
       <div class="form-actions mt-3">
