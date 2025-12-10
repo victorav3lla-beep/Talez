@@ -498,6 +498,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
 
       i {
         font-size: 11px;
@@ -506,11 +509,22 @@
       &.public {
         background-color: rgba($secondary-teal, 0.15);
         color: darken($secondary-teal, 10%);
+
+        &:hover {
+          background-color: rgba($secondary-teal, 0.3);
+          transform: translateY(-2px);
+        }
       }
 
       &.private {
         background-color: rgba($text-muted, 0.15);
         color: $text-muted;
+
+        &:hover {
+          background-color: rgba($primary-coral, 0.2);
+          color: $primary-coral;
+          transform: translateY(-2px);
+        }
       }
     }
 

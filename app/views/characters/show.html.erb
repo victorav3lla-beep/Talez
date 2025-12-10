@@ -1,24 +1,108 @@
-<div class="character-show-container text-center py-5">
-  <h1 class="mb-3"><%= @character.name || "Your Character" %></h1>
-  <p class="mb-4"><%= @character.description %></p>
+<div class="character-show-page-wrapper">
+  <div class="character-show-container">
+    <!-- Sidebar -->
+    <%= render 'shared/sidebar', active: 'create' %>
 
-  <% if @character.image.attached? %>
-    <%= image_tag url_for(@character.image), class: "img-fluid rounded shadow mb-4", style: "max-height: 500px; object-fit: cover;" %>
-  <% end %>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Header -->
+      <%= render 'shared/header', profile: current_profile %>
 
-    <%= link_to characters_path, class: "back-button" do %>
-      <i class="fas fa-arrow-left me-2"></i>Back
-    <% end %>
+      <!-- Character Hero Section -->
+      <section class="character-hero-section">
+        <!-- Floating Sparkles -->
+        <div class="sparkle sparkle-1"></div>
+        <div class="sparkle sparkle-2"></div>
+        <div class="sparkle sparkle-3"></div>
+        <div class="sparkle sparkle-4"></div>
+        <div class="sparkle sparkle-5"></div>
 
-  <div class="d-flex justify-content-center gap-3 mt-3">
-    <%= button_to "Delete Character", character_path(@character),
-          method: :delete,
-          data: { confirm: "Are you sure you want to delete this character?" },
-          class: "btn btn-danger btn-lg" %>
-  </div>
+        <!-- Character Card -->
+        <div class="character-showcase-card">
+          <!-- Character Image -->
+          <div class="character-image-wrapper">
+            <% if @character.image.attached? %>
+              <%= image_tag url_for(@character.image), class: "character-hero-image", alt: @character.name %>
+            <% else %>
+              <div class="character-placeholder-image">
+                <i class="fas fa-user-astronaut"></i>
+              </div>
+            <% end %>
+            <div class="image-glow"></div>
+          </div>
 
-  <div class="d-flex justify-content-center gap-3">
-    <%= link_to "Try Again", new_character_path(description: @character.description), class: "btn btn-warning btn-lg" %>
-    <%= link_to "Continue", universes_path, class: "btn btn-success btn-lg" %>
+          <!-- Character Info -->
+          <div class="character-info-panel">
+            <div class="character-badge">
+              <i class="fas fa-star"></i>
+              Your Character
+            </div>
+
+            <h1 class="character-name"><%= @character.name || "Unnamed Hero" %></h1>
+
+            <% if @character.description.present? %>
+              <div class="character-description">
+                <p><%= @character.description %></p>
+              </div>
+            <% end %>
+
+            <!-- Character Stats (breathing animation) -->
+            <div class="character-stats">
+              <div class="stat-item breathing-slow">
+                <div class="stat-icon">
+                  <i class="fas fa-book"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value"><%= @character.stories.count %></span>
+                  <span class="stat-label">Stories</span>
+                </div>
+              </div>
+
+              <div class="stat-item breathing-medium">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar"></i>
+                </div>
+                <div class="stat-info">
+                  <span class="stat-value"><%= @character.created_at.strftime("%b %d") %></span>
+                  <span class="stat-label">Created</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="character-actions">
+              <%= link_to universes_path, class: "char-btn char-btn-coral" do %>
+                <i class="fas fa-rocket"></i>
+                Start Adventure
+              <% end %>
+
+              <%= link_to new_character_path(description: @character.description), class: "char-btn char-btn-teal" do %>
+                <i class="fas fa-sync-alt"></i>
+                Regenerate
+              <% end %>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="danger-zone">
+              <%= button_to character_path(@character),
+                    method: :delete,
+                    data: { turbo_confirm: "Are you sure you want to delete #{@character.name || 'this character'}?" },
+                    class: "btn-delete" do %>
+                <i class="fas fa-trash-alt"></i>
+                <span>Delete Character</span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back Navigation -->
+        <div class="back-navigation">
+          <%= link_to characters_path, class: "btn-back" do %>
+            <i class="fas fa-arrow-left"></i>
+            <span>All Characters</span>
+          <% end %>
+        </div>
+      </section>
+    </div>
   </div>
 </div>

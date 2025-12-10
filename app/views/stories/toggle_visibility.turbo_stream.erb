@@ -1,0 +1,17 @@
+<%# Update row card version %>
+<%= turbo_stream.replace "story_visibility_#{@story.id}" do %>
+  <%= render partial: "stories/visibility_toggle", locals: { story: @story } %>
+<% end %>
+
+<%# Update library card version %>
+<%= turbo_stream.replace "story_visibility_lib_#{@story.id}" do %>
+  <div id="story_visibility_lib_<%= @story.id %>" class="d-inline">
+    <%= form_with url: toggle_visibility_story_path(@story), method: :patch do %>
+      <button type="submit"
+              class="btn-action-library btn-visibility-action <%= @story.public? ? 'public' : 'private' %>"
+              title="<%= @story.public? ? 'Make Private' : 'Make Public' %>">
+        <i class="fas <%= @story.public? ? 'fa-eye' : 'fa-eye-slash' %>"></i>
+      </button>
+    <% end %>
+  </div>
+<% end %>
