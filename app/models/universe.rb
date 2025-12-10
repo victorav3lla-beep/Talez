@@ -5,4 +5,6 @@ class Universe < ApplicationRecord
   has_many :stories, through: :story_universes
 
   has_one_attached :image
+
+  validates :description, presence: { message: "Please describe your universe" }
 end

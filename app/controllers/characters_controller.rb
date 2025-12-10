@@ -21,59 +21,54 @@ class CharactersController < ApplicationController
   end
 
   def create
-    if character_params[:description].present?
-      llm = RubyLLM.chat
-      llm.with_instructions(SYSTEM_PROMPT)
+    @character = @selected_profile.characters.build(character_params)
+    @character.is_custom = true
 
-      if character_params[:name].blank?
-        response = llm.ask(character_params[:description])
-        begin
-          character_data = JSON.parse(response.content)
-          character_name = character_data["name"]
-          character_description = character_data["description"]
-        rescue JSON::ParserError => e
-          redirect_to characters_path, alert: "AI error: #{e.message}"
-          return
-        end
-      else
-        character_name = character_params[:name]
-        character_description = character_params[:description]
+    unless @character.valid?
+      flash.now[:alert] = @character.errors.full_messages.first
+      render :new, status: :unprocessable_entity
+      return
+    end
+
+    llm = RubyLLM.chat
+    llm.with_instructions(SYSTEM_PROMPT)
+
+    if character_params[:name].blank?
+      response = llm.ask(character_params[:description])
+      begin
+        character_data = JSON.parse(response.content)
+        @character.name = character_data["name"]
+        @character.description = character_data["description"]
+      rescue JSON::ParserError => e
+        redirect_to characters_path, alert: "AI error: #{e.message}"
+        return
       end
+    end
 
-      @character = @selected_profile.characters.new(
-        name: character_name,
-        description: character_description,
-        is_custom: true,
-      )
-
-      image_prompt = <<~PROMPT
+    image_prompt = <<~PROMPT
       Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
-      A full-body portrait of a character named #{character_name}, described as follows: #{character_description}.
+      A full-body portrait of a character named #{@character.name}, described as follows: #{@character.description}.
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
-      PROMPT
-      image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
+    PROMPT
+    image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 
-      if image.url
-        image_data = URI.open(image.url)
-
-        @character.image.attach(
-          io: image_data,
-          filename: "#{character_name.parameterize}.png",
-          content_type: "image/png",
-        )
-      else
-        Rails.logger.warn("No image generated for #{character_name}")
-      end
-
-      if @character.save
-        session[:selected_character_id] = @character.id
-        redirect_to character_path(@character), notice: "Character created!"
-      else
-        redirect_to new_character_path, alert: "Failed to create character: #{@character.errors.full_messages.join(", ")}"
-      end
+    if image.url
+      image_data = URI.open(image.url)
+      @character.image.attach(
+        io: image_data,
+        filename: "#{@character.name.parameterize}.png",
+        content_type: "image/png",
+      )
     else
-      redirect_to characters_path, alert: "Please provide a description"
+      Rails.logger.warn("No image generated for #{@character.name}")
+    end
+
+    if @character.save
+      session[:selected_character_id] = @character.id
+      redirect_to character_path(@character), notice: "Character created!"
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 
