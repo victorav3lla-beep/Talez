@@ -2,8 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 /**
  * Manages the spawning and lifecycle of floating objects.
- * Keeps maximum 2 objects on screen at once.
- * Spawns new objects randomly when slots are available.
+ * Keeps maximum 1 object on screen, spawns rarely for subtle effect.
  */
 export default class extends Controller {
   static targets = ["pool"]
@@ -15,7 +14,8 @@ export default class extends Controller {
     // Liste des images disponibles (depuis les data attributes)
     this.vectorImages = this.imagesValue
 
-    this.maxFloaters = 2
+    this.maxFloaters = 1
+    this.spawnChance = 0.25 // 25% chance to spawn when checking
     this.activeFloaters = []
 
     // Pour éviter les doublons et alterner
@@ -29,12 +29,12 @@ export default class extends Controller {
     this.handleMouseMove = this.handleMouseMove.bind(this)
     window.addEventListener('mousemove', this.handleMouseMove)
 
-    // Spawn initial
-    this.spawn()
-    this.spawn()
+    // Delayed initial spawn (wait 3-8 seconds before first one)
+    const initialDelay = 3000 + Math.random() * 5000
+    setTimeout(() => this.spawn(), initialDelay)
 
-    // Check périodique pour respawn
-    this.checkInterval = setInterval(() => this.checkAndSpawn(), 2000)
+    // Check périodique pour respawn (every 4 seconds)
+    this.checkInterval = setInterval(() => this.checkAndSpawn(), 4000)
   }
 
   disconnect() {
@@ -51,8 +51,8 @@ export default class extends Controller {
     // Nettoyer les floaters qui ont fini
     this.activeFloaters = this.activeFloaters.filter(f => f.isConnected)
 
-    // Spawn si on a moins de 2
-    while (this.activeFloaters.length < this.maxFloaters) {
+    // Only spawn if no floater AND random chance succeeds (makes it rare)
+    if (this.activeFloaters.length < this.maxFloaters && Math.random() < this.spawnChance) {
       this.spawn()
     }
   }

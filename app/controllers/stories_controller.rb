@@ -117,6 +117,21 @@ class StoriesController < ApplicationController
     end
   end
 
+  def toggle_visibility
+    @story = Story.find(params[:id])
+
+    if @story.profile == current_profile
+      @story.update(public: !@story.public)
+
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_back(fallback_location: stories_path) }
+      end
+    else
+      head :unauthorized
+    end
+  end
+
   def add_page
     @story = Story.find(params[:id])
 

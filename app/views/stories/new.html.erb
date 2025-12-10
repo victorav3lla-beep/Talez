@@ -1,39 +1,137 @@
-<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/stories/new.html.erb -->
-<div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
-  <!-- Back Button -->
-  <div class="prompt-back-button">
-    <%= link_to universes_path, class: "btn-back" do %>
-      <i class="bi bi-arrow-left"></i> Back
-    <% end %>
-  </div>
+<div class="story-create-page-wrapper">
+  <div class="story-create-container">
+    <!-- Sidebar -->
+    <%= render 'shared/sidebar', active: 'stories' %>
 
-  <div class="prompt-card">
-    <div class="text-center mb-4">
-      <h1 class="prompt-title mb-2">Create your own story</h1>
-      <p class="prompt-subtitle">Tell me how your story begins...</p>
+    <!-- Main Content -->
+    <div class="main-content">
+      <!-- Top Header -->
+      <%= render 'shared/header', profile: current_profile %>
+
+      <!-- Create Story Section -->
+      <section class="create-story-section">
+        <!-- Floating Decorations -->
+        <div class="floating-decoration deco-1"><i class="fas fa-star"></i></div>
+        <div class="floating-decoration deco-2"><i class="fas fa-heart"></i></div>
+        <div class="floating-decoration deco-3"><i class="fas fa-sparkles"></i></div>
+        <div class="floating-decoration deco-4"><i class="fas fa-wand-magic-sparkles"></i></div>
+
+        <div class="create-story-card">
+          <!-- Card Header -->
+          <div class="create-card-header">
+            <div class="header-badge">
+              <i class="fas fa-feather-pointed"></i>
+              <span>New Adventure</span>
+            </div>
+            <h1 class="create-title">Create Your Story</h1>
+            <p class="create-subtitle">Every great adventure begins with a single idea. What's yours?</p>
+          </div>
+
+          <!-- Inspiration Section -->
+          <div class="inspiration-section">
+            <div class="inspiration-label">
+              <i class="fas fa-lightbulb"></i>
+              <span>Need inspiration?</span>
+            </div>
+            <div class="inspiration-chips">
+              <button type="button" class="inspiration-chip" data-prompt="A brave knight discovers a magical dragon egg">
+                <i class="fas fa-dragon"></i> Dragon Adventure
+              </button>
+              <button type="button" class="inspiration-chip" data-prompt="A young wizard learns their first spell at magic school">
+                <i class="fas fa-hat-wizard"></i> Magic School
+              </button>
+              <button type="button" class="inspiration-chip" data-prompt="A curious explorer finds a hidden underwater kingdom">
+                <i class="fas fa-fish"></i> Ocean Quest
+              </button>
+              <button type="button" class="inspiration-chip" data-prompt="A friendly robot makes its first human friend">
+                <i class="fas fa-robot"></i> Robot Friend
+              </button>
+            </div>
+          </div>
+
+          <!-- Form Section -->
+          <div class="create-form-section">
+            <%= simple_form_for @story do |f| %>
+              <%= f.error_notification %>
+              <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+              <div class="form-wrapper">
+                <label class="form-label-custom">
+                  <i class="fas fa-pen-fancy"></i>
+                  Your Story Prompt
+                </label>
+                <%= f.input :content,
+                            label: false,
+                            required: true,
+                            as: :text,
+                            input_html: {
+                              rows: 5,
+                              class: 'story-prompt-input',
+                              placeholder: 'Once upon a time, in a magical land far away...',
+                              id: 'story-prompt-textarea'
+                            } %>
+                <div class="input-hint">
+                  <i class="fas fa-info-circle"></i>
+                  Describe your story idea - the more details, the better!
+                </div>
+              </div>
+
+              <div class="form-actions-create">
+                <%= link_to stories_path, class: "btn-secondary-create" do %>
+                  <i class="fas fa-arrow-left"></i>
+                  <span>Back to Library</span>
+                <% end %>
+
+                <%= f.button :submit, class: "btn-primary-create" do %>
+                  <i class="fas fa-wand-magic-sparkles"></i>
+                  <span>Create My Story</span>
+                <% end %>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Tips Section -->
+          <div class="tips-section">
+            <div class="tips-header">
+              <i class="fas fa-lightbulb"></i>
+              <span>Story Tips</span>
+            </div>
+            <div class="tips-grid">
+              <div class="tip-item">
+                <div class="tip-icon"><i class="fas fa-user-astronaut"></i></div>
+                <div class="tip-text">Include a main character</div>
+              </div>
+              <div class="tip-item">
+                <div class="tip-icon"><i class="fas fa-map-location-dot"></i></div>
+                <div class="tip-text">Set the scene</div>
+              </div>
+              <div class="tip-item">
+                <div class="tip-icon"><i class="fas fa-bolt"></i></div>
+                <div class="tip-text">Add some action</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <%= simple_form_for @story, error_notification: false do |f| %>
-      <div class="form-inputs">
-        <%= f.input :content,
-                    label: false,
-                    required: true,
-                    as: :text,
-                    input_html: {
-                      rows: 4,
-                      class: 'prompt-input',
-                      placeholder: 'Write your story prompt here...'
-                    } %>
-        <% if flash[:alert] %>
-          <span class="error-message text-danger"><%= flash[:alert] %></span>
-        <% end %>
-      </div>
-
-      <div class="form-actions mt-3">
-        <%= f.button :submit,
-                    "Begin my story",
-                    class: "btn btn-sunset btn-lg w-100" %>
-      </div>
-    <% end %>
   </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const chips = document.querySelectorAll('.inspiration-chip');
+  const textarea = document.getElementById('story-prompt-textarea');
+
+  chips.forEach(chip => {
+    chip.addEventListener('click', function() {
+      const prompt = this.getAttribute('data-prompt');
+      textarea.value = prompt;
+      textarea.focus();
+
+      // Add visual feedback
+      chips.forEach(c => c.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+});
+</script>

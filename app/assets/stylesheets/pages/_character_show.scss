@@ -1,0 +1,589 @@
+// ==========================================================
+// Character Show Page - Sunset Dreams Style
+// ==========================================================
+
+@import '../config/colors';
+
+// Variables (consistent with dashboard)
+$primary-color: $primary-coral;
+$secondary-color: $secondary-teal;
+$accent-color: $accent-yellow;
+
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+$shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.15);
+
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+$radius-2xl: 24px;
+
+$transition-base: all 0.3s ease;
+
+// ==========================================================
+// Page Wrapper
+// ==========================================================
+
+body:has(.character-show-page-wrapper) {
+  background: none !important;
+}
+
+.character-show-page-wrapper {
+  min-height: 100vh;
+  background-image: url('/images/backgrounds/background.2.jpeg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  position: relative;
+  z-index: 0;
+}
+
+.character-show-container {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  background: transparent !important;
+}
+
+// ==========================================================
+// Character Hero Section
+// ==========================================================
+
+.character-hero-section {
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 80px);
+  position: relative;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 20px;
+    min-height: auto;
+  }
+}
+
+// ==========================================================
+// Floating Sparkles (Breathing Effect)
+// ==========================================================
+
+.sparkle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, $accent-color 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle-float 4s ease-in-out infinite;
+
+  &.sparkle-1 {
+    top: 10%;
+    left: 15%;
+    animation-delay: 0s;
+    width: 24px;
+    height: 24px;
+  }
+
+  &.sparkle-2 {
+    top: 20%;
+    right: 20%;
+    animation-delay: 0.8s;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.sparkle-3 {
+    bottom: 30%;
+    left: 10%;
+    animation-delay: 1.6s;
+    width: 20px;
+    height: 20px;
+  }
+
+  &.sparkle-4 {
+    bottom: 15%;
+    right: 15%;
+    animation-delay: 2.4s;
+    width: 28px;
+    height: 28px;
+  }
+
+  &.sparkle-5 {
+    top: 50%;
+    right: 8%;
+    animation-delay: 3.2s;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@keyframes sparkle-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.3);
+    opacity: 1;
+  }
+}
+
+// ==========================================================
+// Character Showcase Card
+// ==========================================================
+
+.character-showcase-card {
+  display: flex;
+  gap: 48px;
+  max-width: 1000px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: $radius-2xl;
+  padding: 48px;
+  box-shadow: $shadow-lg;
+  animation: card-breathe 6s ease-in-out infinite;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    padding: 32px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 24px;
+    border-radius: $radius-xl;
+  }
+}
+
+@keyframes card-breathe {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: $shadow-lg;
+  }
+  50% {
+    transform: scale(1.005);
+    box-shadow: 0 12px 40px rgba($primary-coral, 0.15);
+  }
+}
+
+// ==========================================================
+// Character Image
+// ==========================================================
+
+.character-image-wrapper {
+  position: relative;
+  flex-shrink: 0;
+
+  .character-hero-image {
+    width: 320px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-md;
+    animation: image-breathe 5s ease-in-out infinite;
+
+    @media (max-width: 900px) {
+      width: 280px;
+      height: 350px;
+    }
+
+    @media (max-width: 480px) {
+      width: 240px;
+      height: 300px;
+    }
+  }
+
+  .character-placeholder-image {
+    width: 320px;
+    height: 400px;
+    border-radius: $radius-xl;
+    background: linear-gradient(135deg, lighten($primary-coral, 25%) 0%, lighten($secondary-teal, 25%) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: image-breathe 5s ease-in-out infinite;
+
+    i {
+      font-size: 80px;
+      color: white;
+      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 900px) {
+      width: 280px;
+      height: 350px;
+    }
+
+    @media (max-width: 480px) {
+      width: 240px;
+      height: 300px;
+
+      i {
+        font-size: 60px;
+      }
+    }
+  }
+
+  .image-glow {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: linear-gradient(135deg, rgba($primary-coral, 0.3) 0%, rgba($secondary-teal, 0.3) 100%);
+    border-radius: calc($radius-xl + 10px);
+    z-index: -1;
+    filter: blur(20px);
+    animation: glow-pulse 4s ease-in-out infinite;
+  }
+}
+
+@keyframes image-breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+// ==========================================================
+// Character Info Panel
+// ==========================================================
+
+.character-info-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 900px) {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.character-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, $accent-color 0%, lighten($accent-color, 10%) 100%);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: darken($accent-color, 40%);
+  width: fit-content;
+  animation: badge-pulse 3s ease-in-out infinite;
+
+  i {
+    font-size: 12px;
+  }
+}
+
+@keyframes badge-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba($accent-color, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 16px rgba($accent-color, 0.5);
+  }
+}
+
+.character-name {
+  font-size: 42px;
+  font-weight: 800;
+  color: $text-dark;
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+
+  @media (max-width: 768px) {
+    font-size: 32px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.character-description {
+  p {
+    font-size: 16px;
+    color: $text-muted;
+    line-height: 1.6;
+    margin: 0;
+    max-width: 500px;
+
+    @media (max-width: 900px) {
+      max-width: 100%;
+    }
+  }
+}
+
+// ==========================================================
+// Character Stats (Breathing)
+// ==========================================================
+
+.character-stats {
+  display: flex;
+  gap: 24px;
+  margin: 8px 0;
+
+  @media (max-width: 480px) {
+    gap: 16px;
+  }
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: lighten($primary-coral, 32%);
+  border-radius: $radius-md;
+  transition: $transition-base;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow-sm;
+  }
+
+  &.breathing-slow {
+    animation: stat-breathe 4s ease-in-out infinite;
+  }
+
+  &.breathing-medium {
+    animation: stat-breathe 3s ease-in-out infinite 0.5s;
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+}
+
+@keyframes stat-breathe {
+  0%, 100% {
+    transform: scale(1);
+    background: lighten($primary-coral, 32%);
+  }
+  50% {
+    transform: scale(1.03);
+    background: lighten($primary-coral, 28%);
+  }
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: $primary-coral;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  i {
+    font-size: 18px;
+    color: white;
+  }
+
+  @media (max-width: 480px) {
+    width: 36px;
+    height: 36px;
+
+    i {
+      font-size: 14px;
+    }
+  }
+}
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .stat-value {
+    font-size: 20px;
+    font-weight: 700;
+    color: $text-dark;
+
+    @media (max-width: 480px) {
+      font-size: 16px;
+    }
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+}
+
+// ==========================================================
+// Action Buttons
+// ==========================================================
+
+.character-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+// Simple button styles (no nested elements)
+.char-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 28px;
+  border-radius: $radius-lg;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  i {
+    font-size: 18px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+
+.char-btn-coral {
+  background: linear-gradient(135deg, $primary-coral 0%, darken($primary-coral, 8%) 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba($primary-coral, 0.4);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba($primary-coral, 0.5);
+    color: white;
+  }
+}
+
+.char-btn-teal {
+  background: linear-gradient(135deg, $secondary-teal 0%, darken($secondary-teal, 8%) 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba($secondary-teal, 0.4);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba($secondary-teal, 0.5);
+    color: white;
+  }
+}
+
+// ==========================================================
+// Danger Zone
+// ==========================================================
+
+.danger-zone {
+  margin-top: 16px;
+  padding-top: 20px;
+  border-top: 1px dashed lighten($text-muted, 20%);
+
+  .btn-delete {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: transparent;
+    border: 2px solid lighten($primary-coral, 20%);
+    border-radius: $radius-md;
+    color: $primary-coral;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: $transition-base;
+
+    &:hover {
+      background: $primary-coral;
+      border-color: $primary-coral;
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba($primary-coral, 0.3);
+    }
+
+    i {
+      font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ==========================================================
+// Back Navigation
+// ==========================================================
+
+.back-navigation {
+  margin-top: 32px;
+}
+
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: $radius-lg;
+  color: $text-dark;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: $transition-base;
+  box-shadow: $shadow-sm;
+
+  i {
+    font-size: 14px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: white;
+    transform: translateX(-5px);
+    box-shadow: $shadow-md;
+    color: $text-dark;
+
+    i {
+      transform: translateX(-3px);
+    }
+  }
+}

@@ -53,6 +53,7 @@ Rails.application.routes.draw do
       get :print
       post :add_page
       post :generate_story_cover
+      patch :toggle_visibility
     end
   end
 

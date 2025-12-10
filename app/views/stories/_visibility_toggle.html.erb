@@ -1,0 +1,10 @@
+<div id="story_visibility_<%= story.id %>" class="d-inline">
+  <%= form_with url: toggle_visibility_story_path(story), method: :patch do %>
+    <button type="submit"
+            class="privacy-badge <%= story.public? ? 'public' : 'private' %>"
+            title="Click to <%= story.public? ? 'make private' : 'make public' %>">
+      <i class="fas <%= story.public? ? 'fa-globe' : 'fa-lock' %>"></i>
+      <%= story.public? ? 'Public' : 'Private' %>
+    </button>
+  <% end %>
+</div>
