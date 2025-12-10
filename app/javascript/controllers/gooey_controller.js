@@ -15,11 +15,13 @@ export default class extends Controller {
       y: window.innerHeight / 2
     }))
 
-    // Original "Ultimate Liquid Gold" delays
-    // 0.20: Very responsive (the leader)
-    // 0.06: Medium delay (the follower)
-    // 0.012: Extremely slow (the heavy trailer)
-    this.delays = [0.20, 0.06, 0.012]
+    // Liquid Gold delays - b2 leads!
+    // HTML order: b4 → b3 → b2 → b1 (small to large)
+    // Index 0 (b4 - 150px): Heavy trailer - slowest
+    // Index 1 (b3 - 220px): Trailer - slow
+    // Index 2 (b2 - 320px): LEADER - fastest, sticks to cursor
+    // Index 3 (b1 - 480px): Big follower - 2nd fastest
+    this.delays = [0.008, 0.012, 0.20, 0.04]
 
     // Bind methods once for performance and correct `this` context.
     this.move = this.move.bind(this)

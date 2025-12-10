@@ -4,7 +4,8 @@ class StoriesController < ApplicationController
   SYSTEM_PROMPT = <<~PROMPT
     You are a kids storybook creator, you specialize in creating modern and appropriate images related to engaging text by helping create story components step by step
     I am a kid looking to create a story, and would appreciate assistance creating aesthetically pleasing stories in an organized way
-    Return in JSON format, keys should be ["title", "content"]
+    Return ONLY valid JSON with no markdown formatting, no code blocks, no explanation.
+    Keys should be ["title", "content"]
   PROMPT
 
   def new
@@ -39,7 +40,7 @@ class StoriesController < ApplicationController
     universe = Universe.find(session[:selected_universe_id])
 
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content], with:{ image: [character.image.url, universe.image.url] } )
-    response = JSON.parse(response.content)
+    response = parse_json_response(response.content)
 
     if @story.save
       @story.update(title: response["title"])
@@ -109,7 +110,7 @@ class StoriesController < ApplicationController
                  end
 
     response = @ruby_llm.with_instructions(continuation_instructions(character, universe, story_part)).ask(page_params[:content])
-    response = JSON.parse(response.content)
+    response = parse_json_response(response.content)
 
     # Create the new page
     page = @story.pages.create(
@@ -119,8 +120,8 @@ class StoriesController < ApplicationController
     )
 
     # Generate and attach page image
-    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: bright, bold colors, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
-                        IMPORTANT: Keep the style consistent with the character and universe images provided.
+    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: professional kids storybook, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
+                        IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
                         The main character: #{character.name} - #{character.description} - image: #{character.image.url}
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
     page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
@@ -136,7 +137,7 @@ class StoriesController < ApplicationController
 
     # If this is the resolution (page 3), generate the cover
     if next_position == 3
-      generate_cover
+      generate_cover(character, universe)
     end
 
     redirect_to story_path(@story), notice: "Page added successfully!"
@@ -153,6 +154,23 @@ class StoriesController < ApplicationController
   end
 
   private
+
+  def parse_json_response(content)
+    # Remove markdown code blocks if present
+    cleaned = content.gsub(/```json\s*/i, '').gsub(/```\s*/, '').strip
+
+    # Try to extract JSON object if there's extra text
+    if cleaned =~ /(\{.*\})/m
+      cleaned = $1
+    end
+
+    JSON.parse(cleaned)
+  rescue JSON::ParserError => e
+    Rails.logger.error("Failed to parse LLM response: #{content}")
+    Rails.logger.error("Error: #{e.message}")
+    # Return a fallback structure
+    { "title" => "Untitled", "content" => content }
+  end
 
   def story_params
     params.require(:story).permit(:content)
@@ -179,12 +197,13 @@ class StoriesController < ApplicationController
       image: #{universe.image.url}
 
       Please help me create the beggining of a story that fits within this context and using the same style of these images, then I will continue with the problem and the ending.
-      Return in JSON format, keys should be ["title", "content"]
-      IMPORTANT: Keep the style consistent with the character and universe images provided.
+      Return ONLY valid JSON with no markdown formatting, no code blocks, no explanation.
+      Keys should be ["title", "content"]
+      IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
     PROMPT
   end
 
-    def page_params
+  def page_params
     params.require(:page).permit(:content)
   end
 
@@ -200,20 +219,20 @@ class StoriesController < ApplicationController
       Story so far:
       #{existing_content} - #{@story.pages.order(:position).first&.image&.url}
 
-      Please create the #{story_part} of the story.
-      Return in JSON format, keys should be ["title", "content"]
+      Please create the #{story_part} of the story with consistency and coherence.
+      Return ONLY valid JSON with no markdown formatting, no code blocks, no explanation.
+      Keys should be ["title", "content"]
       IMPORTANT: Keep the style consistent with the character and universe images provided.
-
     PROMPT
   end
 
-  def generate_cover
+  def generate_cover(character, universe)
     cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}
                     The main character: #{character.name} - #{character.description} - image: #{character.image.url}
                     The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
-                    Story content: #{ @story.pages.order(:position).pluck(:content).join(' ')}
-                    \nStyle: similar to the character and universe style, bright, bold colors, high contrast, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image
-                    IMPORTANT: Keep the style consistent with the character and universe images provided."
+                    Story content: #{@story.pages.order(:position).pluck(:content).join(' ')}
+                    \nStyle: similar to the character and universe style, professional book cover layout\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition, with no book margins, just the image
+                    IMPORTANT: Keep the style consistent with the character and universe images provided and dont use any book margins or layouts, just the image."
     cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3")
 
     if cover_image.url

@@ -46,8 +46,13 @@ class CharactersController < ApplicationController
         is_custom: true,
       )
 
-      image_prompt = "Animated, kid-friendly illustration of:#{character_name}: #{character_description}, \nStyle: bright, simple shapes, bold colors, friendly characters, no text, high contrast"
-      image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3")
+      image_prompt = <<~PROMPT
+      Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
+      A full-body portrait of a character named #{character_name}, described as follows: #{character_description}.
+      Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
+      clean background, high contrast, highly detailed but easy to read for kids.
+      PROMPT
+      image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 
       if image.url
         image_data = URI.open(image.url)
