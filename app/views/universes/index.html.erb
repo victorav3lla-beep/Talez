@@ -1,4 +1,20 @@
 <div class="universes-page-wrapper" style="background-image: url('/images/backgrounds/background.10.jpg');">
+  <!-- Floating Vector Background - Spawner System -->
+  <div class="floating-background"
+       data-controller="floating-spawner"
+       id="universe-spawner"
+       data-floating-spawner-images-value='<%= [
+         { src: image_path("vectors/hot-air-balloon.png"), alt: "Balloon", width: 140 },
+         { src: image_path("vectors/crown.png"), alt: "Crown", width: 110 },
+         { src: image_path("vectors/moctezumas-headdress.png"), alt: "Headdress", width: 160 },
+         { src: image_path("vectors/book.png"), alt: "Book", width: 100 },
+         { src: image_path("vectors/razz-berry.png"), alt: "Berry", width: 80 },
+         { src: image_path("vectors/rocket.png"), alt: "Rocket", width: 120 }
+       ].to_json %>'>
+    <!-- Pool où les floaters seront créés dynamiquement -->
+    <div data-floating-spawner-target="pool"></div>
+  </div>
+
   <!-- TALEZ Logo - Top Left -->
   <div class="page-logo" data-controller="logo-switcher">
     <%= link_to dashboard_path, class: "logo-link" do %>
