@@ -1,3 +1,4 @@
+<% content_for :night_sky, true %>
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
   <!-- Back Button -->
   <div class="prompt-back-button">
@@ -11,6 +12,7 @@
       <h1 class="prompt-title mb-2">Create your own universe</h1>
       <p class="prompt-subtitle">Describe the world where the story happens</p>
     </div>
+
 
     <%= simple_form_for @universe do |f| %>
       <%= f.error_notification %>
