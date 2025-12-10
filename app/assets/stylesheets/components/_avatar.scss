@@ -23,3 +23,61 @@
   box-shadow: 0 1px 2px rgba(0,0,0,0.2);
   border: white 1px solid;
 }
+
+// Avatar selector styles
+.avatar-selector {
+  text-align: center;
+  padding: 20px;
+
+  h3 {
+    color: #fff;
+    margin-bottom: 20px;
+  }
+}
+
+.default-avatars-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+.avatar-option {
+  cursor: pointer;
+  position: relative;
+
+  label {
+    cursor: pointer;
+    display: block;
+  }
+
+  input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+  }
+
+  .avatar-thumbnail {
+    border: 3px solid transparent;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+
+  &:hover .avatar-thumbnail {
+    transform: scale(1.1);
+  }
+
+  input[type="radio"]:checked + .avatar-thumbnail,
+  &.selected .avatar-thumbnail {
+    border-color: #e50914;
+    box-shadow: 0 0 15px rgba(229, 9, 20, 0.5);
+  }
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}

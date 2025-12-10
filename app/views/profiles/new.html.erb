@@ -1,10 +1,51 @@
-<div class=container id="new_profile_container">
-  <h1>Add a Profile</h1>
-  <%= simple_form_for [@user, @profile] do |f| %>
-    <%= f.input :name, label: false, required: true, placeholder: "Name" %>
-    <%= f.input :age, label: false, required: true, placeholder: "Age" %>
-    <%= f.input :username, label: false, required: true, placeholder: "Username" %>
-    <%= f.button :submit, 'Continue', class: 'btn btn-primary' %>
-    <%= link_to "Cancel", profiles_path, class: "btn btn-danger " %>
-  <% end %>
+<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/profiles/new.html.erb -->
+<div class="profile-background">
+  <div class="container" id="new_profile_container">
+    <h1>Add a Profile</h1>
+    <%= simple_form_for [@user, @profile] do |f| %>
+      <%= f.input :name, label: false, required: true, placeholder: "Name" %>
+      <%= f.input :age, label: false, required: true, placeholder: "Age" %>
+      <%= f.input :username, label: false, required: true, placeholder: "Username" %>
+
+      <!-- Avatar Selection -->
+      <div class="avatar-selector" data-controller="avatar-selector">
+        <h3>Choose your avatar</h3>
+
+        <ul class="default-avatars-list">
+          <% default_avatars = [
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/Netflix-avatar_z4ahkh.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280271/anime-away-face-svgrepo-com_zqihw4.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-cloud-crying-svgrepo-com_wzugrv.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-lazybones-sloth-svgrepo-com_nabc8k.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-avocado-food-svgrepo-com_fkxp3n.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280271/avatar-coffee-cup-svgrepo-com_ibwkru.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280271/avatar-cacti-cactus-svgrepo-com_1_a34edx.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280272/animal-avatar-mutton-svgrepo-com_f02eo6.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280272/animal-avatar-bear-svgrepo-com_eh7ka5.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/avatar-muslim-paranja-svgrepo-com_inmncc.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/avatar-batman-comics-svgrepo-com_xajrrc.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765279457/profil3_ijfn0h.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765279457/profil2_vuy6cx.png",
+            "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765279457/profil1_adgd63.png",
+          ] %>
+
+          <% default_avatars.each_with_index do |avatar_url, index| %>
+            <li class="avatar-option">
+              <label>
+                <%= f.radio_button :default_avatar_url, avatar_url,
+                    checked: index == 0,
+                    data: { avatar_selector_target: "radio", action: "avatar-selector#select" } %>
+                <%= image_tag avatar_url, class: "avatar-xl avatar-thumbnail" %>
+              </label>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+
+      <div class="form-buttons">
+        <%= f.button :submit, 'Continue', class: 'btn btn-primary' %>
+        <%= link_to "Cancel", profiles_path, class: "btn btn-danger" %>
+      </div>
+    <% end %>
+  </div>
 </div>
