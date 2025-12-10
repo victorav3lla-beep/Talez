@@ -1,55 +1,48 @@
-<%# Gooey Background Effect - ULTIMATE LIQUID GOLD V3 - ENHANCED TEXTURE %>
-<%# - MEGA NUCLEAR SVG filter (200, -80) for ABSOLUTE SINGLE ELEMENT fusion %>
-<%# - ENHANCED LIQUID TEXTURE with displacement for organic flow %>
-<%# - Blur 70 for COMPLETE elimination of all separation %>
-<%# - 4 blobs with extreme delays for heavy viscous stretching %>
-<%# - White light effect in gradients for glowing liquid gold %>
-<%# - Specular lighting for realistic liquid shine %>
+<%# Gooey Background Effect - Liquid Gold with Texture %>
+<%# - SVG filter (60, -20) for smooth liquid fusion %>
+<%# - Fractal noise texture for organic feel %>
+<%# - 4 blobs with cascading delays %>
 
-<%# SVG Filter Definition: Creates realistic liquid with perfect fusion %>
+<%# SVG Filter Definition - Enhanced Liquid Gold %>
 <svg style="position: fixed; width: 0; height: 0; pointer-events: none;">
   <defs>
     <filter id="goo-liquid-textured">
-      <%# 1. Blur MEGA EXTREME - 70 for TOTAL fusion %>
-      <feGaussianBlur in="SourceGraphic" stdDeviation="70" result="blur" />
+      <%# 1. Blur for smooth blob fusion (reduced 10%) %>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="32" result="blur" />
 
-      <%# 2. MEGA NUCLEAR matrix (200, -80) = ABSOLUTE SINGLE UNIFIED BLOB %>
-      <%# This creates ONE SINGLE VISUAL ELEMENT - zero separation visible %>
+      <%# 2. Color matrix for sharp liquid edges (reduced 10%) %>
       <feColorMatrix in="blur" mode="matrix" values="
         1 0 0 0 0
         0 1 0 0 0
         0 0 1 0 0
-        0 0 0 200 -80" result="goo" />
+        0 0 0 54 -18" result="goo" />
 
-      <%# 3. Generate MULTI-LAYER fractal noise for realistic liquid texture %>
-      <%# baseFrequency 0.6 for larger organic patterns + 5 octaves for detail %>
-      <feTurbulence type="fractalNoise" baseFrequency="0.6 0.8" numOctaves="40" seed="1" result="noise" />
+      <%# 3. Fractal noise for organic texture %>
+      <feTurbulence type="fractalNoise" baseFrequency="0.5 0.7" numOctaves="4" seed="1" result="noise" />
 
-      <%# 4. Create displacement map for organic liquid flow effect %>
-      <%# This makes the texture "flow" like real liquid %>
-      <feDisplacementMap in="goo" in2="noise" scale="8" xChannelSelector="R" yChannelSelector="G" result="displaced" />
+      <%# 4. Displacement map - makes edges flow like liquid %>
+      <feDisplacementMap in="goo" in2="noise" scale="6" xChannelSelector="R" yChannelSelector="G" result="displaced" />
 
-      <%# 5. Add subtle specular lighting for liquid shine %>
-      <%# Creates realistic light reflections on liquid surface %>
-      <feSpecularLighting in="displaced" surfaceScale="2" specularConstant="0.8" specularExponent="20" lighting-color="#ffffff" result="specular">
-        <fePointLight x="150" y="100" z="200" />
+      <%# 5. Specular lighting - adds shine/reflection %>
+      <feSpecularLighting in="displaced" surfaceScale="1.5" specularConstant="0.6" specularExponent="25" lighting-color="#ffffff" result="specular">
+        <fePointLight x="200" y="100" z="150" />
       </feSpecularLighting>
 
-      <%# 6. Blend specular highlight with displaced texture (subtle) %>
-      <feComposite in="specular" in2="displaced" operator="atop" k1="0" k2="0.15" k3="0.85" k4="0" result="litGoo" />
+      <%# 6. Blend specular with displaced (subtle) %>
+      <feComposite in="specular" in2="displaced" operator="atop" result="litGoo" />
 
-      <%# 7. Add fine grain texture on top %>
-      <feTurbulence type="turbulence" baseFrequency="2.5" numOctaves="3" seed="2" result="fineGrain" />
-      <feColorMatrix in="fineGrain" type="matrix" values="
+      <%# 7. Fine grain texture overlay %>
+      <feTurbulence type="turbulence" baseFrequency="1.5" numOctaves="2" seed="2" result="grain" />
+      <feColorMatrix in="grain" type="matrix" values="
         1 0 0 0 0
         0 1 0 0 0
         0 0 1 0 0
-        0 0 0 0.08 0" result="subtleGrain" />
+        0 0 0 0.05 0" result="subtleGrain" />
 
-      <%# 8. Final composite: lit goo + fine grain %>
+      <%# 8. Composite grain on lit goo %>
       <feComposite in="subtleGrain" in2="litGoo" operator="atop" result="texturedGoo"/>
 
-      <%# 9. Composite original source on top for color preservation %>
+      <%# 9. Final composite %>
       <feComposite in="SourceGraphic" in2="texturedGoo" operator="atop"/>
     </filter>
   </defs>
@@ -58,9 +51,7 @@
 <%# Main container for the animated blobs %>
 <div class="hooks-main">
   <div class="hooks-filter" data-controller="gooey">
-    <%# 4 blobs in REVERSE order (small to large) %>
-    <%# This puts the LARGE blob on TOP visually (better depth effect) %>
-    <%# All use IDENTICAL gradients for seamless merging %>
+    <%# Order: small to large (last = on top visually) %>
     <div class="blob-item b4" data-gooey-target="blob"></div>
     <div class="blob-item b3" data-gooey-target="blob"></div>
     <div class="blob-item b2" data-gooey-target="blob"></div>
