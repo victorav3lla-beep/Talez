@@ -57,39 +57,46 @@ class StoriesController < ApplicationController
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(user_content, with: { image: [character.image.url, universe.image.url] })
     response = parse_json_response(response.content)
 
+    @story.title = response["title"]
+
     if @story.save
-      @story.update(title: response["title"])
       response_text = response["content"]
 
-      # Create first page (beginning of the story)
       page = @story.pages.create(
         title: response["title"],
         content: response_text,
         position: 1,
       )
 
-      # Generate and attach page image
       page_image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT OR DIALOGUE, of: #{response_text}\nStyle: bright, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, 16:9 aspect ratio, horizontal composition.
                         IMPORTANT: Keep the style consistent with the character and universe images provided.
                         The main character: #{character.name} - #{character.description} - image: #{character.image.url}
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
-      page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
 
-      if page_image.url
-        page_image_data = URI.open(page_image.url)
-        page.image.attach(
-          io: page_image_data,
-          filename: "page-#{SecureRandom.hex(4)}.png",
-          content_type: "image/png",
-        )
+      begin
+        page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3")
+        if page_image.url
+          page_image_data = URI.open(page_image.url)
+          page.image.attach(
+            io: page_image_data,
+            filename: "page-#{SecureRandom.hex(4)}.png",
+            content_type: "image/png",
+          )
+        end
+      rescue => e
+        Rails.logger.error("Page image generation failed: #{e.message}")
       end
 
       # Redirect after successfully updating the story and attaching the image
       redirect_to story_path(@story), notice: "Story created successfully!"
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_story_path, alert: "Failed to create story: #{@story.errors.full_messages.join(', ')}"
     end
+  rescue => e
+    Rails.logger.error("Story creation error: #{e.message}\n#{e.backtrace.join("\n")}")
+    redirect_to new_story_path, alert: "Error creating story: #{e.message}"
   end
+end
 
   def show
     @story = Story.find(params[:id])

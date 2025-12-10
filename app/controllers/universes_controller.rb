@@ -15,7 +15,7 @@ class UniversesController < ApplicationController
     @custom_universes = current_profile ? current_profile.universes : []
     @all_universes = current_profile.universes
   end
-
+  
   def new
     @universe = @selected_profile.universes.build
   end
