@@ -1,3 +1,4 @@
+<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/shared/_header.html.erb -->
 <header class="top-header">
   <!-- Search Bar -->
   <div class="search-wrapper">
@@ -18,7 +19,7 @@
   <!-- Right Actions -->
   <div class="header-actions">
     <!-- Theme Toggle (Dashboard only) -->
-    
+
 
     <!-- Notifications -->
     <button class="icon-btn notifications-btn" title="Notifications">
@@ -29,7 +30,9 @@
     <!-- Profile Dropdown -->
     <div class="profile-dropdown" data-controller="dropdown">
       <button class="profile-trigger" data-action="click->dropdown#toggle">
-        <% if profile.image.attached? %>
+        <% if profile.avatar_url.present? %>
+          <%= image_tag profile.avatar_url, alt: profile.name, class: 'avatar-img' %>
+        <% elsif profile.image.attached? %>
           <%= cl_image_tag profile.image.key, alt: profile.name, class: 'avatar-img' %>
         <% else %>
           <div class="avatar-placeholder">

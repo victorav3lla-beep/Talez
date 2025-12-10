@@ -1,15 +1,17 @@
-<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/profiles/new.html.erb -->
+<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/profiles/edit.html.erb -->
 <div class="profile-background">
   <div class="container" id="new_profile_container">
-    <h1>Add a Profile</h1>
-    <%= simple_form_for [@user, @profile] do |f| %>
+    <h1>Edit Profile</h1>
+    <%= simple_form_for [@user, @profile], html: { data: { controller: "selection" } } do |f| %>
       <%= f.input :name, label: false, required: true, placeholder: "Name" %>
       <%= f.input :age, label: false, required: true, placeholder: "Age" %>
       <%= f.input :username, label: false, required: true, placeholder: "Username" %>
 
       <!-- Avatar Selection -->
-      <div class="avatar-selector" data-controller="avatar-selector">
+      <div class="avatar-selector">
         <h3>Choose your avatar</h3>
+
+        <%= f.hidden_field :avatar_url, data: { selection_target: "input" } %>
 
         <ul class="default-avatars-list">
           <% default_avatars = [
@@ -29,22 +31,20 @@
             "https://res.cloudinary.com/dyzpce9wi/image/upload/v1765279457/profil1_adgd63.png",
           ] %>
 
-          <% default_avatars.each_with_index do |avatar_url, index| %>
-            <li class="avatar-option">
-              <label>
-                <%= f.radio_button :avatar_url, avatar_url,
-                    checked: index == 0,
-                    data: { avatar_selector_target: "radio", action: "avatar-selector#select" } %>
-                <%= image_tag avatar_url, class: "avatar-xl avatar-thumbnail" %>
-              </label>
+          <% default_avatars.each do |avatar_url| %>
+            <li class="avatar-option <%= 'selected' if @profile.avatar_url == avatar_url %>"
+                data-selection-target="card"
+                data-id="<%= avatar_url %>"
+                data-action="click->selection#select">
+              <%= image_tag avatar_url, class: "avatar-xl avatar-thumbnail" %>
             </li>
           <% end %>
         </ul>
       </div>
 
       <div class="form-buttons">
-        <%= f.button :submit, 'Continue', class: 'btn btn-primary' %>
-        <%= link_to "Cancel", profiles_path, class: "btn btn-danger" %>
+        <%= f.button :submit, 'Save Changes', class: 'btn btn-primary', data: { selection_target: "submitButton" } %>
+        <%= link_to "Cancel", dashboard_path, class: "btn btn-danger" %>
       </div>
     <% end %>
   </div>

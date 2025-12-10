@@ -1,3 +1,4 @@
+<!-- filepath: /home/victor/code/victorav3lla-beep/Talez/app/views/profiles/index.html.erb -->
 <!-- app/views/profiles/index.html.erb -->
 
 <!-- 1. J'ouvre le background au tout début pour qu'il contienne tout -->
@@ -19,15 +20,17 @@
     <% @profiles.each do |profile| %>
       <div class="profile-container">
         <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
-          <% if profile.image.attached? %>
-            <%= cl_image_tag profile.image.key, height: 300, width: 400, crop: :fill, class: "avatar-xl" %>
+          <% if profile.avatar_url.present? %>
+            <%= image_tag profile.avatar_url, width: 150, height: 150, class: "avatar-xl" %>
+          <% elsif profile.image.attached? %>
+            <%= cl_image_tag profile.image.key, height: 150, width: 150, crop: :fill, class: "avatar-xl" %>
           <% else %>
             <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/Netflix-avatar_z4ahkh.png", width: 150, height: 150, class: "avatar-xl") %>
           <% end %>
           <p><%= profile.username %></p>
         <% end %>
-        <%= link_to raw("&times;"), profile_path(profile), 
-            data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{profile.username}?" }, 
+        <%= link_to raw("&times;"), profile_path(profile),
+            data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{profile.username}?" },
             class: "profile-delete-btn",
             title: "Delete Profile" %>
       </div>
