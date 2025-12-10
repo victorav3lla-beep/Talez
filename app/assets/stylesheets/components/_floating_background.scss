@@ -1,0 +1,42 @@
+// Floating Background - "Shy Fish" Effect
+// Playful effect where elements move across screen with curves
+// and flee from mouse cursor, making them uncatchable
+
+// Container
+.floating-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; // Behind content, above background image
+  pointer-events: none; // Doesn't block clicks
+  overflow: hidden;
+}
+
+// Floating element: crosses screen and flees from mouse
+.floater {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+  transform-origin: center center; // Center rotation point
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.15));
+  transition: none; // Movement handled by requestAnimationFrame
+
+  img {
+    display: block;
+    opacity: 0.8;
+    animation: pulse 3s ease-in-out infinite; // Subtle pulse for life
+  }
+}
+
+// Subtle life animation
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}

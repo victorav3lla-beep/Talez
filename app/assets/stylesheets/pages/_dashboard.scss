@@ -31,19 +31,28 @@ $transition-base: all 0.3s ease;
 // Layout
 // ==========================================================
 
+// Remove body background when dashboard page is active
+body:has(.dashboard-page-wrapper) {
+  background: none !important;
+}
+
+// Dashboard Page Background Wrapper
+.dashboard-page-wrapper {
+  min-height: 100vh;
+  background-image: url('/images/backgrounds/background.2.jpeg') !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+  position: relative;
+  z-index: 0;
+}
+
 .dashboard-container {
   display: flex;
   min-height: 100vh;
   position: relative;
-  background:
-    radial-gradient(circle 1200px at 15% 25%, rgba(255, 107, 107, 0.7) 0%, transparent 50%),
-    radial-gradient(circle 1000px at 85% 75%, rgba(78, 205, 196, 0.7) 0%, transparent 50%),
-    radial-gradient(circle 1100px at 50% 50%, rgba(255, 230, 109, 0.6) 0%, transparent 55%),
-    radial-gradient(circle 1300px at 75% 15%, rgba(255, 107, 107, 0.6) 0%, transparent 55%),
-    radial-gradient(circle 900px at 25% 85%, rgba(78, 205, 196, 0.65) 0%, transparent 50%);
-  background-color: #F7F7F7;
-  background-size: 100% 100%;
-  background-attachment: fixed;
+  background: transparent !important;
 }
 
 @keyframes subtleFloat {
@@ -72,6 +81,10 @@ $transition-base: all 0.3s ease;
   @media (max-width: 768px) {
     margin-left: 80px;
   }
+
+  @media (max-width: 480px) {
+    margin-left: 70px;
+  }
 }
 
 // ==========================================================
@@ -91,6 +104,16 @@ $transition-base: all 0.3s ease;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
   z-index: 1001;
   transition: $transition-base;
+
+  @media (max-width: 768px) {
+    width: 80px;
+    padding: 16px 8px;
+  }
+
+  @media (max-width: 480px) {
+    width: 70px;
+    padding: 12px 6px;
+  }
 
   // Logo Section
   .sidebar-logo {
@@ -274,10 +297,28 @@ $transition-base: all 0.3s ease;
   box-shadow: $shadow-sm;
   z-index: 10;
 
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 480px) {
+    padding: 10px 12px;
+    gap: 8px;
+  }
+
   // Search Wrapper
   .search-wrapper {
     flex: 1;
     max-width: 500px;
+
+    @media (max-width: 768px) {
+      order: 3;
+      flex: 100%;
+      max-width: 100%;
+      margin-top: 8px;
+    }
 
     .search-form {
       position: relative;
@@ -401,6 +442,10 @@ $transition-base: all 0.3s ease;
         font-weight: 600;
         color: $text-dark;
         font-size: 14px;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
       }
 
       .dropdown-arrow {
@@ -652,7 +697,14 @@ $transition-base: all 0.3s ease;
 
 .favorite-stories,
 .my-stories {
-  padding: 0 32px 32px;
+  padding: 32px;
+  margin: 0 32px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   h2 {
     font-size: 28px;
@@ -667,6 +719,19 @@ $transition-base: all 0.3s ease;
       color: $primary-coral;
       font-size: 24px;
     }
+
+    @media (max-width: 768px) {
+      font-size: 22px;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 20px;
+      gap: 8px;
+
+      i {
+        font-size: 20px;
+      }
+    }
   }
 
   .stories-header {
@@ -677,7 +742,14 @@ $transition-base: all 0.3s ease;
   }
 
   @media (max-width: 768px) {
-    padding: 0 16px 24px;
+    padding: 20px 16px;
+    margin: 0 16px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+    margin: 0 12px 12px;
+    border-radius: 16px;
   }
 }
 
@@ -715,6 +787,7 @@ $transition-base: all 0.3s ease;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
   }
 
   @media (max-width: 768px) {
@@ -724,6 +797,7 @@ $transition-base: all 0.3s ease;
 
   @media (max-width: 480px) {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 }
 

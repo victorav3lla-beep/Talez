@@ -12,10 +12,25 @@
   display: flex;
   gap: 32px;
   padding: 32px;
+  margin: 0 32px 32px;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-radius: 20px;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 1024px) {
     flex-direction: column;
     padding: 20px 16px;
+    margin: 0 16px 16px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px;
+    margin: 0 12px 12px;
+    gap: 20px;
+    border-radius: 16px;
   }
 }
 

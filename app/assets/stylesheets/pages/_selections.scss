@@ -63,10 +63,10 @@ $gold-light: #ffd700;
   overflow: hidden;
   clip-path: inset(0 round $card-radius); // Fix for preserve-3d
 
-  // 3D TILT PROPERTIES (New)
+  // 3D tilt properties
   transform-style: preserve-3d;
   will-change: transform;
-  transition: transform 0.1s ease-out; // Rapide pour le tilt
+  transition: transform 0.1s ease-out; // Fast for tilt effect
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
   // Rainbow holographic layer
@@ -139,12 +139,12 @@ $gold-light: #ffd700;
     }
   }
 
-  // IMAGE & SHEEN
+  // Image & sheen
   .character-img, .character-image-wrapper {
     position: absolute;
     inset: -10px; // Overflow to cover corners during parallax
     z-index: 0;
-    transition: transform 0.1s ease; // Parallax
+    transition: transform 0.1s ease; // Parallax effect
 
     img {
       width: 100%;
@@ -169,7 +169,7 @@ $gold-light: #ffd700;
       }
     }
 
-    // Sheen Effect (Fix: Intégré directement ici)
+    // Sheen effect integrated here
     &::before {
       content: "";
       position: absolute;
@@ -181,18 +181,18 @@ $gold-light: #ffd700;
       transform: scale(1.5);
       z-index: 3;
       pointer-events: none;
-      opacity: 0; // Caché par défaut
+      opacity: 0; // Hidden by default
     }
   }
 
-  // GLASSMORPHISM CONTENT
+  // Glassmorphism content
   .character-content {
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
     padding: 2rem 1.5rem;
-    // Fix: Static blur to prevent white flash
+    // Static blur to prevent white flash
     background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 100%);
     backdrop-filter: blur(10px);
     z-index: 2;
@@ -215,7 +215,7 @@ $gold-light: #ffd700;
     font-size: 0.95rem;
   }
 
-  // GOLDEN SELECTION STATE
+  // Golden selection state
   &::after {
     content: "";
     position: absolute;
@@ -229,7 +229,7 @@ $gold-light: #ffd700;
   }
 
   &.selected {
-    // Activation du Sheen
+    // Activate sheen effect
     .character-img::before, .character-image-wrapper::before {
       opacity: 1;
       animation: holoSheen 4s infinite linear;
@@ -284,7 +284,7 @@ $gold-light: #ffd700;
     z-index: 5;
     text-align: center;
     color: white;
-    transform: translateZ(30px); // Effet 3D
+    transform: translateZ(30px); // 3D effect
   }
 
   .create-icon { font-size: 5rem; margin-bottom: 1.5rem; }
