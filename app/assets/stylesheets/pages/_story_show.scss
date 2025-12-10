@@ -95,6 +95,22 @@ body:has(.story-show-page-wrapper) {
     background: radial-gradient(circle, rgba($secondary-teal, 0.5) 0%, transparent 70%);
     animation-delay: 3s;
   }
+  &.sparkle-4 {
+    top: 40%;
+    right: 6%;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba($accent-color, 0.4) 0%, transparent 70%);
+    animation-delay: 2s;
+  }
+  &.sparkle-5 {
+    bottom: 15%;
+    left: 8%;
+    width: 18px;
+    height: 18px;
+    background: radial-gradient(circle, rgba($primary-coral, 0.4) 0%, transparent 70%);
+    animation-delay: 4s;
+  }
 }
 
 @keyframes sparkle-breathe {
@@ -658,5 +674,180 @@ body:has(.story-show-page-wrapper) {
   &:hover {
     box-shadow: 0 8px 30px rgba($accent-color, 0.5);
     color: darken($accent-color, 45%);
+  }
+}
+
+.book-btn-danger {
+  background: linear-gradient(135deg, #dc3545 0%, darken(#dc3545, 10%) 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(#dc3545, 0.3);
+
+  &:hover {
+    box-shadow: 0 8px 30px rgba(#dc3545, 0.4);
+    color: white;
+  }
+}
+
+// ==========================================================
+// Enhanced Book Header
+// ==========================================================
+
+.book-header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.meta-tag-character {
+  background: linear-gradient(135deg, lighten($primary-coral, 35%) 0%, lighten($primary-coral, 38%) 100%) !important;
+  color: darken($primary-coral, 15%) !important;
+}
+
+.meta-tag-universe {
+  background: linear-gradient(135deg, lighten($secondary-teal, 38%) 0%, lighten($secondary-teal, 42%) 100%) !important;
+  color: darken($secondary-teal, 20%) !important;
+}
+
+.meta-tag-pages {
+  background: linear-gradient(135deg, lighten($accent-color, 30%) 0%, lighten($accent-color, 35%) 100%) !important;
+  color: darken($accent-color, 35%) !important;
+}
+
+// Author Info
+.story-author-info {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 14px;
+
+  .author-label {
+    color: $text-muted;
+    font-weight: 500;
+  }
+
+  .author-name {
+    color: $text-dark;
+    font-weight: 700;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+}
+
+// ==========================================================
+// Like Section
+// ==========================================================
+
+.book-like-section {
+  padding: 20px 32px 28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.9) 100%);
+  display: flex;
+  justify-content: center;
+}
+
+.book-like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 28px;
+  background: white;
+  border: 3px solid rgba($primary-coral, 0.2);
+  border-radius: $radius-xl;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+  i {
+    font-size: 22px;
+    color: $primary-coral;
+    transition: $transition-base;
+  }
+
+  .like-count {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-dark;
+  }
+
+  .like-text {
+    font-size: 15px;
+    font-weight: 600;
+    color: $text-muted;
+  }
+
+  &:hover {
+    border-color: $primary-coral;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba($primary-coral, 0.2);
+
+    i {
+      transform: scale(1.2);
+    }
+  }
+
+  &.liked {
+    background: linear-gradient(135deg, rgba($primary-coral, 0.08) 0%, rgba($primary-coral, 0.12) 100%);
+    border-color: $primary-coral;
+
+    i {
+      color: $primary-coral;
+      animation: heartPulse 0.6s ease;
+    }
+
+    .like-text {
+      color: $primary-coral;
+    }
+  }
+}
+
+@keyframes heartPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+}
+
+.book-like-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: $radius-lg;
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-muted;
+
+  i {
+    font-size: 18px;
+    color: $primary-coral;
+  }
+}
+
+// ==========================================================
+// Main Content Layout Fix
+// ==========================================================
+
+.story-show-container {
+  .main-content {
+    flex: 1;
+    margin-left: 220px;
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 100vh;
+
+    @media (max-width: 768px) {
+      margin-left: 80px;
+      padding-top: 0;
+    }
+
+    @media (max-width: 480px) {
+      margin-left: 70px;
+    }
   }
 }

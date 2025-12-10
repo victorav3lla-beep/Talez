@@ -14,35 +14,47 @@
         <div class="sparkle sparkle-1"></div>
         <div class="sparkle sparkle-2"></div>
         <div class="sparkle sparkle-3"></div>
+        <div class="sparkle sparkle-4"></div>
+        <div class="sparkle sparkle-5"></div>
 
         <!-- Story Book Container -->
         <div class="story-book-container">
           <!-- Book Header -->
           <div class="book-header">
-            <div class="book-title-badge">
-              <i class="fas fa-book-open"></i>
-              <span>Story Book</span>
-            </div>
-            <h1 class="book-title"><%= @story.title || "Untitled Story" %></h1>
+            <div class="book-header-content">
+              <div class="book-title-badge">
+                <i class="fas fa-book-open"></i>
+                <span>Story Book</span>
+              </div>
+              <h1 class="book-title"><%= @story.title || "Untitled Story" %></h1>
 
-            <!-- Story Meta -->
-            <div class="story-meta-info">
-              <% if @story.characters.any? %>
-                <span class="meta-tag">
-                  <i class="fas fa-user-astronaut"></i>
-                  <%= @story.characters.first.name %>
+              <!-- Story Meta -->
+              <div class="story-meta-info">
+                <% if @story.characters.any? %>
+                  <span class="meta-tag meta-tag-character">
+                    <i class="fas fa-user-astronaut"></i>
+                    <%= @story.characters.first.name %>
+                  </span>
+                <% end %>
+                <% if @story.universes.any? %>
+                  <span class="meta-tag meta-tag-universe">
+                    <i class="fas fa-globe-americas"></i>
+                    <%= @story.universes.first.name %>
+                  </span>
+                <% end %>
+                <span class="meta-tag meta-tag-pages">
+                  <i class="fas fa-file-alt"></i>
+                  <%= @story.pages.count %> / 3 pages
                 </span>
+              </div>
+
+              <!-- Author Info -->
+              <% if @story.profile %>
+                <div class="story-author-info">
+                  <span class="author-label">Created by</span>
+                  <span class="author-name"><%= @story.profile.name %></span>
+                </div>
               <% end %>
-              <% if @story.universes.any? %>
-                <span class="meta-tag">
-                  <i class="fas fa-globe-americas"></i>
-                  <%= @story.universes.first.name %>
-                </span>
-              <% end %>
-              <span class="meta-tag">
-                <i class="fas fa-file-alt"></i>
-                <%= @story.pages.count %> / 3 pages
-              </span>
             </div>
           </div>
 
@@ -184,19 +196,56 @@
 
           <!-- Action Buttons -->
           <div class="book-actions">
-            <%= link_to dashboard_path, class: "book-btn book-btn-secondary" do %>
-              <i class="fas fa-home"></i>
-              Dashboard
+            <%= link_to stories_path, class: "book-btn book-btn-secondary" do %>
+              <i class="fas fa-book"></i>
+              <span>Library</span>
             <% end %>
 
             <%= link_to print_story_path(@story), class: "book-btn book-btn-accent", target: "_blank" do %>
               <i class="fas fa-print"></i>
-              Print
+              <span>Print Story</span>
+            <% end %>
+
+            <% if @story.profile == current_profile %>
+              <%= link_to story_path(@story), method: :delete, data: { confirm: 'Are you sure you want to delete this story?' }, class: "book-btn book-btn-danger" do %>
+                <i class="fas fa-trash-alt"></i>
+                <span>Delete</span>
+              <% end %>
             <% end %>
 
             <%= link_to new_story_path, class: "book-btn book-btn-primary" do %>
-              <i class="fas fa-plus"></i>
-              New Story
+              <i class="fas fa-wand-magic-sparkles"></i>
+              <span>New Story</span>
+            <% end %>
+          </div>
+
+          <!-- Like Section -->
+          <div class="book-like-section">
+            <% if user_signed_in? && current_profile %>
+              <% user_liked = @story.likes.exists?(profile: current_profile) %>
+              <% user_like = @story.likes.find_by(profile: current_profile) %>
+              <% if user_liked %>
+                <%= button_to like_path(user_like), method: :delete,
+                    class: 'book-like-btn liked',
+                    form: { data: { turbo: false } } do %>
+                  <i class="fas fa-heart"></i>
+                  <span class="like-count"><%= @story.likes_count %></span>
+                  <span class="like-text">Liked</span>
+                <% end %>
+              <% else %>
+                <%= button_to story_likes_path(@story), method: :post,
+                    class: 'book-like-btn',
+                    form: { data: { turbo: false } } do %>
+                  <i class="far fa-heart"></i>
+                  <span class="like-count"><%= @story.likes_count %></span>
+                  <span class="like-text">Like this story</span>
+                <% end %>
+              <% end %>
+            <% else %>
+              <div class="book-like-info">
+                <i class="fas fa-heart"></i>
+                <span><%= @story.likes_count %> likes</span>
+              </div>
             <% end %>
           </div>
         </div>
