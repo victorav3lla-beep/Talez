@@ -4,8 +4,9 @@
 .prompt-container {
   padding: 2rem 1rem;
   position: relative;
-  background-color: #000;
-  color: #fff;
+  // background: #b15a5a;
+  background: blue;
+  color: green;
 }
 
 .prompt-back-button {
@@ -50,7 +51,7 @@
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   border-radius: 24px;
   padding: 3rem 2.5rem;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 20px 60px rgba(199, 70, 70, 0.5);
   max-width: 700px;
   width: 100%;
 
@@ -81,7 +82,7 @@
 }
 
 .prompt-input {
-  background-color: #0a0a0a;
+  background-color: #ae5353;
   border: 2px solid #333;
   border-radius: 20px;
   color: #fff !important;
@@ -96,8 +97,8 @@
   }
 
   &:focus {
-    background-color: #111;
-    border-color: #FF6B6B;
+    background-color: #971414;
+    border-color: #a92424;
     outline: none;
     box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
     color: #fff !important;
