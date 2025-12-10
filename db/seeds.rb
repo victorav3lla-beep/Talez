@@ -59,7 +59,7 @@ lily_profile1 = Profile.create!(
   user: lily_user,
   name: "Lily",
   age: 7,
-  username: "lily_tales"
+  username: "Lily"
   # avatar_url: "https://i.pravatar.cc/150?img=10"
   )
   file = URI.parse("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280271/anime-away-face-svgrepo-com_zqihw4.png").open
@@ -69,7 +69,7 @@ lily_profile2 = Profile.create!(
   user: lily_user,
   name: "Lily's Adventure",
   age: 7,
-  username: "lily_adventure",
+  username: "Marco",
   # avatar_url: "https://i.pravatar.cc/150?img=11"
   )
   file = URI.parse("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-avocado-food-svgrepo-com_fkxp3n.png").open
@@ -79,7 +79,7 @@ lily_profile3 = Profile.create!(
   user: lily_user,
   name: "Lily's Magic",
   age: 7,
-  username: "lily_magic",
+  username: "Soojin",
   # avatar_url: "https://i.pravatar.cc/150?img=12"
   )
   file = URI.parse("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-cloud-crying-svgrepo-com_wzugrv.png").open
