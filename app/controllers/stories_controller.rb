@@ -79,14 +79,16 @@ class StoriesController < ApplicationController
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
 
       begin
-        page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3", size: "1792x1024")
-        if page_image.url
-          page_image_data = URI.open(page_image.url)
-          page.image.attach(
-            io: page_image_data,
-            filename: "page-#{SecureRandom.hex(4)}.png",
-            content_type: "image/png",
-          )
+        image_base64 = StabilityService.new.call(page_image_prompt, aspect_ratio: "16:9")
+        if image_base64
+          image_io = StabilityService.base64_to_io(image_base64, filename: "page-#{SecureRandom.hex(4)}")
+          if image_io
+            page.image.attach(
+              io: image_io,
+              filename: "page-#{SecureRandom.hex(4)}.png",
+              content_type: "image/png"
+            )
+          end
         end
       rescue => e
         Rails.logger.error("Page image generation failed: #{e.message}")
@@ -191,15 +193,18 @@ class StoriesController < ApplicationController
                         IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
                         The main character: #{character.name} - #{character.description} - image: #{character.image.url}
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
-    page_image = RubyLLM.paint(page_image_prompt, model: "dall-e-3", size: "1792x1024")
 
-    if page_image.url
-      page_image_data = URI.open(page_image.url)
-      page.image.attach(
-        io: page_image_data,
-        filename: "page-#{SecureRandom.hex(4)}.png",
-        content_type: "image/png",
-      )
+    image_base64 = StabilityService.new.call(page_image_prompt, aspect_ratio: "16:9")
+
+    if image_base64
+      image_io = StabilityService.base64_to_io(image_base64, filename: "page-#{SecureRandom.hex(4)}")
+      if image_io
+        page.image.attach(
+          io: image_io,
+          filename: "page-#{SecureRandom.hex(4)}.png",
+          content_type: "image/png"
+        )
+      end
     end
 
     # Auto-generate cover after 3 pages if not already generated
@@ -236,16 +241,21 @@ class StoriesController < ApplicationController
                   Story content: #{@story.pages.order(:position).pluck(:content).join(" ")}
                   \nStyle: similar to the character and universe style, professional book cover layout with the story title visible\nFormat: wide landscape, horizontal composition, with no book margins, just the image
                   IMPORTANT: The story title \"#{@story.title}\" should be clearly visible in the cover image. Keep the style consistent with the character and universe images provided and don't use any book margins or layouts, just the image."
-    cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3", size: "1792x1024")
 
-    if cover_image.url
-      cover_data = URI.open(cover_image.url)
-      @story.cover.attach(
-        io: cover_data,
-        filename: "cover-#{SecureRandom.hex(4)}.png",
-        content_type: "image/png",
-      )
-      redirect_to story_path(@story), notice: "Cover generated successfully!"
+    image_base64 = StabilityService.new.call(cover_prompt, aspect_ratio: "16:9")
+
+    if image_base64
+      image_io = StabilityService.base64_to_io(image_base64, filename: "cover-#{SecureRandom.hex(4)}")
+      if image_io
+        @story.cover.attach(
+          io: image_io,
+          filename: "cover-#{SecureRandom.hex(4)}.png",
+          content_type: "image/png"
+        )
+        redirect_to story_path(@story), notice: "Cover generated successfully!"
+      else
+        redirect_to story_path(@story), alert: "Failed to process cover image."
+      end
     else
       redirect_to story_path(@story), alert: "Failed to generate cover."
     end
@@ -341,15 +351,18 @@ class StoriesController < ApplicationController
                     Story content: #{@story.pages.order(:position).pluck(:content).join(' ')}
                     \nStyle: similar to the character and universe style, professional book cover layout\nFormat: wide landscape, horizontal composition, with no book margins, just the image
                     IMPORTANT: Keep the style consistent with the character and universe images provided and dont use any book margins or layouts, just the image."
-    cover_image = RubyLLM.paint(cover_prompt, model: "dall-e-3", size: "1792x1024")
 
-    if cover_image.url
-      cover_data = URI.open(cover_image.url)
-      @story.cover.attach(
-        io: cover_data,
-        filename: "cover-#{SecureRandom.hex(4)}.png",
-        content_type: "image/png",
-      )
+    image_base64 = StabilityService.new.call(cover_prompt, aspect_ratio: "16:9")
+
+    if image_base64
+      image_io = StabilityService.base64_to_io(image_base64, filename: "cover-#{SecureRandom.hex(4)}")
+      if image_io
+        @story.cover.attach(
+          io: image_io,
+          filename: "cover-#{SecureRandom.hex(4)}.png",
+          content_type: "image/png"
+        )
+      end
     end
   end
 end
