@@ -5,7 +5,7 @@
 
   <div class="prompt-back-button">
     <%= link_to characters_path, class: "btn-back" do %>
-      <i class="bi bi-arrow-left"></i> Back
+      <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
 
@@ -17,7 +17,7 @@
 
     <%= render 'shared/flashes' %>
 
-    <%= simple_form_for @character, error_notification: false do |f| %>
+    <%= simple_form_for @character, error_notification: false, html: { data: { loading_game: "true" } } do |f| %>
       <div class="form-inputs">
         <%= f.input :description,
                     label: false,

@@ -62,7 +62,7 @@
     </div>
 
     <!-- Form - Simple -->
-    <%= simple_form_for @story do |f| %>
+    <%= simple_form_for @story, html: { data: { loading_game: "true" } } do |f| %>
       <%= f.error_notification %>
 
       <div class="form-inputs">

@@ -130,11 +130,15 @@ export default class extends Controller {
   }
 }
 
-// Show overlay when form submits
-document.addEventListener("turbo:submit-start", () => {
-  loadingStartedAt = Date.now()
-  const overlay = document.getElementById("loadingOverlay")
-  if (overlay) overlay.style.display = "block"
+// Show overlay when form submits - ONLY if form has data-loading-game="true"
+document.addEventListener("turbo:submit-start", (event) => {
+  const form = event.target
+  // Only show mini-game for specific forms (characters, universes, stories creation)
+  if (form && form.dataset && form.dataset.loadingGame === "true") {
+    loadingStartedAt = Date.now()
+    const overlay = document.getElementById("loadingOverlay")
+    if (overlay) overlay.style.display = "block"
+  }
 })
 
 // Hide overlay after min time, when images load, or after max wait
@@ -171,15 +175,3 @@ document.addEventListener("turbo:load", () => {
   }, waitMin)
 })
 
-document.addEventListener("turbo:load", () => {
-  const overlay = document.getElementById("loadingOverlay")
-  if (!overlay) return
-
-  // Check if we're on a show page (character, universe, or story)
-  const isShowPage = window.location.pathname.match(/\/(characters|universes|stories)\/\d+$/)
-
-  if (isShowPage) {
-    overlay.style.display = "block"
-    overlay.style.pointerEvents = "none" // Don't block clicks
-  }
-})

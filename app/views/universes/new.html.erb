@@ -16,7 +16,7 @@
       <h1 class="prompt-title">Create a World!</h1>
     </div>
 
-    <%= simple_form_for @universe do |f| %>
+    <%= simple_form_for @universe, html: { data: { loading_game: "true" } } do |f| %>
       <%= f.error_notification %>
 
       <div class="form-inputs">

@@ -331,6 +331,7 @@ body:has(.character-show-page-wrapper) {
 .character-description {
   p {
     font-size: 16px;
+    font-weight: 600;
     color: $text-muted;
     line-height: 1.6;
     margin: 0;
@@ -554,36 +555,84 @@ body:has(.character-show-page-wrapper) {
 
 .back-navigation {
   margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-back {
+.btn-back-rect {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 24px;
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  border-radius: $radius-lg;
+  padding: 14px 28px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: $radius-md;
   color: $text-dark;
-  font-size: 15px;
-  font-weight: 500;
   text-decoration: none;
-  transition: $transition-base;
-  box-shadow: $shadow-sm;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.1),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba($primary-coral, 0.08) 0%, rgba($secondary-teal, 0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
 
   i {
     font-size: 14px;
     transition: transform 0.3s ease;
   }
 
+  span {
+    position: relative;
+    z-index: 1;
+  }
+
   &:hover {
     background: white;
-    transform: translateX(-5px);
-    box-shadow: $shadow-md;
-    color: $text-dark;
+    transform: translateY(-3px);
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.12),
+      0 4px 8px rgba($primary-coral, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 1);
+    color: $primary-coral;
+    border-color: rgba($primary-coral, 0.2);
+
+    &::before {
+      opacity: 1;
+    }
 
     i {
-      transform: translateX(-3px);
+      transform: translateX(-4px);
     }
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow:
+      0 4px 12px rgba(0, 0, 0, 0.1),
+      0 2px 4px rgba($primary-coral, 0.1);
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 24px;
+    font-size: 14px;
   }
 }

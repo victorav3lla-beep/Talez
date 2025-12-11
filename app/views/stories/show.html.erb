@@ -161,7 +161,7 @@
                 <p>What happens next in your adventure?</p>
               </div>
 
-              <%= simple_form_for :page, url: add_page_story_path(@story), method: :post, html: { class: 'continue-form' } do |f| %>
+              <%= simple_form_for :page, url: add_page_story_path(@story), method: :post, html: { class: 'continue-form', data: { loading_game: "true" } } do |f| %>
                 <div class="form-wrapper">
                   <%= f.input :content,
                               label: false,
