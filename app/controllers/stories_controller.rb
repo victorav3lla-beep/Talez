@@ -23,6 +23,10 @@ class StoriesController < ApplicationController
     when "recent"
       @stories = Story.where(public: true).order(created_at: :desc)
     when "my_stories"
+      if current_profile.nil?
+        redirect_to profiles_path, alert: "Please select a profile first"
+        return
+      end
       @stories = current_profile.stories.order(updated_at: :desc)
     else # popular
       @stories = Story.where(public: true).order(likes_count: :desc, updated_at: :desc)

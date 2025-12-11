@@ -15,7 +15,8 @@ class DashboardController < ApplicationController
   private
 
   def require_profile
-    unless session[:current_profile_id].present?
+    unless session[:current_profile_id].present? && current_profile.present?
+      session[:current_profile_id] = nil
       redirect_to profiles_path, alert: "Please select a profile first"
     end
   end

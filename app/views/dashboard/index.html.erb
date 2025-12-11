@@ -208,21 +208,6 @@
         </div>
       </section>
     <% end %>
-    <!-- My Favorite Stories -->
-    <% if @bookmarked_stories.any? %>
-      <section class="favorite-stories">
-        <h2>
-          <i class="fas fa-star"></i>
-          My favorite stories
-        </h2>
-        <div class="stories-scroll">
-          <% @bookmarked_stories.each do |story| %>
-            <%= render 'story_card', story: story %>
-          <% end %>
-        </div>
-      </section>
-    <% end %>
-
     <!-- Main Content Area with Stats Sidebar -->
     <div class="content-with-sidebar">
       <!-- Best User's Stories Carousel (Left/Main) -->

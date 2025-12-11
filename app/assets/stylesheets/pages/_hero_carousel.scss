@@ -94,7 +94,7 @@
 
 .hero-carousel-section {
   position: relative;
-  padding: 32px;
+  padding: 32px; // Equal padding on all sides
   background: transparent;
   border-radius: 0;
   overflow: visible;
@@ -103,12 +103,19 @@
   background-position: center;
   background-repeat: no-repeat;
 
+  // Fullscreen hero - takes entire viewport
+  min-height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
   @media (max-width: 768px) {
-    padding: 20px 16px;
+    padding: 20px;
+    min-height: calc(100vh - 50px);
   }
 
   @media (max-width: 480px) {
-    padding: 16px 12px;
+    padding: 16px;
   }
 }
 
@@ -188,26 +195,16 @@
   }
 
   .carousel-item {
-    // Use aspect ratio instead of fixed height for better responsiveness
+    // Fullscreen hero - use viewport height
     width: 100%;
-    aspect-ratio: 16 / 9; // Maintains 16:9 ratio (widescreen)
-    min-height: 400px; // Prevents too small on mobile
-    max-height: 650px; // Prevents too tall on huge screens
-    padding: 0; // Remove padding for full-width images
+    height: calc(100vh - 280px); // Fill viewport minus header/CTA
+    min-height: 400px;
+    padding: 0;
     position: relative;
 
     @media (max-width: 768px) {
-      aspect-ratio: 4 / 3; // Taller ratio for mobile (less panoramic)
+      height: calc(100vh - 220px);
       min-height: 300px;
-      max-height: 450px;
-    }
-
-    @media (min-width: 1400px) {
-      max-height: 650px; // Cap height on large screens
-    }
-
-    @media (min-width: 1920px) {
-      max-height: 700px; // Cap for ultra-wide screens
     }
   }
 
@@ -539,7 +536,8 @@
 .hero-cta-container {
   display: flex;
   justify-content: center;
-  padding: 2rem 1.5rem 1rem;
+  padding: 1.5rem 1.5rem 0;
+  margin-top: 20px;
 }
 
 .btn-hero-cta {
