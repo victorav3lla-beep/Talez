@@ -56,36 +56,85 @@
           Recent
         <% end %>
         <%= link_to stories_path(filter: 'my_stories'), class: "filter-tab #{@current_filter == 'my_stories' ? 'active' : ''}" do %>
-          <i class="fas fa-user"></i>
+          <i class="fas fa-book"></i>
           My Stories
+        <% end %>
+        <%= link_to stories_path(filter: 'my_characters'), class: "filter-tab #{@current_filter == 'my_characters' ? 'active' : ''}" do %>
+          <i class="fas fa-user-astronaut"></i>
+          My Characters
+        <% end %>
+        <%= link_to stories_path(filter: 'my_universes'), class: "filter-tab #{@current_filter == 'my_universes' ? 'active' : ''}" do %>
+          <i class="fas fa-globe"></i>
+          My Universes
         <% end %>
       </div>
 
-      <!-- Stories List -->
-      <% if @stories.any? %>
-        <div class="stories-list">
-          <% @stories.each do |story| %>
-            <%= render 'stories/row_card', story: story, current_profile: current_profile %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="empty-state-simple">
-          <div class="empty-icon">📚</div>
-          <h3>No stories found</h3>
-          <p>
-            <% if @current_filter == 'my_stories' %>
-              You haven't created any stories yet.
-            <% else %>
-              No stories available at the moment.
+      <!-- Content based on filter -->
+      <% if @current_filter == 'my_characters' %>
+        <!-- Characters Grid -->
+        <% if @characters.any? %>
+          <div class="row g-4">
+            <% @characters.each do |character| %>
+              <%= render 'characters/card', character: character, show_actions: true %>
             <% end %>
-          </p>
-          <% if @current_filter == 'my_stories' %>
-            <%= link_to characters_path, class: 'btn-create' do %>
+          </div>
+        <% else %>
+          <div class="empty-state-simple">
+            <div class="empty-icon">🦸</div>
+            <h3>No characters found</h3>
+            <p>You haven't created any characters yet.</p>
+            <%= link_to new_character_path, class: 'btn-create' do %>
               <i class="fas fa-plus-circle"></i>
-              Create Your First Story
+              Create Your First Character
             <% end %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
+      <% elsif @current_filter == 'my_universes' %>
+        <!-- Universes Grid -->
+        <% if @universes.any? %>
+          <div class="row g-4">
+            <% @universes.each do |universe| %>
+              <%= render 'universes/card', universe: universe, show_actions: true %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state-simple">
+            <div class="empty-icon">🌍</div>
+            <h3>No universes found</h3>
+            <p>You haven't created any universes yet.</p>
+            <%= link_to new_universe_path, class: 'btn-create' do %>
+              <i class="fas fa-plus-circle"></i>
+              Create Your First Universe
+            <% end %>
+          </div>
+        <% end %>
+      <% else %>
+        <!-- Stories List -->
+        <% if @stories.any? %>
+          <div class="stories-list">
+            <% @stories.each do |story| %>
+              <%= render 'stories/row_card', story: story, current_profile: current_profile %>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="empty-state-simple">
+            <div class="empty-icon">📚</div>
+            <h3>No stories found</h3>
+            <p>
+              <% if @current_filter == 'my_stories' %>
+                You haven't created any stories yet.
+              <% else %>
+                No stories available at the moment.
+              <% end %>
+            </p>
+            <% if @current_filter == 'my_stories' %>
+              <%= link_to characters_path, class: 'btn-create' do %>
+                <i class="fas fa-plus-circle"></i>
+                Create Your First Story
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
       <% end %>
     </section>
   </div>
