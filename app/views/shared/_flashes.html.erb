@@ -1,14 +1,28 @@
-<% if notice %>
-  <div class="alert alert-info alert-dismissible fade show m-1" role="alert">
-    <%= notice %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-    </button>
-  </div>
-<% end %>
-<% if alert %>
-  <div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-    <%= alert %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-    </button>
-  </div>
-<% end %>
+<div class="toast-container" data-controller="toast">
+  <% if notice %>
+    <div class="toast toast-success" data-toast-target="message">
+      <div class="toast-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <div class="toast-content">
+        <%= notice %>
+      </div>
+      <button type="button" class="toast-close" data-action="click->toast#dismiss">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  <% end %>
+  <% if alert %>
+    <div class="toast toast-warning" data-toast-target="message">
+      <div class="toast-icon">
+        <i class="fas fa-exclamation-circle"></i>
+      </div>
+      <div class="toast-content">
+        <%= alert %>
+      </div>
+      <button type="button" class="toast-close" data-action="click->toast#dismiss">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  <% end %>
+</div>

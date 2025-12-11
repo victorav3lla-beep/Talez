@@ -1,5 +1,8 @@
 <% content_for :night_sky, true %>
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
+  <!-- Avatar Corner -->
+  <%= render 'shared/avatar_corner' %>
+
   <!-- Back Button -->
   <div class="prompt-back-button">
     <%= link_to universes_path, class: "btn-back" do %>

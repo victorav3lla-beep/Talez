@@ -1,0 +1,15 @@
+<% if current_profile %>
+  <div class="avatar-corner">
+    <%= link_to profiles_path, class: "avatar-link" do %>
+      <% if current_profile.avatar_url.present? %>
+        <%= image_tag current_profile.avatar_url, alt: current_profile.name, class: 'avatar-img' %>
+      <% elsif current_profile.image.attached? %>
+        <%= cl_image_tag current_profile.image.key, alt: current_profile.name, class: 'avatar-img' %>
+      <% else %>
+        <div class="avatar-placeholder">
+          <%= current_profile.name.first.upcase %>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

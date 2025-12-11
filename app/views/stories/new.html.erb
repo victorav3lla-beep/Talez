@@ -1,43 +1,69 @@
 <% content_for :night_sky, true %>
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
-  <!-- Back Button -->
+  <%= render 'shared/avatar_corner' %>
+
   <div class="prompt-back-button">
     <%= link_to universes_path, class: "btn-back" do %>
-      <i class="bi bi-arrow-left"></i> Back
+      <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
 
-  <div class="prompt-card">
-    <div class="text-center mb-4">
-      <h1 class="prompt-title mb-2">Create your own story</h1>
-      <p class="prompt-subtitle">Tell me how the story begins</p>
+  <div class="prompt-card" data-controller="inspiration">
+    <!-- Header - Simple for kids -->
+    <div class="prompt-header">
+      <div class="prompt-icon">
+        <i class="fas fa-book-open"></i>
+      </div>
+      <h1 class="prompt-title">What happens?</h1>
     </div>
 
-  <!-- Inspiration Section -->
-          <div class="inspiration-section">
-            <div class="inspiration-label">
-              <i class="fas fa-lightbulb"></i>
-              <span>Need inspiration?</span>
-            </div>
-            <div class="inspiration-chips">
-              <button type="button" class="inspiration-chip" data-prompt="A brave knight discovers a magical dragon egg">
-                <i class="fas fa-dragon"></i> Dragon Adventure
-              </button>
-              <button type="button" class="inspiration-chip" data-prompt="A young wizard learns their first spell at magic school">
-                <i class="fas fa-hat-wizard"></i> Magic School
-              </button>
-              <button type="button" class="inspiration-chip" data-prompt="A curious explorer finds a hidden underwater kingdom">
-                <i class="fas fa-fish"></i> Ocean Quest
-              </button>
-              <button type="button" class="inspiration-chip" data-prompt="A friendly robot makes its first human friend">
-                <i class="fas fa-robot"></i> Robot Friend
-              </button>
-            </div>
-          </div>
+    <!-- Context: Character & Universe - Visual only -->
+    <% character = Character.find_by(id: session[:selected_character_id]) %>
+    <% universe = Universe.find_by(id: session[:selected_universe_id]) %>
+    <% if character && universe %>
+      <div class="prompt-context">
+        <div class="context-item">
+          <% if character.image.attached? %>
+            <%= image_tag character.image, alt: character.name %>
+          <% end %>
+        </div>
+        <span class="context-plus">+</span>
+        <div class="context-item">
+          <% if universe.image.attached? %>
+            <%= image_tag universe.image, alt: universe.name %>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
 
+    <!-- Inspiration - Big visual chips -->
+    <%
+      inspiration_ideas = [
+        { icon: "fa-dragon", label: "Dragon", prompt: "A brave knight discovers a magical dragon egg" },
+        { icon: "fa-hat-wizard", label: "Magic", prompt: "A young wizard learns their first spell at magic school" },
+        { icon: "fa-fish", label: "Ocean", prompt: "A curious explorer finds a hidden underwater kingdom" },
+        { icon: "fa-robot", label: "Robot", prompt: "A friendly robot makes its first human friend" },
+        { icon: "fa-crown", label: "Castle", prompt: "A young prince or princess uncovers a secret in the castle" },
+        { icon: "fa-rocket", label: "Space", prompt: "An astronaut discovers a friendly alien on a distant planet" },
+        { icon: "fa-tree", label: "Forest", prompt: "A child finds a tiny door at the base of an old tree" },
+        { icon: "fa-ghost", label: "Ghost", prompt: "A shy ghost just wants to make friends at a new school" }
+      ].sample(3)
+    %>
+    <div class="inspiration-chips">
+      <% inspiration_ideas.each do |idea| %>
+        <button type="button" class="inspiration-chip"
+                data-inspiration-target="chip"
+                data-action="click->inspiration#select"
+                data-prompt="<%= idea[:prompt] %>">
+          <i class="fas <%= idea[:icon] %>"></i>
+          <span><%= idea[:label] %></span>
+        </button>
+      <% end %>
+    </div>
+
+    <!-- Form - Simple -->
     <%= simple_form_for @story do |f| %>
       <%= f.error_notification %>
-      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
       <div class="form-inputs">
         <%= f.input :content,
@@ -45,16 +71,18 @@
                     required: true,
                     as: :text,
                     input_html: {
-                      rows: 4,
+                      rows: 3,
                       class: 'prompt-input',
-                      placeholder: 'Write your story prompt here...'
+                      placeholder: 'What happens in your story?',
+                      data: { inspiration_target: 'input' }
                     } %>
       </div>
 
-      <div class="form-actions mt-3">
+      <div class="form-actions">
         <%= f.button :submit,
-                    "Generate story beginning",
-                    class: "btn btn-sunset btn-lg w-100" %>
+                    class: "btn btn-sunset btn-lg w-100" do %>
+          <i class="fas fa-magic me-2"></i> Create!
+        <% end %>
       </div>
     <% end %>
   </div>

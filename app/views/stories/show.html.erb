@@ -120,12 +120,20 @@
                           </div>
                           <div class="page-text-container">
                             <div class="page-number-badge">Page <%= page.position %></div>
-                            <p class="page-story-text"><%= page.content %></p>
+                            <div class="page-story-text">
+                              <% page.content.to_s.split(/(?<=[.!?])\s+/).each_slice(2) do |group| %>
+                                <p><%= group.join(' ') %></p>
+                              <% end %>
+                            </div>
                           </div>
                         <% else %>
                           <div class="page-text-only">
                             <div class="page-number">Page <%= page.position %></div>
-                            <p class="page-content"><%= page.content %></p>
+                            <div class="page-content">
+                              <% page.content.to_s.split(/(?<=[.!?])\s+/).each_slice(2) do |group| %>
+                                <p><%= group.join(' ') %></p>
+                              <% end %>
+                            </div>
                           </div>
                         <% end %>
                       </div>
@@ -201,9 +209,11 @@
               <span>Library</span>
             <% end %>
 
-            <%= link_to print_story_path(@story), class: "book-btn book-btn-accent", target: "_blank" do %>
-              <i class="fas fa-print"></i>
-              <span>Print Story</span>
+            <% if @story.pages.count >= 3 %>
+              <%= link_to print_story_path(@story), class: "book-btn book-btn-accent", target: "_blank" do %>
+                <i class="fas fa-print"></i>
+                <span>Print Story</span>
+              <% end %>
             <% end %>
 
             <% if @story.profile == current_profile %>
