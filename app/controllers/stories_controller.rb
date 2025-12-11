@@ -31,22 +31,28 @@ class StoriesController < ApplicationController
     @current_filter = filter
   end
 
-  def create
+def create
+  begin
+    character = Character.find_by(id: session[:selected_character_id])
+    universe = Universe.find_by(id: session[:selected_universe_id])
+
+    unless character && universe
+      redirect_to new_story_path, alert: "Please select a character and universe first"
+      return
+    end
+
     @ruby_llm = RubyLLM.chat
     @story = Story.new
     @story.profile = current_profile
 
-    character = Character.find(session[:selected_character_id])
-    universe = Universe.find(session[:selected_universe_id])
-
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(story_params[:content], with:{ image: [character.image.url, universe.image.url] } )
     response = parse_json_response(response.content)
 
+    @story.title = response["title"]
+
     if @story.save
-      @story.update(title: response["title"])
       response_text = response["content"]
 
-      # Create first page (beginning of the story)
       page = @story.pages.create(
         title: response["title"],
         content: response_text,
@@ -69,12 +75,15 @@ class StoriesController < ApplicationController
         )
       end
 
-      # Redirect after successfully updating the story and attaching the image
-      redirect_to story_path(@story), notice: "Story image created successfully!"
+      redirect_to story_path(@story), notice: "Story created successfully!"
     else
-      render :new, status: :unprocessable_entity
+      redirect_to new_story_path, alert: "Failed to create story: #{@story.errors.full_messages.join(', ')}"
     end
+  rescue => e
+    Rails.logger.error("Story creation error: #{e.message}\n#{e.backtrace.join("\n")}")
+    redirect_to new_story_path, alert: "Error creating story: #{e.message}"
   end
+end
 
   def show
     @story = Story.find(params[:id])

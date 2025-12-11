@@ -1,0 +1,107 @@
+// app/assets/stylesheets/components/_night_sky.scss
+
+// Your color palette
+$primary-coral: #FF6B6B;
+$secondary-teal: #4ECDC4;
+$accent-yellow: #FFE66D;
+$bg-light-gray: #F7F7F7;
+$bg-white: #FFFFFF;
+
+// Night sky specific colors
+$night-sky-dark: #1a1a2e;
+$night-sky-medium: #16213e;
+$star-white: rgba(255, 255, 255, 0.8);
+$star-yellow: rgba($accent-yellow, 0.6);
+$star-teal: rgba($secondary-teal, 0.4);
+
+.night-sky-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    $night-sky-dark 0%,
+    $night-sky-medium 50%,
+    darken($night-sky-medium, 5%) 100%
+  );
+  z-index: -1;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  background: $star-white;
+  border-radius: 50%;
+  animation: twinkle linear infinite;
+
+  &.star-yellow {
+    background: $star-yellow;
+    box-shadow: 0 0 4px $accent-yellow;
+  }
+
+  &.star-teal {
+    background: $star-teal;
+    box-shadow: 0 0 4px $secondary-teal;
+  }
+
+  // Different star sizes
+  &.star-small {
+    width: 1px;
+    height: 1px;
+  }
+
+  &.star-medium {
+    width: 2px;
+    height: 2px;
+  }
+
+  &.star-large {
+    width: 3px;
+    height: 3px;
+  }
+}
+
+@keyframes twinkle {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+// Optional: Add a subtle gradient overlay for depth
+.night-sky-background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 0%,
+    rgba($night-sky-dark, 0.3) 100%
+  );
+  pointer-events: none;
+}
+
+// Ensure content is above the background
+.night-sky-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+// Override prompt container for night sky pages
+body.characters-new,
+body.universes-new,
+body.stories-new {
+  .prompt-container {
+    background-color: transparent !important;
+  }
+}

@@ -10,34 +10,33 @@ class UniversesController < ApplicationController
   before_action :authenticate_user!
   before_action :load_selected_profile, only: [:index, :new, :create]
 
-def index
-  @default_universes = Universe.where(profile_id: nil)
-  @custom_universes = current_profile ? current_profile.universes : []
-  @all_universes = current_profile.universes
-end
+  def index
+    @default_universes = Universe.where(profile_id: nil)
+    @custom_universes = current_profile ? current_profile.universes : []
+    @all_universes = current_profile.universes
+  end
 
 
   def new
     @universe = @selected_profile.universes.build
   end
 
-  # def create
-  #   @universe = @selected_profile.universes.build(universe_params)
-  #   @universe.is_custom = true
-
-  #   if @universe.save
-  #     redirect_to universes_path, notice: "Universe created successfully!"
-  #   else
-  #     render :new, status: :unprocessable_entity
-  #   end
-  # end
-
   def create
-    if universe_params[:description].present?
+    begin
+      unless universe_params[:description].present?
+        redirect_to universes_path, alert: "Please provide a description"
+        return
+      end
+
+      character = Character.find_by(id: session[:selected_character_id])
+      unless character
+        redirect_to characters_path, alert: "Please create or select a character first"
+        return
+      end
+
       llm = RubyLLM.chat
       llm.with_instructions(SYSTEM_PROMPT)
 
-      # Generate name if blank
       if universe_params[:name].blank?
         response = llm.ask(universe_params[:description])
         begin
@@ -59,28 +58,29 @@ end
         is_custom: true
       )
 
-      character = Character.find(session[:selected_character_id])
-      universe = Universe.find(session[:selected_universe_id])
-      # Generate image using DALL·E 3
       image_prompt = <<~PROMPT
-      Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
-      Wide cinematic landscape view, 16:9 composition, no borders, no text, no UI.
-      The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-      Setting: #{universe_name} – #{universe_description}.
-      Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
-      clean background, high contrast, highly detailed but easy to read for kids.
+        Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
+        Wide cinematic landscape view, 16:9 composition, no borders, no text, no UI.
+        The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+        Setting: #{universe_name} – #{universe_description}.
+        Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
+        clean background, high contrast, highly detailed but easy to read for kids.
       PROMPT
-        image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 
-      if image.url
-        image_data = URI.open(image.url)
-        @universe.image.attach(
-          io: image_data,
-          filename: "#{universe_name.parameterize}.png",
-          content_type: "image/png"
-        )
-      else
-        Rails.logger.warn("No image generated for #{universe_name}")
+      begin
+        image = RubyLLM.paint(image_prompt, model: "dall-e-3", size: "1792x1024")
+        if image.url
+          image_data = URI.open(image.url)
+          @universe.image.attach(
+            io: image_data,
+            filename: "#{universe_name.parameterize}.png",
+            content_type: "image/png"
+          )
+        else
+          Rails.logger.warn("No image generated for #{universe_name}")
+        end
+      rescue => e
+        Rails.logger.error("Image generation failed: #{e.message}")
       end
 
       if @universe.save
@@ -89,8 +89,9 @@ end
       else
         redirect_to new_universe_path, alert: "Failed to create universe: #{@universe.errors.full_messages.join(', ')}"
       end
-    else
-      redirect_to universes_path, alert: "Please provide a description"
+    rescue => e
+      Rails.logger.error("Universe creation error: #{e.message}\n#{e.backtrace.join("\n")}")
+      redirect_to new_universe_path, alert: "Error creating universe: #{e.message}"
     end
   end
 
