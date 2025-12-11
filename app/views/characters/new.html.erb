@@ -1,4 +1,8 @@
+<% content_for :night_sky, true %>
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
+  <!-- Avatar Corner -->
+  <%= render 'shared/avatar_corner' %>
+
   <div class="prompt-back-button">
     <%= link_to characters_path, class: "btn-back" do %>
       <i class="bi bi-arrow-left"></i> Back
@@ -11,10 +15,9 @@
       <p class="prompt-subtitle">Describe the hero you want to play with</p>
     </div>
 
-    <%= simple_form_for @character do |f| %>
-      <%= f.error_notification %>
-      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+    <%= render 'shared/flashes' %>
 
+    <%= simple_form_for @character, error_notification: false do |f| %>
       <div class="form-inputs">
         <%= f.input :description,
                     label: false,
