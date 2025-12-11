@@ -1,17 +1,17 @@
 // Character & Universe Prompt Creation Pages
-// Styles for characters/new and universes/new
+// Kid-friendly UI - stories/new, characters/new, universes/new
+
 .prompt-container {
   padding: 2rem 1rem;
   position: relative;
-  background: #313030;
-  color: green;
 }
 
+// Back Button - circle aligned with avatar
 .prompt-back-button {
-  position: absolute;
-  top: 2rem;
+  position: fixed;
+  top: calc(2rem + 0.75rem);
   left: 2rem;
-  z-index: 10;
+  z-index: 1000;
 
   @media (max-width: 768px) {
     top: 1rem;
@@ -20,113 +20,374 @@
 }
 
 .btn-back {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background-color: rgba(255, 255, 255, 0.1);
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  min-height: 50px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 12px;
+  border-radius: 50% !important;
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
+  font-size: 1.25rem;
   transition: all 0.3s ease;
+  overflow: hidden;
+
+  i {
+    line-height: 1;
+  }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 107, 107, 0.3);
     border-color: #FF6B6B;
-    color: #FF6B6B;
-    transform: translateX(-3px);
+    color: #fff;
+    transform: scale(1.1);
   }
 
   @media (max-width: 768px) {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
+// Main Card - Premium glassmorphism
 .prompt-card {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-  border-radius: 24px;
-  padding: 3rem 2.5rem;
-  box-shadow: 0 20px 60px rgba(199, 70, 70, 0.5);
-  max-width: 700px;
+  background: linear-gradient(145deg, rgba(30, 30, 35, 0.95) 0%, rgba(20, 20, 25, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 28px;
+  padding: 2.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 25px 80px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
+    0 1px 0 rgba(255, 255, 255, 0.1) inset;
+  max-width: 580px;
   width: 100%;
+  animation: cardEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+
+  // Subtle gradient shine
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  }
 
   @media (max-width: 768px) {
     padding: 2rem 1.5rem;
+    border-radius: 24px;
   }
+}
+
+@keyframes cardEntrance {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Header Section - Big and playful for kids
+.prompt-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.prompt-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  color: #fff;
+  animation: iconBounce 2s ease-in-out infinite;
+  box-shadow: 0 8px 30px rgba(255, 107, 107, 0.3);
+
+  @media (max-width: 768px) {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+}
+
+@keyframes iconBounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(-3deg); }
+  75% { transform: translateY(-4px) rotate(3deg); }
 }
 
 .prompt-title {
   font-size: 2rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #fff;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-}
-
-.prompt-subtitle {
-  font-size: 1.1rem;
-  color: #999;
   margin-bottom: 0;
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 1.75rem;
   }
 }
 
+// Context Preview - Big visual images for kids
+.prompt-context {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.context-item {
+  img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+
+  @media (max-width: 768px) {
+    img {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
+.context-plus {
+  color: #4ECDC4;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+// Inspiration Chips - Big and visual for kids
+.prompt-card .inspiration-chips {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 1.5rem;
+}
+
+.prompt-card .inspiration-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+
+  i {
+    font-size: 28px;
+    color: #FFE66D;
+    transition: transform 0.3s ease;
+  }
+
+  span {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  &:hover {
+    background: rgba(78, 205, 196, 0.2);
+    border-color: #4ECDC4;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+
+    i {
+      transform: scale(1.2);
+    }
+  }
+
+  &.active {
+    background: rgba(255, 107, 107, 0.25);
+    border-color: #FF6B6B;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+
+    i {
+      color: #FF6B6B;
+    }
+
+    span {
+      color: #fff;
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 12px 14px;
+    min-width: 70px;
+
+    i {
+      font-size: 24px;
+    }
+
+    span {
+      font-size: 11px;
+    }
+  }
+}
+
+// Text Input - Premium styling
 .prompt-input {
-  background-color: #252323;
-  border: 2px solid #333;
-  border-radius: 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
   color: #fff !important;
-  font-size: 1.1rem;
+  font-size: 1rem;
   padding: 1.25rem 1.5rem;
   width: 100%;
   resize: none;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1.6;
+  font-family: inherit;
 
   &::placeholder {
-    color: #666 !important;
+    color: rgba(255, 255, 255, 0.35) !important;
+  }
+
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   &:focus {
-    background-color: #971414;
-    border-color: #a92424;
+    background: rgba(0, 0, 0, 0.4);
+    border-color: #FF6B6B;
     outline: none;
-    box-shadow: 0 0 0 4px rgba(255, 107, 107, 0.15);
+    box-shadow:
+      0 0 0 4px rgba(255, 107, 107, 0.1),
+      0 4px 20px rgba(255, 107, 107, 0.1);
     color: #fff !important;
   }
 
   @media (max-width: 768px) {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 1rem 1.25rem;
   }
 }
 
-// Btn-sunset styles for prompt pages
+// Submit Button - Big and fun for kids
 .prompt-card .btn-sunset {
-  background-color: #FF6B6B;
+  position: relative;
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
   border: none;
   color: white;
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 1.25rem 2rem;
   border-radius: 16px;
   transition: all 0.3s ease;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
 
   &:hover {
-    background-color: #FF5252;
+    background: linear-gradient(135deg, #FF5252 0%, #e84545 100%);
     color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(255, 107, 107, 0.5);
   }
 
   &:active {
-    transform: translateY(0);
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  i {
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+
+  // Loading state
+  &.loading {
+    pointer-events: none;
+    opacity: 0.8;
+
+    &::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      border: 3px solid transparent;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-left: 12px;
+      display: inline-block;
+      vertical-align: middle;
+    }
   }
 }
+
+@keyframes sparkle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(15deg) scale(1.1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+// Character Count
+.char-count {
+  text-align: right;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 8px;
+
+  &.warning {
+    color: #f59e0b;
+  }
+
+  &.error {
+    color: #ef4444;
+  }
+}
+
+// Form spacing
+.form-inputs {
+  margin-bottom: 1rem;
+}
+
+.form-actions {
+  margin-top: 1.25rem;
+}
+
+// Error states
+.prompt-card .error {
+  color: #FF6B6B;
+  font-size: 13px;
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  i {
+    font-size: 14px;
+  }
+}
+
