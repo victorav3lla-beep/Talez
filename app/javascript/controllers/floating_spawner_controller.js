@@ -40,6 +40,15 @@ export default class extends Controller {
   disconnect() {
     window.removeEventListener('mousemove', this.handleMouseMove)
     clearInterval(this.checkInterval)
+
+    // Clean up all floaters when leaving page (prevents duplicates with Turbo)
+    this.activeFloaters.forEach(floater => {
+      if (floater.parentNode) {
+        floater.remove()
+      }
+    })
+    this.activeFloaters = []
+    this.usedIndices = []
   }
 
   handleMouseMove(event) {

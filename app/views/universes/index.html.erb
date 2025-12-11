@@ -7,12 +7,12 @@
        data-controller="floating-spawner"
        id="universe-spawner"
        data-floating-spawner-images-value='<%= [
-         { src: image_path("vectors/hot-air-balloon.png"), alt: "Balloon", width: 140 },
-         { src: image_path("vectors/crown.png"), alt: "Crown", width: 110 },
-         { src: image_path("vectors/moctezumas-headdress.png"), alt: "Headdress", width: 160 },
-         { src: image_path("vectors/book.png"), alt: "Book", width: 100 },
-         { src: image_path("vectors/razz-berry.png"), alt: "Berry", width: 80 },
-         { src: image_path("vectors/rocket.png"), alt: "Rocket", width: 120 }
+         { src: image_path("vectors/hot-air-balloon.png"), alt: "Balloon", width: 112 },
+         { src: image_path("vectors/crown.png"), alt: "Crown", width: 88 },
+         { src: image_path("vectors/moctezumas-headdress.png"), alt: "Headdress", width: 128 },
+         { src: image_path("vectors/book.png"), alt: "Book", width: 80 },
+         { src: image_path("vectors/razz-berry.png"), alt: "Berry", width: 64 },
+         { src: image_path("vectors/rocket.png"), alt: "Rocket", width: 96 }
        ].to_json %>'>
     <!-- Pool où les floaters seront créés dynamiquement -->
     <div data-floating-spawner-target="pool"></div>
@@ -35,86 +35,70 @@
         </h1>
       </div>
 
+      <%
+        # Logic: 4 cards max, 1 row
+        # Priority: custom universes first, then defaults, then "Create Your Own" if space
+        custom_count = @custom_universes.size
+        slots_for_defaults = [4 - custom_count, 3].min  # Max 3 defaults
+        show_create_card = custom_count == 0  # Only show "Create Your Own" if no customs
+
+        # Default universes data
+        default_universes_data = [
+          { id: @default_universes.first&.id || 1, name: "Enchanted Forest", image: "enchanted_forest.jpg", description: "A magical woodland filled with ancient trees and wonder!" },
+          { id: @default_universes.second&.id || 2, name: "Galaxy Beyond", image: "galaxy_beyond.jpg", description: "A vast cosmos of stars, planets, and endless adventures!" },
+          { id: @default_universes.third&.id || 3, name: "Future City", image: "future_city.jpeg", description: "A bustling metropolis of technology and innovation!" }
+        ]
+      %>
+
       <%= form_with url: select_universes_path, method: :post, data: { turbo: false } do |f| %>
         <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
 
-        <!-- Universes Showcase: 4 cards max (3 universes + 1 Create) -->
+        <!-- Universes Showcase: 4 cards max, 1 row -->
+        <!-- Order: Defaults (left) → Custom/Create (right) -->
         <div class="characters-showcase">
           <div class="row g-4 justify-content-center">
-            <!-- Universe 1: Enchanted Forest -->
-            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-              <div class="universe-card"
-                   data-tilt-target="card"
-                   data-selection-target="card"
-                   data-id="<%= @default_universes.first&.id || 1 %>"
-                   data-action="click->selection#select">
-                <div class="character-image-wrapper">
-                  <%= image_tag 'enchanted_forest.jpg', alt: 'Enchanted Forest' %>
-                </div>
-                <div class="character-content">
-                  <h5 class="character-name">Enchanted Forest</h5>
-                  <p class="character-description">A magical woodland filled with ancient trees and wonder!</p>
-                </div>
-              </div>
-            </div>
 
-            <!-- Universe 2: Galaxy Beyond -->
-            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-              <div class="universe-card"
-                   data-tilt-target="card"
-                   data-selection-target="card"
-                   data-id="<%= @default_universes.second&.id || 2 %>"
-                   data-action="click->selection#select">
-                <div class="character-image-wrapper">
-                  <%= image_tag 'galaxy_beyond.jpg', alt: 'Galaxy Beyond' %>
-                </div>
-                <div class="character-content">
-                  <h5 class="character-name">Galaxy Beyond</h5>
-                  <p class="character-description">A vast cosmos of stars, planets, and endless adventures!</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Universe 3: Future City -->
-            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-              <div class="universe-card"
-                   data-tilt-target="card"
-                   data-selection-target="card"
-                   data-id="<%= @default_universes.third&.id || 3 %>"
-                   data-action="click->selection#select">
-                <div class="character-image-wrapper">
-                  <%= image_tag 'future_city.jpeg', alt: 'Future City' %>
-                </div>
-                <div class="character-content">
-                  <h5 class="character-name">Future City</h5>
-                  <p class="character-description">A bustling metropolis of technology and innovation!</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Create Your Own Card -->
-            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-              <%= link_to new_universe_path, class: "text-decoration-none" do %>
-                <div class="create-own-card" data-tilt-target="card">
-                  <div class="create-content-wrapper">
-                    <div class="create-icon">
-                      <i class="bi bi-plus-circle"></i>
-                    </div>
-                    <h5 class="create-text">Create Your Own</h5>
-                    <p class="create-subtext">Design your own world!</p>
+            <%# Default Universes first (LEFT side) %>
+            <% default_universes_data.first(slots_for_defaults).each do |uni_data| %>
+              <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+                <div class="universe-card"
+                     data-tilt-target="card"
+                     data-selection-target="card"
+                     data-id="<%= uni_data[:id] %>"
+                     data-action="click->selection#select">
+                  <div class="character-image-wrapper">
+                    <%= image_tag uni_data[:image], alt: uni_data[:name] %>
+                  </div>
+                  <div class="character-content">
+                    <h5 class="character-name"><%= uni_data[:name] %></h5>
+                    <p class="character-description"><%= uni_data[:description] %></p>
                   </div>
                 </div>
-              <% end %>
-            </div>
-          </div>
-        </div>
-
-
-        <div class="universe-showcase mt-4">
-          <div class="row g-4 justify-content-center">
-            <% @custom_universes.each do |universe| %>
-              <%= render partial: "card", locals: { universe: universe } %>
+              </div>
             <% end %>
+
+            <%# Custom Universes (RIGHT side, with action icons) %>
+            <% @custom_universes.first(4 - slots_for_defaults).each do |universe| %>
+              <%= render partial: "card", locals: { universe: universe, show_actions: true } %>
+            <% end %>
+
+            <%# Create Your Own Card (only if no custom universes) %>
+            <% if show_create_card %>
+              <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+                <%= link_to new_universe_path, class: "text-decoration-none" do %>
+                  <div class="create-own-card" data-tilt-target="card">
+                    <div class="create-content-wrapper">
+                      <div class="create-icon">
+                        <i class="bi bi-plus-circle"></i>
+                      </div>
+                      <h5 class="create-text">Create Your Own</h5>
+                      <p class="create-subtext">Design your own world!</p>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <% end %>
+
           </div>
         </div>
 

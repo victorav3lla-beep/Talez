@@ -7,12 +7,12 @@
        data-controller="floating-spawner"
        id="main-spawner"
        data-floating-spawner-images-value='<%= [
-         { src: image_path("vectors/hot-air-balloon.png"), alt: "Balloon", width: 140 },
-         { src: image_path("vectors/crown.png"), alt: "Crown", width: 110 },
-         { src: image_path("vectors/moctezumas-headdress.png"), alt: "Headdress", width: 160 },
-         { src: image_path("vectors/book.png"), alt: "Book", width: 100 },
-         { src: image_path("vectors/razz-berry.png"), alt: "Berry", width: 80 },
-         { src: image_path("vectors/rocket.png"), alt: "Rocket", width: 120 }
+         { src: image_path("vectors/hot-air-balloon.png"), alt: "Balloon", width: 112 },
+         { src: image_path("vectors/crown.png"), alt: "Crown", width: 88 },
+         { src: image_path("vectors/moctezumas-headdress.png"), alt: "Headdress", width: 128 },
+         { src: image_path("vectors/book.png"), alt: "Book", width: 80 },
+         { src: image_path("vectors/razz-berry.png"), alt: "Berry", width: 64 },
+         { src: image_path("vectors/rocket.png"), alt: "Rocket", width: 96 }
        ].to_json %>'>
     <!-- Pool où les floaters seront créés dynamiquement -->
     <div data-floating-spawner-target="pool"></div>
@@ -36,87 +36,70 @@
       </h1>
     </div>
 
+    <%
+      # Logic: 4 cards max, 1 row
+      # Priority: custom characters first, then defaults, then "Create Your Own" if space
+      custom_count = @custom_characters.size
+      slots_for_defaults = [4 - custom_count, 3].min  # Max 3 defaults
+      show_create_card = custom_count == 0  # Only show "Create Your Own" if no customs
+
+      # Default characters data
+      default_characters_data = [
+        { id: @default_characters.first&.id || 1, name: "Sparkle Fairy", image: "sparkle_fairy_profile.jpeg", description: "A magical fairy with rainbow wings who brings joy and wonder!" },
+        { id: @default_characters.second&.id || 2, name: "Blaze Dragon", image: "blaze_dragon_profile.jpeg", description: "A mighty steampunk dragon guardian of the mechanical realm!" },
+        { id: @default_characters.third&.id || 3, name: "Captain Stella", image: "captain_stella_profile.jpeg", description: "A brave space pilot ready to explore the galaxy and beyond!" }
+      ]
+    %>
+
     <%= form_with url: select_characters_path, method: :post, data: { turbo: false } do |f| %>
       <%= f.hidden_field :id, value: "", data: { selection_target: "input" } %>
 
-      <!-- Characters Showcase: 4 cards max (3 characters + 1 Create) -->
+      <!-- Characters Showcase: 4 cards max, 1 row -->
+      <!-- Order: Defaults (left) → Custom/Create (right) -->
       <div class="characters-showcase">
         <div class="row g-4 justify-content-center">
-          <!-- Character 1: Sparkle Fairy -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="character-card-fancy"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_characters.first&.id || 1 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'sparkle_fairy_profile.jpeg', alt: 'Sparkle Fairy' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Sparkle Fairy</h5>
-                <p class="character-description">A magical fairy with rainbow wings who brings joy and wonder!</p>
-              </div>
-            </div>
-          </div>
 
-          <!-- Character 2: Blaze Dragon -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="character-card-fancy"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_characters.second&.id || 2 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'blaze_dragon_profile.jpeg', alt: 'Blaze Dragon' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Blaze Dragon</h5>
-                <p class="character-description">A mighty steampunk dragon guardian of the mechanical realm!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Character 3: Captain Stella -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <div class="character-card-fancy"
-                 data-tilt-target="card"
-                 data-selection-target="card"
-                 data-id="<%= @default_characters.third&.id || 3 %>"
-                 data-action="click->selection#select">
-              <div class="character-image-wrapper">
-                <%= image_tag 'captain_stella_profile.jpeg', alt: 'Captain Stella' %>
-              </div>
-              <div class="character-content">
-                <h5 class="character-name">Captain Stella</h5>
-                <p class="character-description">A brave space pilot ready to explore the galaxy and beyond!</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Create Your Own Card -->
-          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-            <%= link_to new_character_path, class: "text-decoration-none" do %>
-              <div class="create-own-card" data-tilt-target="card">
-                <div class="create-content-wrapper">
-                  <div class="create-icon">
-                    <i class="bi bi-plus-circle"></i>
-                  </div>
-                  <h5 class="create-text">Create Your Own</h5>
-                  <p class="create-subtext">Bring your hero to life!</p>
+          <%# Default Characters first (LEFT side) %>
+          <% default_characters_data.first(slots_for_defaults).each do |char_data| %>
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <div class="character-card-fancy"
+                   data-tilt-target="card"
+                   data-selection-target="card"
+                   data-id="<%= char_data[:id] %>"
+                   data-action="click->selection#select">
+                <div class="character-image-wrapper">
+                  <%= image_tag char_data[:image], alt: char_data[:name] %>
+                </div>
+                <div class="character-content">
+                  <h5 class="character-name"><%= char_data[:name] %></h5>
+                  <p class="character-description"><%= char_data[:description] %></p>
                 </div>
               </div>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Custom Characters -->
-      <div class="characters-showcase mt-4">
-        <div class="row g-4 justify-content-center">
-          <% @custom_characters.each do |character| %>
-            <%= render partial: "card", locals: { character: character } %>
+            </div>
           <% end %>
+
+          <%# Custom Characters (RIGHT side, with action icons) %>
+          <% @custom_characters.first(4 - slots_for_defaults).each do |character| %>
+            <%= render partial: "card", locals: { character: character, show_actions: true } %>
+          <% end %>
+
+          <%# Create Your Own Card (only if no custom characters) %>
+          <% if show_create_card %>
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <%= link_to new_character_path, class: "text-decoration-none" do %>
+                <div class="create-own-card" data-tilt-target="card">
+                  <div class="create-content-wrapper">
+                    <div class="create-icon">
+                      <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <h5 class="create-text">Create Your Own</h5>
+                    <p class="create-subtext">Bring your hero to life!</p>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
         </div>
       </div>
 

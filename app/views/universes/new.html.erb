@@ -1,43 +1,41 @@
 <% content_for :night_sky, true %>
 <div class="prompt-container min-vh-100 d-flex align-items-center justify-content-center">
-  <!-- Avatar Corner -->
   <%= render 'shared/avatar_corner' %>
 
-  <!-- Back Button -->
   <div class="prompt-back-button">
     <%= link_to universes_path, class: "btn-back" do %>
-      <i class="bi bi-arrow-left"></i> Back
+      <i class="fas fa-arrow-left"></i>
     <% end %>
   </div>
 
   <div class="prompt-card">
-    <div class="text-center mb-4">
-      <h1 class="prompt-title mb-2">Create your own universe</h1>
-      <p class="prompt-subtitle">Describe the world where the story happens</p>
+    <div class="prompt-header">
+      <div class="prompt-icon">
+        <i class="fas fa-globe"></i>
+      </div>
+      <h1 class="prompt-title">Create a World!</h1>
     </div>
-
 
     <%= simple_form_for @universe do |f| %>
       <%= f.error_notification %>
-      <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
-    <%= simple_form_for @universe, error_notification: false do |f| %>
       <div class="form-inputs">
         <%= f.input :description,
                     label: false,
                     required: true,
                     as: :text,
                     input_html: {
-                      rows: 4,
+                      rows: 3,
                       class: 'prompt-input',
-                      placeholder: 'Write your universe prompt here...'
+                      placeholder: 'Describe your magical world...'
                     } %>
       </div>
 
-      <div class="form-actions mt-3">
+      <div class="form-actions">
         <%= f.button :submit,
-                    "Generate universe",
-                    class: "btn btn-sunset btn-lg w-100" %>
+                    class: "btn btn-sunset btn-lg w-100" do %>
+          <i class="fas fa-magic me-2"></i> Create!
+        <% end %>
       </div>
     <% end %>
   </div>
