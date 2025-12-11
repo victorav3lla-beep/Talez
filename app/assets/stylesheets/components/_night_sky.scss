@@ -1,11 +1,7 @@
 // app/assets/stylesheets/components/_night_sky.scss
 
-// Your color palette
-$primary-coral: #FF6B6B;
-$secondary-teal: #4ECDC4;
-$accent-yellow: #FFE66D;
-$bg-light-gray: #F7F7F7;
-$bg-white: #FFFFFF;
+// Import colors from config (don't redefine)
+@import '../config/colors';
 
 // Night sky specific colors
 $night-sky-dark: #1a1a2e;
