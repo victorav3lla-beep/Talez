@@ -60,10 +60,9 @@ class UniversesController < ApplicationController
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
     PROMPT
-    image_url = AiImageService.generate(image_prompt)
+    image_data = AiImageService.generate(image_prompt)
 
-    if image_url
-      image_data = URI.open(image_url)
+    if image_data
       @universe.image.attach(
         io: image_data,
         filename: "#{@universe.name.parameterize}.png",

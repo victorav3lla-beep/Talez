@@ -79,9 +79,8 @@ class StoriesController < ApplicationController
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
 
       begin
-        page_image_url = AiImageService.generate(page_image_prompt)
-        if page_image_url
-          page_image_data = URI.open(page_image_url)
+        page_image_data = AiImageService.generate(page_image_prompt)
+        if page_image_data
           page.image.attach(
             io: page_image_data,
             filename: "page-#{SecureRandom.hex(4)}.png",
@@ -191,10 +190,9 @@ class StoriesController < ApplicationController
                         IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
                         The main character: #{character.name} - #{character.description} - image: #{character.image.url}
                         The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
-    page_image_url = AiImageService.generate(page_image_prompt)
+    page_image_data = AiImageService.generate(page_image_prompt)
 
-    if page_image_url
-      page_image_data = URI.open(page_image_url)
+    if page_image_data
       page.image.attach(
         io: page_image_data,
         filename: "page-#{SecureRandom.hex(4)}.png",
@@ -236,12 +234,11 @@ class StoriesController < ApplicationController
                   Story content: #{@story.pages.order(:position).pluck(:content).join(" ")}
                   \nStyle: similar to the character and universe style, professional book cover layout with the story title visible\nFormat: wide landscape, horizontal composition, with no book margins, just the image
                   IMPORTANT: The story title \"#{@story.title}\" should be clearly visible in the cover image. Keep the style consistent with the character and universe images provided and don't use any book margins or layouts, just the image."
-    cover_image_url = AiImageService.generate(cover_prompt)
+    cover_image_data = AiImageService.generate(cover_prompt)
 
-    if cover_image_url
-      cover_data = URI.open(cover_image_url)
+    if cover_image_data
       @story.cover.attach(
-        io: cover_data,
+        io: cover_image_data,
         filename: "cover-#{SecureRandom.hex(4)}.png",
         content_type: "image/png",
       )
@@ -341,12 +338,11 @@ class StoriesController < ApplicationController
                     Story content: #{@story.pages.order(:position).pluck(:content).join(' ')}
                     \nStyle: similar to the character and universe style, professional book cover layout\nFormat: wide landscape, horizontal composition, with no book margins, just the image
                     IMPORTANT: Keep the style consistent with the character and universe images provided and dont use any book margins or layouts, just the image."
-    cover_image_url = AiImageService.generate(cover_prompt)
+    cover_image_data = AiImageService.generate(cover_prompt)
 
-    if cover_image_url
-      cover_data = URI.open(cover_image_url)
+    if cover_image_data
       @story.cover.attach(
-        io: cover_data,
+        io: cover_image_data,
         filename: "cover-#{SecureRandom.hex(4)}.png",
         content_type: "image/png",
       )

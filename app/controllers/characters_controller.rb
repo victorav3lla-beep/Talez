@@ -52,10 +52,9 @@ class CharactersController < ApplicationController
       clean background, high contrast, highly detailed but easy to read for kids.
       IMPORTANT: create only one character
     PROMPT
-    image_url = AiImageService.generate(image_prompt)
+    image_data = AiImageService.generate(image_prompt)
 
-    if image_url
-      image_data = URI.open(image_url)
+    if image_data
       @character.image.attach(
         io: image_data,
         filename: "#{@character.name.parameterize}.png",
