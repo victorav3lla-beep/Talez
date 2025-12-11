@@ -1,4 +1,4 @@
-<div class="col-12 col-sm-6 col-md-4 col-lg-3 custom-character-card" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+<div class="col-12 col-sm-6 col-lg-3 custom-character-card" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
   <div class="character-card-fancy" data-tilt-target="card" data-selection-target="card" data-id="<%= character.id %>" data-action="click->selection#select">
     <div class="character-image-wrapper">
       <% if character.image.attached? %>
@@ -10,13 +10,22 @@
       <% end %>
     </div>
     <div class="character-content">
-      <%= link_to character_path(character), class: "text-decoration-none text-dark" do %>
-        <h5 class="character-name"><%= character.name %></h5>
-        <% if character.description.present? %>
-          <p class="character-description"><%= truncate(character.description, length: 80) %></p>
-        <% end %>
+      <h5 class="character-name"><%= character.name %></h5>
+      <% if character.description.present? %>
+        <p class="character-description"><%= truncate(character.description, length: 80) %></p>
       <% end %>
     </div>
 
+    <% if local_assigns[:show_actions] %>
+      <!-- Action buttons -->
+      <div class="card-actions-magic">
+        <%= link_to new_character_path, class: "magic-btn magic-btn-new", title: "Create new", data: { turbo: false } do %>
+          <span>✦</span>
+        <% end %>
+        <%= link_to character_path(character), class: "magic-btn magic-btn-edit", title: "Edit", data: { turbo: false } do %>
+          <span>✎</span>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

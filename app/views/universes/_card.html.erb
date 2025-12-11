@@ -12,13 +12,22 @@
     </div>
 
     <div class="character-content">
-      <%= link_to universe_path(universe), class: "text-decoration-none text-dark" do %>
-        <h5 class="character-name"><%= universe.name %></h5>
-        <% if universe.description.present? %>
-          <p class="character-description"><%= truncate(universe.description, length: 80) %></p>
-        <% end %>
+      <h5 class="character-name"><%= universe.name %></h5>
+      <% if universe.description.present? %>
+        <p class="character-description"><%= truncate(universe.description, length: 80) %></p>
       <% end %>
-
     </div>
+
+    <% if local_assigns[:show_actions] %>
+      <!-- Action buttons -->
+      <div class="card-actions-magic">
+        <%= link_to new_universe_path, class: "magic-btn magic-btn-new", title: "Create new", data: { turbo: false } do %>
+          <span>✦</span>
+        <% end %>
+        <%= link_to universe_path(universe), class: "magic-btn magic-btn-edit", title: "Edit", data: { turbo: false } do %>
+          <span>✎</span>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>

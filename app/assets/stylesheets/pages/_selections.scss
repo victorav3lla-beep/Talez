@@ -139,6 +139,79 @@ $gold-light: #ffd700;
     }
   }
 
+  // Hover sparkle - fast, energetic (for all cards on hover)
+  .sparkle-hover {
+    animation: sparkle-hover-fade 0.8s ease-out forwards;
+  }
+
+  @keyframes sparkle-hover-fade {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+    }
+    40% {
+      opacity: 1;
+      transform: scale(1.2);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.3);
+    }
+  }
+
+  // Ambient sparkle - slow, magical, dreamy
+  .sparkle-ambient {
+    animation: sparkle-ambient-fade 2.5s ease-in-out forwards;
+    border-radius: 50%;
+
+    &::before, &::after {
+      content: '';
+      position: absolute;
+      background: inherit;
+      border-radius: 50%;
+    }
+
+    // Create a soft cross/star shape
+    &::before {
+      width: 100%;
+      height: 30%;
+      top: 35%;
+      left: 0;
+      filter: blur(1px);
+    }
+
+    &::after {
+      width: 30%;
+      height: 100%;
+      top: 0;
+      left: 35%;
+      filter: blur(1px);
+    }
+  }
+
+  @keyframes sparkle-ambient-fade {
+    0% {
+      opacity: 0;
+      transform: scale(0) rotate(0deg);
+    }
+    15% {
+      opacity: 0.9;
+      transform: scale(1) rotate(20deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1) rotate(45deg);
+    }
+    85% {
+      opacity: 0.7;
+      transform: scale(0.9) rotate(70deg);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.2) rotate(90deg);
+    }
+  }
+
   // Image & sheen
   .character-img, .character-image-wrapper {
     position: absolute;
@@ -204,15 +277,27 @@ $gold-light: #ffd700;
   }
 
   .character-name {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
     font-weight: 800;
     color: white;
     text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    // Limit to 1 line with ellipsis
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 0.25rem;
   }
 
   .character-description {
     color: rgba(255, 255, 255, 0.9);
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    // Limit to 2 lines with ellipsis
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 0;
   }
 
   // Golden selection state
@@ -242,6 +327,71 @@ $gold-light: #ffd700;
     }
     .character-name { color: $gold-light; }
   }
+
+  // Action buttons (for custom characters)
+  .card-actions-magic {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    gap: 8px;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  &:hover .card-actions-magic {
+    opacity: 1;
+  }
+
+  .magic-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    line-height: 1;
+    // Glassmorphism style matching site
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    color: #444;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    // New button - subtle golden glow on hover
+    &.magic-btn-new {
+      &:hover {
+        color: $gold-dark;
+        border-color: rgba($gold-light, 0.5);
+        box-shadow: 0 6px 20px rgba($gold-light, 0.3);
+      }
+    }
+
+    // Edit button - subtle teal glow on hover
+    &.magic-btn-edit {
+      &:hover {
+        color: darken($secondary-teal, 10%);
+        border-color: rgba($secondary-teal, 0.5);
+        box-shadow: 0 6px 20px rgba($secondary-teal, 0.3);
+      }
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 }
 
 @keyframes premiumPulse {
@@ -258,12 +408,13 @@ $gold-light: #ffd700;
 // --- CREATE CARD (HOLOGRAPHIC OIL SLICK) ---
 .create-own-card {
   @extend .character-card-fancy;
-  background: black;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
+  // Magical aurora background with rainbow conic gradient - softer
   &::before {
     content: '';
     position: absolute;
@@ -271,11 +422,19 @@ $gold-light: #ffd700;
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle at center, $primary-coral, $accent-yellow, $secondary-teal, $primary-coral);
-    background-size: 50% 50%;
-    filter: blur(40px);
+    background: conic-gradient(
+      from 0deg,
+      #ff6b9d,
+      #ffa726,
+      #ffeb3b,
+      #69f0ae,
+      #40c4ff,
+      #ab47bc,
+      #ff6b9d
+    );
+    filter: blur(50px);
     animation: holo-spin 10s linear infinite;
-    opacity: 0.6;
+    opacity: 0.4;
     z-index: 0;
   }
 
@@ -288,10 +447,32 @@ $gold-light: #ffd700;
   }
 
   .create-icon { font-size: 5rem; margin-bottom: 1.5rem; }
-  .create-text { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+
+  // Shimmering golden text effect
+  .create-text {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    background: linear-gradient(90deg, #fff 0%, #ffd700 50%, #fff 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer-text 3s linear infinite;
+  }
+
   .create-subtext { color: rgba(255, 255, 255, 0.9); }
 }
-@keyframes holo-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+@keyframes holo-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes shimmer-text {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
 
 // --- CONTINUE BUTTON ---
 .continue-button-wrapper {

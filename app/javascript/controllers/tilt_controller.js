@@ -6,11 +6,22 @@ export default class extends Controller {
   connect() {
     this.resetTilt()
     this.addEffectLayers()
-    this.sparkleInterval = null
+    this.hoverInterval = null
+    this.ambientInterval = null
+    this.isHovering = false
+
+    // Auto-start ambient sparkles for "Create Your Own" card
+    if (this.cardTarget.classList.contains('create-own-card')) {
+      this.isCreateCard = true
+      this.startAmbientSparkles()
+    } else {
+      this.isCreateCard = false
+    }
   }
 
   disconnect() {
-    if (this.sparkleInterval) clearInterval(this.sparkleInterval)
+    if (this.hoverInterval) clearInterval(this.hoverInterval)
+    if (this.ambientInterval) clearInterval(this.ambientInterval)
   }
 
   addEffectLayers() {
@@ -73,40 +84,103 @@ export default class extends Controller {
       rainbow.style.opacity = '1'
     }
 
-    // Sparkles - add on movement
-    if (intensity > 0.4 && !this.sparkleInterval) {
-      this.startSparkles()
-    } else if (intensity <= 0.2 && this.sparkleInterval) {
-      this.stopSparkles()
+    // Hover sparkles - separate from ambient
+    if (intensity > 0.4 && !this.hoverInterval) {
+      this.startHoverSparkles()
+    } else if (intensity <= 0.2 && this.hoverInterval) {
+      this.stopHoverSparkles()
     }
   }
 
-  startSparkles() {
+  // Fast sparkles on hover (all cards)
+  startHoverSparkles() {
     const container = this.cardTarget.querySelector('.sparkle-container')
     if (!container) return
 
-    this.sparkleInterval = setInterval(() => {
+    this.hoverInterval = setInterval(() => {
       const sparkle = document.createElement('div')
-      sparkle.className = 'sparkle'
+      sparkle.className = 'sparkle sparkle-hover'
       sparkle.style.left = Math.random() * 100 + '%'
       sparkle.style.top = Math.random() * 100 + '%'
-      sparkle.style.animationDelay = Math.random() * 0.5 + 's'
+      sparkle.style.animationDelay = Math.random() * 0.3 + 's'
       container.appendChild(sparkle)
 
       setTimeout(() => sparkle.remove(), 1000)
-    }, 200)
+    }, 150)
   }
 
-  stopSparkles() {
-    if (this.sparkleInterval) {
-      clearInterval(this.sparkleInterval)
-      this.sparkleInterval = null
+  stopHoverSparkles() {
+    if (this.hoverInterval) {
+      clearInterval(this.hoverInterval)
+      this.hoverInterval = null
+    }
+  }
+
+  // Ambient sparkles for "Create Your Own" card - magical, slow effect
+  startAmbientSparkles() {
+    const container = this.cardTarget.querySelector('.sparkle-container')
+    if (!container) return
+
+    // Teal color palette (#4ECDC4) with variations
+    const colors = [
+      { bg: 'rgba(78, 205, 196, 0.95)', glow: 'rgba(78, 205, 196, 0.7)' },     // Teal
+      { bg: 'rgba(100, 220, 210, 0.9)', glow: 'rgba(100, 220, 210, 0.6)' },    // Light teal
+      { bg: 'rgba(60, 180, 172, 0.9)', glow: 'rgba(60, 180, 172, 0.6)' },      // Dark teal
+      { bg: 'rgba(255, 255, 255, 0.9)', glow: 'rgba(255, 255, 255, 0.7)' },    // White accent
+    ]
+
+    const createAmbientSparkle = () => {
+      const sparkle = document.createElement('div')
+      sparkle.className = 'sparkle sparkle-ambient'
+
+      // Random position with slight bias towards center
+      const randomWithBias = () => 15 + Math.random() * 70
+      sparkle.style.left = randomWithBias() + '%'
+      sparkle.style.top = randomWithBias() + '%'
+
+      // Smaller sizes
+      const size = 2 + Math.random() * 3
+      sparkle.style.width = size + 'px'
+      sparkle.style.height = size + 'px'
+
+      // Random color with glow
+      const colorSet = colors[Math.floor(Math.random() * colors.length)]
+      sparkle.style.background = colorSet.bg
+      sparkle.style.boxShadow = `
+        0 0 ${size}px ${colorSet.glow},
+        0 0 ${size * 2}px ${colorSet.glow}
+      `
+
+      // Varied animation duration for organic feel
+      const duration = 2 + Math.random() * 2
+      sparkle.style.animationDuration = duration + 's'
+
+      // Random delay for staggered effect
+      sparkle.style.animationDelay = Math.random() * 0.5 + 's'
+
+      container.appendChild(sparkle)
+      setTimeout(() => sparkle.remove(), (duration + 0.5) * 1000)
+    }
+
+    // Create a burst of initial sparkles
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => createAmbientSparkle(), i * 150)
+    }
+
+    // Continuous ambient sparkles at slower pace
+    this.ambientInterval = setInterval(createAmbientSparkle, 500)
+  }
+
+  stopAmbientSparkles() {
+    if (this.ambientInterval) {
+      clearInterval(this.ambientInterval)
+      this.ambientInterval = null
     }
   }
 
   leave() {
     this.resetTilt()
-    this.stopSparkles()
+    this.stopHoverSparkles()
 
     const rainbow = this.cardTarget.querySelector('.holo-rainbow')
     const img = this.cardTarget.querySelector('.character-image-wrapper')
@@ -114,9 +188,9 @@ export default class extends Controller {
     if (rainbow) rainbow.style.opacity = '0'
     if (img) img.style.transform = 'translateX(0) translateY(0)'
 
-    // Clear sparkles
-    const sparkles = this.cardTarget.querySelectorAll('.sparkle')
-    sparkles.forEach(s => s.remove())
+    // Clear hover sparkles only (keep ambient for create card)
+    const hoverSparkles = this.cardTarget.querySelectorAll('.sparkle-hover')
+    hoverSparkles.forEach(s => s.remove())
   }
 
   resetTilt() {

@@ -6,8 +6,8 @@ import { Controller } from "@hotwired/stimulus"
  */
 export default class extends Controller {
   connect() {
-    // Vitesse de traversée (pixels par frame)
-    this.baseSpeed = 2 + Math.random() * 2 // 2-4 px/frame
+    // Vitesse de traversée (pixels par frame) - 20% slower
+    this.baseSpeed = 1.6 + Math.random() * 1.6 // 1.6-3.2 px/frame
 
     // Distance de répulsion de la souris (PLUS LOIN)
     this.repelDistance = 400
@@ -144,8 +144,8 @@ export default class extends Controller {
     const distTarget = Math.sqrt(dxTarget * dxTarget + dyTarget * dyTarget)
 
     if (distTarget > 0) {
-      this.vx += (dxTarget / distTarget) * 0.05
-      this.vy += (dyTarget / distTarget) * 0.05
+      this.vx += (dxTarget / distTarget) * 0.04
+      this.vy += (dyTarget / distTarget) * 0.04
     }
 
     // Appliquer la transformation (PAS DE ROTATION)
