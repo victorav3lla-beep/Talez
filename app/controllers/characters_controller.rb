@@ -13,7 +13,7 @@ class CharactersController < ApplicationController
   def index
     @default_characters = Character.where(profile_id: nil)
     @custom_characters = current_profile ? current_profile.characters : []
-    @all_characters = current_profile.characters
+    @all_characters = current_profile&.characters || []
   end
 
   def new
@@ -52,15 +52,20 @@ class CharactersController < ApplicationController
       clean background, high contrast, highly detailed but easy to read for kids.
       IMPORTANT: create only one character
     PROMPT
-    image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 
-    if image.url
-      image_data = URI.open(image.url)
-      @character.image.attach(
-        io: image_data,
-        filename: "#{@character.name.parameterize}.png",
-        content_type: "image/png",
-      )
+    image_base64 = StabilityService.new.call(image_prompt)
+
+    if image_base64
+      image_io = StabilityService.base64_to_io(image_base64, filename: @character.name.parameterize)
+      if image_io
+        @character.image.attach(
+          io: image_io,
+          filename: "#{@character.name.parameterize}.png",
+          content_type: "image/png"
+        )
+      else
+        Rails.logger.warn("Failed to decode image for #{@character.name}")
+      end
     else
       Rails.logger.warn("No image generated for #{@character.name}")
     end
@@ -100,6 +105,7 @@ class CharactersController < ApplicationController
     @selected_profile = current_profile
     unless @selected_profile
       redirect_to profiles_path, alert: "Please select a profile first."
+      return
     end
   end
 

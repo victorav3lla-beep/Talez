@@ -13,7 +13,7 @@ class UniversesController < ApplicationController
   def index
     @default_universes = Universe.where(profile_id: nil)
     @custom_universes = current_profile ? current_profile.universes : []
-    @all_universes = current_profile.universes
+    @all_universes = current_profile&.universes || []
   end
   
   def new
@@ -60,15 +60,20 @@ class UniversesController < ApplicationController
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
     PROMPT
-    image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
 
-    if image.url
-      image_data = URI.open(image.url)
-      @universe.image.attach(
-        io: image_data,
-        filename: "#{@universe.name.parameterize}.png",
-        content_type: "image/png"
-      )
+    image_base64 = StabilityService.new.call(image_prompt, aspect_ratio: "16:9")
+
+    if image_base64
+      image_io = StabilityService.base64_to_io(image_base64, filename: @universe.name.parameterize)
+      if image_io
+        @universe.image.attach(
+          io: image_io,
+          filename: "#{@universe.name.parameterize}.png",
+          content_type: "image/png"
+        )
+      else
+        Rails.logger.warn("Failed to decode image for #{@universe.name}")
+      end
     else
       Rails.logger.warn("No image generated for #{@universe.name}")
     end
@@ -103,6 +108,7 @@ class UniversesController < ApplicationController
     @selected_profile = current_profile
     unless @selected_profile
       redirect_to profiles_path, alert: "Please select a profile first."
+      return
     end
   end
 

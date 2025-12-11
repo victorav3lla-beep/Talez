@@ -85,3 +85,7 @@ gem "replicate", "~> 1.5"
 gem "google-cloud-vision", "~> 2.0"
 
 gem "cloudinary"
+
+gem 'httparty'
+
+gem 'multipart-post' # Nécessaire pour gérer correctement le form-data
