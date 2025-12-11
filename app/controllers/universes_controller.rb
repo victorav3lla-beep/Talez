@@ -60,10 +60,10 @@ class UniversesController < ApplicationController
       Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
       clean background, high contrast, highly detailed but easy to read for kids.
     PROMPT
-    image = RubyLLM.paint("#{image_prompt}", model: "dall-e-3", size: "1792x1024")
+    image_url = AiImageService.generate(image_prompt)
 
-    if image.url
-      image_data = URI.open(image.url)
+    if image_url
+      image_data = URI.open(image_url)
       @universe.image.attach(
         io: image_data,
         filename: "#{@universe.name.parameterize}.png",
