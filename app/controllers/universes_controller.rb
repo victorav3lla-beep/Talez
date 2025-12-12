@@ -21,7 +21,12 @@ class UniversesController < ApplicationController
   end
 
   def create
-    @universe = @selected_profile.universes.build(universe_params)
+    Rails.logger.info "=== UNIVERSE PARAMS DEBUG: #{params.inspect} ==="
+    Rails.logger.info "=== UNIVERSE STYLE FROM PARAMS: '#{params.dig(:universe, :style)}' ==="
+
+    selected_style = params.dig(:universe, :style).presence || "cartoon"
+    uni_attrs = universe_params.to_h.except("style")
+    @universe = @selected_profile.universes.build(uni_attrs)
     @universe.is_custom = true
 
     unless @universe.valid?
@@ -33,8 +38,8 @@ class UniversesController < ApplicationController
     llm = RubyLLM.chat
     llm.with_instructions(SYSTEM_PROMPT)
 
-    if universe_params[:name].blank?
-      response = llm.ask(universe_params[:description])
+    if uni_attrs["name"].blank?
+      response = llm.ask(uni_attrs["description"])
       begin
         universe_data = JSON.parse(response.content)
         @universe.name = universe_data["name"]
@@ -45,21 +50,29 @@ class UniversesController < ApplicationController
       end
     end
 
-    character = Character.find_by(id: session[:selected_character_id])
+    Rails.logger.info "=== UNIVERSE STYLE DEBUG: selected_style = '#{selected_style}' ==="
 
-    unless character
-      redirect_to characters_path, alert: "Please select a character first"
-      return
+    style_description = case selected_style
+      when "manga" then "Japanese manga/anime style with vibrant colors, dynamic composition, cel-shaded coloring"
+      when "storybook" then "classic children's storybook illustration, soft painterly style, warm and cozy"
+      when "pixel art" then "retro pixel art style, 16-bit video game aesthetic, crisp pixels"
+      when "watercolor" then "soft watercolor painting style, gentle washes of color, artistic brushstrokes"
+      when "sketch" then "hand-drawn pencil sketch style, charming linework, minimal coloring"
+      else "bright cartoon style, bold colors, simple shapes, friendly and expressive"
     end
 
+    Rails.logger.info "=== UNIVERSE STYLE DEBUG: style_description = '#{style_description}' ==="
+
     image_prompt = <<~PROMPT
-      Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
-      Wide cinematic landscape view, 16:9 composition, no borders, no text, no UI.
-      The main character: #{character.name} - #{character.description} - image: #{character.image.url}
+      #{style_description} illustration.
+      Wide cinematic landscape, 16:9 composition, no borders, no text, no UI.
       Setting: #{@universe.name} – #{@universe.description}.
-      Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
-      clean background, high contrast, highly detailed but easy to read for kids.
+      Kid-friendly for children aged 4–10, high contrast, easy to read.
+      Focus on environment and atmosphere only. NO characters or people.
+      Art style: #{style_description}.
     PROMPT
+
+    Rails.logger.info "=== UNIVERSE IMAGE PROMPT: #{image_prompt} ==="
 
     image_base64 = StabilityService.new.call(image_prompt, aspect_ratio: "16:9")
 
@@ -80,7 +93,7 @@ class UniversesController < ApplicationController
 
     if @universe.save
       session[:selected_universe_id] = @universe.id
-      redirect_to universe_path(@universe), notice: "Universe created!"
+      redirect_to universe_path(@universe), notice: "Universe created with style: #{selected_style}"
     else
       render :new, status: :unprocessable_entity
     end
@@ -113,6 +126,6 @@ class UniversesController < ApplicationController
   end
 
   def universe_params
-    params.require(:universe).permit(:name, :description)
+    params.require(:universe).permit(:name, :description, :style)
   end
 end

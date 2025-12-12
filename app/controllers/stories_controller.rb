@@ -70,6 +70,10 @@ class StoriesController < ApplicationController
     @story = Story.new(content: user_content)
     @story.profile = current_profile
 
+    # Store selected style in session for consistency across pages
+    selected_style = params[:story][:style] || "cartoon"
+    session[:selected_story_style] = selected_style
+
     response = @ruby_llm.with_instructions(instructions(character, universe)).ask(user_content, with: { image: [character.image.url, universe.image.url] })
     response = parse_json_response(response.content)
 
@@ -85,10 +89,12 @@ class StoriesController < ApplicationController
       )
 
       # Generate and attach page image
-      page_image_prompt = "Animated, kid-friendly illustration, WITH NO TEXT OR DIALOGUE, of: #{response_text}\nStyle: bright, bold colors, friendly characters, no text, high contrast\nFormat: wide landscape, horizontal composition.
-                        IMPORTANT: Keep the style consistent with the character and universe images provided.
-                        The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-                        The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
+      style_description = style_for_prompt(selected_style)
+      page_image_prompt = "#{style_description} illustration. Kid-friendly, NO TEXT OR DIALOGUE.
+Scene: #{response_text}
+Character: #{character.name} - #{character.description}
+Setting: #{universe.name} - #{universe.description}
+Format: wide landscape. Art style: #{style_description}."
 
       begin
         image_base64 = StabilityService.new.call(page_image_prompt, aspect_ratio: "16:9")
@@ -200,11 +206,14 @@ class StoriesController < ApplicationController
       position: next_position,
     )
 
-    # Generate and attach page image
-    page_image_prompt = "Animated, kid-friendly illustration of: #{response['content']}\nStyle: professional kids storybook, no text, high contrast\nFormat: wide landscape, horizontal composition.
-                        IMPORTANT: NO TEXT or DIALOGUE in the images. Keep the style consistent with the character and universe images provided.
-                        The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-                        The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}"
+    # Generate and attach page image using stored style
+    selected_style = session[:selected_story_style] || "cartoon"
+    style_description = style_for_prompt(selected_style)
+    page_image_prompt = "#{style_description} illustration. Kid-friendly, NO TEXT OR DIALOGUE.
+Scene: #{response['content']}
+Character: #{character.name} - #{character.description}
+Setting: #{universe.name} - #{universe.description}
+Format: wide landscape. Art style: #{style_description}."
 
     image_base64 = StabilityService.new.call(page_image_prompt, aspect_ratio: "16:9")
 
@@ -247,12 +256,13 @@ class StoriesController < ApplicationController
     # Regenerate cover (purge old if exists)
     @story.cover.purge if @story.cover.attached?
 
-    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title} (show the title in the image)
-                  The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-                  The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
-                  Story content: #{@story.pages.order(:position).pluck(:content).join(" ")}
-                  \nStyle: similar to the character and universe style, professional book cover layout with the story title visible\nFormat: wide landscape, horizontal composition, with no book margins, just the image
-                  IMPORTANT: The story title \"#{@story.title}\" should be clearly visible in the cover image. Keep the style consistent with the character and universe images provided and don't use any book margins or layouts, just the image."
+    selected_style = session[:selected_story_style] || "cartoon"
+    style_description = style_for_prompt(selected_style)
+    cover_prompt = "#{style_description} book cover illustration.
+Title: #{@story.title} (show title in image)
+Character: #{character.name} - #{character.description}
+Setting: #{universe.name} - #{universe.description}
+Format: wide landscape, no book margins. Art style: #{style_description}."
 
     image_base64 = StabilityService.new.call(cover_prompt, aspect_ratio: "16:9")
 
@@ -303,7 +313,7 @@ class StoriesController < ApplicationController
   end
 
   def story_params
-    params.require(:story).permit(:content)
+    params.require(:story).permit(:content, :style)
   end
 
   def story_update_params
@@ -357,12 +367,13 @@ class StoriesController < ApplicationController
   end
 
   def generate_cover(character, universe)
-    cover_prompt = "Animated, kid-friendly book cover illustration for: #{@story.title}
-                    The main character: #{character.name} - #{character.description} - image: #{character.image.url}
-                    The universe: #{universe.name} - #{universe.description} - image: #{universe.image.url}
-                    Story content: #{@story.pages.order(:position).pluck(:content).join(' ')}
-                    \nStyle: similar to the character and universe style, professional book cover layout\nFormat: wide landscape, horizontal composition, with no book margins, just the image
-                    IMPORTANT: Keep the style consistent with the character and universe images provided and dont use any book margins or layouts, just the image."
+    selected_style = session[:selected_story_style] || "cartoon"
+    style_description = style_for_prompt(selected_style)
+    cover_prompt = "#{style_description} book cover illustration.
+Title: #{@story.title}
+Character: #{character.name} - #{character.description}
+Setting: #{universe.name} - #{universe.description}
+Format: wide landscape, no book margins. Art style: #{style_description}."
 
     image_base64 = StabilityService.new.call(cover_prompt, aspect_ratio: "16:9")
 
@@ -375,6 +386,17 @@ class StoriesController < ApplicationController
           content_type: "image/png"
         )
       end
+    end
+  end
+
+  def style_for_prompt(style)
+    case style
+    when "manga" then "Japanese manga/anime style with vibrant colors, dynamic composition, cel-shaded coloring"
+    when "storybook" then "classic children's storybook illustration, soft painterly style, warm and cozy"
+    when "pixel art" then "retro pixel art style, 16-bit video game aesthetic, crisp pixels"
+    when "watercolor" then "soft watercolor painting style, gentle washes of color, artistic brushstrokes"
+    when "sketch" then "hand-drawn pencil sketch style, charming linework, minimal coloring"
+    else "bright cartoon style, bold colors, simple shapes, friendly and expressive"
     end
   end
 end

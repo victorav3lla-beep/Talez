@@ -2,12 +2,6 @@
   <!-- Avatar Corner -->
   <%= render 'shared/avatar_corner' %>
 
-  <!-- All Universes Button - Near Avatar -->
-  <%= link_to stories_path(filter: 'my_universes'), class: "all-characters-btn" do %>
-    <i class="bi bi-globe2"></i>
-    <span>All Universes</span>
-  <% end %>
-
   <!-- Floating Vector Background - Spawner System -->
   <div class="floating-background"
        data-controller="floating-spawner"
@@ -102,12 +96,7 @@
         </div>
       <% end %>
 
-      <!-- Browse All Stories Button -->
-      <div class="browse-all-wrapper text-center mt-4">
-        <%= link_to stories_path, class: "btn btn-outline-light btn-lg" do %>
-          <i class="bi bi-collection me-2"></i>Browse All Stories
-        <% end %>
-      </div>
+
 
       <!-- Back Button - At Bottom Left -->
       <%= link_to characters_path, class: "back-button" do %>

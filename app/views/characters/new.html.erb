@@ -29,6 +29,21 @@
                       placeholder: 'Write your character prompt here...',
                       value: params[:description] || @character&.description
                     } %>
+
+        <div class="style-selector mt-3">
+          <label class="style-label">Choose a style</label>
+          <%= select_tag "character[style]",
+                      options_for_select([
+                        ["🎨 Cartoon", "cartoon"],
+                        ["🌸 Manga / Anime", "manga"],
+                        ["📚 Storybook", "storybook"],
+                        ["🎮 Pixel Art", "pixel art"],
+                        ["🖍️ Watercolor", "watercolor"],
+                        ["✏️ Sketch", "sketch"]
+                      ], "cartoon"),
+                      class: "form-select prompt-select",
+                      style: "background-color: rgba(0,0,0,0.4); color: #fff; border: 2px solid rgba(255,255,255,0.12);" %>
+        </div>
       </div>
 
       <div class="form-actions mt-3">
