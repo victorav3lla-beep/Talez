@@ -594,3 +594,59 @@ $gold-light: #ffd700;
     }
   }
 }
+
+// All Characters Button - Glass Pill Style
+.all-characters-btn {
+  position: fixed;
+  top: calc(2rem + 0.75rem); // Aligned with avatar
+  right: calc(2rem + 50px + 1rem); // Avatar width + gap
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 25px; // Pill shape
+  // Glass effect with coral tint
+  background: rgba($primary-coral, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 20px rgba($primary-coral, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  color: $primary-coral;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.5);
+
+  i {
+    font-size: 1.1rem;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    background: rgba($primary-coral, 0.25);
+    box-shadow:
+      0 8px 30px rgba($primary-coral, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    color: darken($primary-coral, 10%);
+  }
+
+  @media (max-width: 768px) {
+    top: 1rem;
+    right: calc(1rem + 44px + 0.75rem);
+    padding: 8px 14px;
+    font-size: 0.8rem;
+
+    span {
+      display: none; // Hide text on mobile, show only icon
+    }
+
+    i {
+      font-size: 1rem;
+    }
+  }
+}

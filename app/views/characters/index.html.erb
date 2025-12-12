@@ -2,6 +2,12 @@
   <!-- Avatar Corner -->
   <%= render 'shared/avatar_corner' %>
 
+  <!-- All Characters Button - Near Avatar -->
+  <%= link_to stories_path(filter: 'my_characters'), class: "all-characters-btn" do %>
+    <i class="bi bi-people-fill"></i>
+    <span>All Characters</span>
+  <% end %>
+
   <!-- Floating Vector Background - Spawner System -->
   <div class="floating-background"
        data-controller="floating-spawner"
@@ -37,13 +43,8 @@
     </div>
 
     <%
-      # Logic: 4 cards max, 1 row
-      # Priority: custom characters first, then defaults, then "Create Your Own" if space
-      custom_count = @custom_characters.size
-      slots_for_defaults = [4 - custom_count, 3].min  # Max 3 defaults
-      show_create_card = custom_count == 0  # Only show "Create Your Own" if no customs
-
-      # Default characters data
+      # Logic: Always show 3 defaults + Create Your Own (4 fixed cards)
+      # Custom characters are available at /stories
       default_characters_data = [
         { id: @default_characters.first&.id || 1, name: "Sparkle Fairy", image: "sparkle_fairy_profile.jpeg", description: "A magical fairy with rainbow wings who brings joy and wonder!" },
         { id: @default_characters.second&.id || 2, name: "Blaze Dragon", image: "blaze_dragon_profile.jpeg", description: "A mighty steampunk dragon guardian of the mechanical realm!" },
@@ -59,8 +60,8 @@
       <div class="characters-showcase">
         <div class="row g-4 justify-content-center">
 
-          <%# Default Characters first (LEFT side) %>
-          <% default_characters_data.first(slots_for_defaults).each do |char_data| %>
+          <%# Default Characters (3 cards) %>
+          <% default_characters_data.each do |char_data| %>
             <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
               <div class="character-card-fancy"
                    data-tilt-target="card"
@@ -78,27 +79,20 @@
             </div>
           <% end %>
 
-          <%# Custom Characters (RIGHT side, with action icons) %>
-          <% @custom_characters.first(4 - slots_for_defaults).each do |character| %>
-            <%= render partial: "card", locals: { character: character, show_actions: true } %>
-          <% end %>
-
-          <%# Create Your Own Card (only if no custom characters) %>
-          <% if show_create_card %>
-            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-              <%= link_to new_character_path, class: "text-decoration-none" do %>
-                <div class="create-own-card" data-tilt-target="card">
-                  <div class="create-content-wrapper">
-                    <div class="create-icon">
-                      <i class="bi bi-plus-circle"></i>
-                    </div>
-                    <h5 class="create-text">Create Your Own</h5>
-                    <p class="create-subtext">Bring your hero to life!</p>
+          <%# Create Your Own Card (always visible) %>
+          <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+            <%= link_to new_character_path, class: "text-decoration-none" do %>
+              <div class="create-own-card" data-tilt-target="card">
+                <div class="create-content-wrapper">
+                  <div class="create-icon">
+                    <i class="bi bi-plus-circle"></i>
                   </div>
+                  <h5 class="create-text">Create Your Own</h5>
+                  <p class="create-subtext">Bring your hero to life!</p>
                 </div>
-              <% end %>
-            </div>
-          <% end %>
+              </div>
+            <% end %>
+          </div>
 
         </div>
       </div>
@@ -110,6 +104,13 @@
       </div>
 
     <% end %>
+
+    <!-- Browse All Stories Button -->
+    <div class="browse-all-wrapper text-center mt-4">
+      <%= link_to stories_path, class: "btn btn-outline-light btn-lg" do %>
+        <i class="bi bi-collection me-2"></i>Browse All Stories
+      <% end %>
+    </div>
 
 
   </div>
