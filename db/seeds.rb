@@ -82,7 +82,7 @@ lily_profile3 = Profile.create!(
   username: "Soojin",
   # avatar_url: "https://i.pravatar.cc/150?img=12"
   )
-  file = URI.parse("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765280071/avatar-cloud-crying-svgrepo-com_wzugrv.png").open
+  file = URI.parse("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765539119/cute-snail-with-ice-cream-cone_jts3bo.avif").open
   lily_profile3.image.attach(io: file, filename: "lily_magic.png", content_type: "image/png")
 
 # Max's profiles
