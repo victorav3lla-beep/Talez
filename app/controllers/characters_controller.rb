@@ -21,7 +21,12 @@ class CharactersController < ApplicationController
   end
 
   def create
-    @character = @selected_profile.characters.build(character_params)
+    Rails.logger.info "=== CHARACTER PARAMS DEBUG: #{params.inspect} ==="
+    Rails.logger.info "=== CHARACTER STYLE FROM PARAMS: '#{params.dig(:character, :style)}' ==="
+
+    selected_style = params.dig(:character, :style).presence || "cartoon"
+    char_attrs = character_params.to_h.except("style")
+    @character = @selected_profile.characters.build(char_attrs)
     @character.is_custom = true
 
     unless @character.valid?
@@ -33,8 +38,8 @@ class CharactersController < ApplicationController
     llm = RubyLLM.chat
     llm.with_instructions(SYSTEM_PROMPT)
 
-    if character_params[:name].blank?
-      response = llm.ask(character_params[:description])
+    if char_attrs["name"].blank?
+      response = llm.ask(char_attrs["description"])
       begin
         character_data = JSON.parse(response.content)
         @character.name = character_data["name"]
@@ -45,13 +50,27 @@ class CharactersController < ApplicationController
       end
     end
 
+    Rails.logger.info "=== CHARACTER STYLE DEBUG: selected_style = '#{selected_style}' ==="
+
+    style_description = case selected_style
+      when "manga" then "Japanese manga/anime style with big expressive eyes, dynamic poses, cel-shaded coloring"
+      when "storybook" then "classic children's storybook illustration, soft painterly style, warm and cozy"
+      when "pixel art" then "retro pixel art style, 16-bit video game aesthetic, crisp pixels"
+      when "watercolor" then "soft watercolor painting style, gentle washes of color, artistic brushstrokes"
+      when "sketch" then "hand-drawn pencil sketch style, charming linework, minimal coloring"
+      else "bright cartoon style, bold colors, simple shapes, friendly and expressive"
+    end
+
+    Rails.logger.info "=== CHARACTER STYLE DEBUG: style_description = '#{style_description}' ==="
+
     image_prompt = <<~PROMPT
-      Colorful, animated, kid-friendly storybook illustration for children aged 4–10.
-      A full-body portrait of a character named #{@character.name}, described as follows: #{@character.description}.
-      Style: bright, simple shapes, bold colors, soft lighting, friendly and expressive characters,
-      clean background, high contrast, highly detailed but easy to read for kids.
-      IMPORTANT: create only one character
+      #{style_description}.
+      Full-body character portrait: #{@character.name} - #{@character.description}.
+      Single character only, clean background.
+      MUST BE #{style_description.upcase}.
     PROMPT
+
+    Rails.logger.info "=== CHARACTER IMAGE PROMPT: #{image_prompt} ==="
 
     image_base64 = StabilityService.new.call(image_prompt)
 
@@ -72,7 +91,7 @@ class CharactersController < ApplicationController
 
     if @character.save
       session[:selected_character_id] = @character.id
-      redirect_to character_path(@character), notice: "Character created!"
+      redirect_to character_path(@character), notice: "Character created with style: #{selected_style}"
     else
       render :new, status: :unprocessable_entity
     end
@@ -110,6 +129,6 @@ class CharactersController < ApplicationController
   end
 
   def character_params
-    params.require(:character).permit(:name, :description)
+    params.require(:character).permit(:name, :description, :style)
   end
 end

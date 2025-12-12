@@ -378,6 +378,78 @@
   margin-top: 1.25rem;
 }
 
+// Style Selector
+.style-selector {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.08) 0%, rgba(78, 205, 196, 0.08) 100%);
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+
+  .style-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+    &::before {
+      content: '✨';
+      font-size: 1rem;
+    }
+  }
+}
+
+// Style selector dropdown - override Bootstrap completely
+.prompt-card .style-selector select,
+.prompt-card select.prompt-select,
+.style-selector select.form-select,
+select.prompt-select,
+.form-select.prompt-select {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  border: 2px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 12px !important;
+  color: #fff !important;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.875rem 1rem;
+  padding-right: 2.5rem;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23FF6B6B' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 16px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    border-color: rgba(255, 107, 107, 0.4) !important;
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  &:focus {
+    border-color: #FF6B6B !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.15), 0 4px 12px rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  option {
+    background: #1a1a1f !important;
+    color: #fff !important;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+  }
+}
+
 // Error states
 .prompt-card .error {
   color: #FF6B6B;
