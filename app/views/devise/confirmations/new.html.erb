@@ -1,20 +1,54 @@
-<h2>Resend confirmation instructions</h2>
+<div class="auth-page">
+  <!-- Stars background container -->
+  <div class="auth-stars"></div>
 
-<%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.error_notification %>
-  <%= f.full_error :confirmation_token %>
+  <!-- Floating decorations -->
+  <div class="auth-decoration deco-1">📧</div>
+  <div class="auth-decoration deco-2">✨</div>
+  <div class="auth-decoration deco-3">💌</div>
+  <div class="auth-decoration deco-4">🌟</div>
 
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: true,
-                autofocus: true,
-                value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
-                input_html: { autocomplete: "email" } %>
+  <!-- Back to login -->
+  <%= link_to new_user_session_path, class: "auth-home-link" do %>
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to Sign In</span>
+  <% end %>
+
+  <!-- Main auth card -->
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">📬</div>
+      <h1 class="auth-title">Resend Confirmation</h1>
+      <p class="auth-subtitle">We'll send you a new confirmation email</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post, class: "auth-form" }) do |f| %>
+      <%= f.error_notification message: "Please fix the errors below" %>
+      <%= f.full_error :confirmation_token %>
+
+      <div class="form-inputs">
+        <div class="mb-3">
+          <%= f.label :email %>
+          <div class="auth-input-wrapper">
+            <%= f.email_field :email,
+                              required: true,
+                              autofocus: true,
+                              value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email),
+                              autocomplete: "email",
+                              placeholder: "Enter your email",
+                              class: "form-control" %>
+            <i class="fas fa-envelope auth-input-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="auth-submit">
+        Send Confirmation ✨
+      </button>
+    <% end %>
+
+    <div class="auth-links">
+      <p>Already confirmed? <%= link_to "Sign in", new_session_path(resource_name) %></p>
+    </div>
   </div>
-
-  <div class="form-actions">
-    <%= f.button :submit, "Resend confirmation instructions" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+</div>

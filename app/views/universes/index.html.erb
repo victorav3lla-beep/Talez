@@ -2,6 +2,12 @@
   <!-- Avatar Corner -->
   <%= render 'shared/avatar_corner' %>
 
+  <!-- All Universes Button - Near Avatar -->
+  <%= link_to stories_path(filter: 'my_universes'), class: "all-characters-btn" do %>
+    <i class="bi bi-globe2"></i>
+    <span>All Universes</span>
+  <% end %>
+
   <!-- Floating Vector Background - Spawner System -->
   <div class="floating-background"
        data-controller="floating-spawner"
@@ -36,13 +42,8 @@
       </div>
 
       <%
-        # Logic: 4 cards max, 1 row
-        # Priority: custom universes first, then defaults, then "Create Your Own" if space
-        custom_count = @custom_universes.size
-        slots_for_defaults = [4 - custom_count, 3].min  # Max 3 defaults
-        show_create_card = custom_count == 0  # Only show "Create Your Own" if no customs
-
-        # Default universes data
+        # Logic: Always show 3 defaults + Create Your Own (4 fixed cards)
+        # Custom universes are available at /stories
         default_universes_data = [
           { id: @default_universes.first&.id || 1, name: "Enchanted Forest", image: "enchanted_forest.jpg", description: "A magical woodland filled with ancient trees and wonder!" },
           { id: @default_universes.second&.id || 2, name: "Galaxy Beyond", image: "galaxy_beyond.jpg", description: "A vast cosmos of stars, planets, and endless adventures!" },
@@ -58,8 +59,8 @@
         <div class="characters-showcase">
           <div class="row g-4 justify-content-center">
 
-            <%# Default Universes first (LEFT side) %>
-            <% default_universes_data.first(slots_for_defaults).each do |uni_data| %>
+            <%# Default Universes (3 cards) %>
+            <% default_universes_data.each do |uni_data| %>
               <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
                 <div class="universe-card"
                      data-tilt-target="card"
@@ -77,27 +78,20 @@
               </div>
             <% end %>
 
-            <%# Custom Universes (RIGHT side, with action icons) %>
-            <% @custom_universes.first(4 - slots_for_defaults).each do |universe| %>
-              <%= render partial: "card", locals: { universe: universe, show_actions: true } %>
-            <% end %>
-
-            <%# Create Your Own Card (only if no custom universes) %>
-            <% if show_create_card %>
-              <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
-                <%= link_to new_universe_path, class: "text-decoration-none" do %>
-                  <div class="create-own-card" data-tilt-target="card">
-                    <div class="create-content-wrapper">
-                      <div class="create-icon">
-                        <i class="bi bi-plus-circle"></i>
-                      </div>
-                      <h5 class="create-text">Create Your Own</h5>
-                      <p class="create-subtext">Design your own world!</p>
+            <%# Create Your Own Card (always visible) %>
+            <div class="col-12 col-sm-6 col-lg-3" data-controller="tilt" data-action="mousemove->tilt#move mouseleave->tilt#leave">
+              <%= link_to new_universe_path, class: "text-decoration-none" do %>
+                <div class="create-own-card" data-tilt-target="card">
+                  <div class="create-content-wrapper">
+                    <div class="create-icon">
+                      <i class="bi bi-plus-circle"></i>
                     </div>
+                    <h5 class="create-text">Create Your Own</h5>
+                    <p class="create-subtext">Design your own world!</p>
                   </div>
-                <% end %>
-              </div>
-            <% end %>
+                </div>
+              <% end %>
+            </div>
 
           </div>
         </div>
@@ -107,6 +101,13 @@
           <%= f.submit "Continue", class: "btn btn-sunset btn-lg", disabled: true, data: { selection_target: "submitButton" } %>
         </div>
       <% end %>
+
+      <!-- Browse All Stories Button -->
+      <div class="browse-all-wrapper text-center mt-4">
+        <%= link_to stories_path, class: "btn btn-outline-light btn-lg" do %>
+          <i class="bi bi-collection me-2"></i>Browse All Stories
+        <% end %>
+      </div>
 
       <!-- Back Button - At Bottom Left -->
       <%= link_to characters_path, class: "back-button" do %>

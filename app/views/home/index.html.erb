@@ -1,36 +1,71 @@
-<div class="landing-page">
-  <header>
-    <h1>Welcome to Talez!</h1>
-    <p>Create magical stories with AI!</p>
-  </header>
+<div class="home-page-wrapper">
+  <!-- Floating magical elements -->
+  <div class="home-magic-elements">
+    <div class="magic-star star-1">✨</div>
+    <div class="magic-star star-2">⭐</div>
+    <div class="magic-star star-3">🌟</div>
+    <div class="magic-book book-1">📖</div>
+    <div class="magic-book book-2">📚</div>
+  </div>
 
-  <!-- Empty State Design -->
-  <div class="home-empty-state">
-    <div class="home-empty-icon">📖</div>
-    <p class="home-empty-subtitle">Let's create your first magical adventure!</p>
+  <!-- Main content container -->
+  <div class="home-hero-container">
+    <!-- Welcome card with glassmorphism -->
+    <div class="home-welcome-card">
+      <!-- Animated logo -->
+      <div class="home-logo-wrapper">
+        <div class="home-logo-icon">📖</div>
+        <div class="home-logo-sparkles">
+          <span class="sparkle s1">✨</span>
+          <span class="sparkle s2">✨</span>
+          <span class="sparkle s3">✨</span>
+        </div>
+      </div>
 
-    <div class="home-empty-steps">
-      <div class="home-empty-step">
-        <div class="step-emoji">✨</div>
-        <p class="step-text">Choose a hero</p>
+      <!-- Welcome text -->
+      <h1 class="home-welcome-title">Welcome to <span class="brand-name">Talez</span></h1>
+      <p class="home-welcome-subtitle">Where every child becomes the hero of their own story</p>
+
+      <!-- Feature cards -->
+      <div class="home-features">
+        <div class="home-feature-card">
+          <div class="feature-icon">✨</div>
+          <h3 class="feature-title">Choose Your Hero</h3>
+          <p class="feature-desc">Pick your favorite character to star in amazing adventures</p>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="feature-icon">🌍</div>
+          <h3 class="feature-title">Explore Worlds</h3>
+          <p class="feature-desc">Discover magical universes from enchanted forests to distant galaxies</p>
+        </div>
+
+        <div class="home-feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">Create Stories</h3>
+          <p class="feature-desc">Let AI craft personalized tales with beautiful illustrations</p>
+        </div>
       </div>
-      <div class="home-empty-step">
-        <div class="step-emoji">🌍</div>
-        <p class="step-text">Pick a universe</p>
-      </div>
-      <div class="home-empty-step">
-        <div class="step-emoji">📝</div>
-        <p class="step-text">Tell your story</p>
+
+      <!-- CTA buttons -->
+      <div class="home-cta-section">
+        <%= link_to new_user_session_path, class: "home-cta-btn primary" do %>
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Sign In</span>
+        <% end %>
+
+        <%= link_to new_user_registration_path, class: "home-cta-btn secondary" do %>
+          <i class="fas fa-rocket"></i>
+          <span>Start Your Adventure</span>
+        <% end %>
       </div>
     </div>
-  </div>
 
-  <div class="buttons">
-    <%= link_to "Sign Up", new_user_registration_path, class: "landing-button" %>
-    <%= link_to "Log In", new_user_session_path, class: "landing-button" %>
-  </div>
-
-  <div class="theme-toggle">
-    <button id="toggle-scheme" data-controller="theme-toggle">Switch Theme</button>
+    <!-- Bottom tagline -->
+    <p class="home-tagline">
+      <span class="tagline-emoji">🌙</span>
+      Magical stories await...
+      <span class="tagline-emoji">🌙</span>
+    </p>
   </div>
 </div>

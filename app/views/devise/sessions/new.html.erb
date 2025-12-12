@@ -1,20 +1,76 @@
-<h2>Log in</h2>
+<div class="auth-page">
+  <!-- Stars background container -->
+  <div class="auth-stars"></div>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="form-inputs">
-    <%= f.input :email,
-                required: false,
-                autofocus: true,
-                input_html: { autocomplete: "email" } %>
-    <%= f.input :password,
-                required: false,
-                input_html: { autocomplete: "current-password" } %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+  <!-- Floating decorations -->
+  <div class="auth-decoration deco-1">✨</div>
+  <div class="auth-decoration deco-2">📖</div>
+  <div class="auth-decoration deco-3">🌙</div>
+  <div class="auth-decoration deco-4">⭐</div>
+
+  <!-- Back to home -->
+  <%= link_to root_path, class: "auth-home-link" do %>
+    <i class="fas fa-arrow-left"></i>
+    <span>Back to Home</span>
+  <% end %>
+
+  <!-- Main auth card -->
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-logo">📚</div>
+      <h1 class="auth-title">Welcome Back!</h1>
+      <p class="auth-subtitle">Sign in to continue your magical adventures</p>
+    </div>
+
+    <%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
+      <div class="form-inputs">
+        <div class="mb-3">
+          <%= f.label :email %>
+          <div class="auth-input-wrapper">
+            <%= f.email_field :email,
+                              autofocus: true,
+                              autocomplete: "email",
+                              placeholder: "Enter your email",
+                              class: "form-control" %>
+            <i class="fas fa-envelope auth-input-icon"></i>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= f.label :password %>
+          <div class="auth-input-wrapper">
+            <%= f.password_field :password,
+                                 autocomplete: "current-password",
+                                 placeholder: "Enter your password",
+                                 class: "form-control" %>
+            <i class="fas fa-lock auth-input-icon"></i>
+          </div>
+        </div>
+
+        <% if devise_mapping.rememberable? %>
+          <div class="form-check">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "Remember me" %>
+          </div>
+        <% end %>
+      </div>
+
+      <button type="submit" class="auth-submit">
+        Sign In ✨
+      </button>
+    <% end %>
+
+    <div class="auth-links">
+      <% if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
+        <p>
+          <%= link_to "Forgot your password?", new_password_path(resource_name) %>
+        </p>
+      <% end %>
+    </div>
   </div>
 
-  <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
-  </div>
-<% end %>
-
-<%= render "devise/shared/links" %>
+  <!-- Switch to sign up -->
+  <p class="auth-switch">
+    Don't have an account? <%= link_to "Create one", new_registration_path(resource_name) %>
+  </p>
+</div>

@@ -1,0 +1,551 @@
+// ==========================================================
+// TALEZ Authentication Pages - Magical Login Experience
+// ==========================================================
+
+@import '../config/colors';
+
+// Night sky colors for auth pages
+$auth-bg-dark: #1a1a2e;
+$auth-bg-medium: #16213e;
+$auth-card-bg: rgba(255, 255, 255, 0.95);
+$auth-card-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+$auth-input-bg: #f8f9fa;
+$auth-input-focus: rgba($secondary-teal, 0.2);
+
+// Override body styles for auth pages (Devise controllers)
+body.sessions-new,
+body.sessions-create,
+body.registrations-new,
+body.registrations-create,
+body.passwords-new,
+body.passwords-create,
+body.passwords-edit,
+body.passwords-update,
+body.confirmations-new,
+body.confirmations-create,
+body.unlocks-new,
+body.unlocks-create {
+  background: $auth-bg-dark;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+// Auth page container with night sky
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(
+    135deg,
+    $auth-bg-dark 0%,
+    $auth-bg-medium 50%,
+    darken($auth-bg-medium, 5%) 100%
+  );
+}
+
+// Animated floating elements
+.auth-page::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at 30% 20%,
+    rgba($secondary-teal, 0.1) 0%,
+    transparent 50%
+  ),
+  radial-gradient(
+    ellipse at 70% 80%,
+    rgba($primary-coral, 0.08) 0%,
+    transparent 50%
+  );
+  animation: aurora 15s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes aurora {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(2%, 2%) rotate(1deg);
+  }
+}
+
+// Stars container
+.auth-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.auth-star {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  animation: auth-twinkle linear infinite;
+
+  &.star-yellow {
+    background: rgba($accent-yellow, 0.7);
+    box-shadow: 0 0 6px $accent-yellow;
+  }
+
+  &.star-teal {
+    background: rgba($secondary-teal, 0.6);
+    box-shadow: 0 0 6px $secondary-teal;
+  }
+
+  &.star-coral {
+    background: rgba($primary-coral, 0.5);
+    box-shadow: 0 0 6px $primary-coral;
+  }
+}
+
+@keyframes auth-twinkle {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
+
+// Main auth card
+.auth-card {
+  position: relative;
+  z-index: 10;
+  background: $auth-card-bg;
+  border-radius: 24px;
+  box-shadow: $auth-card-shadow;
+  padding: 3rem;
+  width: 100%;
+  max-width: 420px;
+  animation: card-float-in 0.6s ease-out;
+  backdrop-filter: blur(10px);
+
+  @media (max-width: 480px) {
+    padding: 2rem;
+    border-radius: 20px;
+  }
+}
+
+@keyframes card-float-in {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Header with branding
+.auth-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.auth-logo {
+  font-size: 3.5rem;
+  margin-bottom: 0.5rem;
+  animation: logo-bounce 2s ease-in-out infinite;
+}
+
+@keyframes logo-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.auth-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: $text-dark;
+  margin: 0 0 0.25rem 0;
+}
+
+.auth-subtitle {
+  font-size: 0.95rem;
+  color: $text-muted;
+  margin: 0;
+}
+
+// Form styling
+.auth-form {
+  .form-inputs {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group,
+  .mb-3 {
+    margin-bottom: 1.25rem;
+  }
+
+  label,
+  .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: $text-dark;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-control,
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-left: 2.75rem;
+    font-size: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: $auth-input-bg;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-teal;
+      background-color: white;
+      box-shadow: 0 0 0 4px $auth-input-focus;
+    }
+
+    &::placeholder {
+      color: $text-muted;
+    }
+  }
+
+  // Input wrapper for icons
+  .auth-input-wrapper {
+    position: relative;
+
+    .auth-input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: $text-muted;
+      font-size: 1rem;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    input:focus + .auth-input-icon,
+    input:focus ~ .auth-input-icon {
+      color: $secondary-teal;
+    }
+  }
+
+  // Checkbox styling
+  .form-check,
+  .boolean {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: $secondary-teal;
+      cursor: pointer;
+    }
+
+    label {
+      margin: 0;
+      font-weight: 500;
+      color: $text-muted;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  }
+
+  // Password hint
+  .form-text,
+  .hint {
+    font-size: 0.8rem;
+    color: $text-muted;
+    margin-top: 0.5rem;
+  }
+
+  // Error messages
+  .invalid-feedback,
+  .error {
+    color: $primary-coral;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .is-invalid,
+  .field_with_errors input {
+    border-color: $primary-coral !important;
+  }
+}
+
+// Submit button
+.auth-submit {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, $primary-coral 0%, darken($primary-coral, 10%) 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-coral, 0.4);
+
+    &::before {
+      left: 100%;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// Alternative submit for signup
+.auth-submit-secondary {
+  @extend .auth-submit;
+  background: linear-gradient(135deg, $secondary-teal 0%, darken($secondary-teal, 10%) 100%);
+
+  &:hover {
+    box-shadow: 0 8px 25px rgba($secondary-teal, 0.4);
+  }
+}
+
+// Divider
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e2e8f0;
+  }
+
+  span {
+    padding: 0 1rem;
+    color: $text-muted;
+    font-size: 0.85rem;
+  }
+}
+
+// Links section
+.auth-links {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+
+  a {
+    color: $secondary-teal;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+    display: inline-block;
+    margin: 0.25rem 0;
+
+    &:hover {
+      color: darken($secondary-teal, 10%);
+      text-decoration: underline;
+    }
+  }
+
+  p {
+    margin: 0.5rem 0;
+    color: $text-muted;
+    font-size: 0.9rem;
+
+    a {
+      margin-left: 0.25rem;
+    }
+  }
+}
+
+// Switch auth mode link (more prominent)
+.auth-switch {
+  display: block;
+  text-align: center;
+  margin-top: 2rem;
+  color: white;
+  font-size: 0.95rem;
+
+  a {
+    color: $accent-yellow;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: lighten($accent-yellow, 10%);
+      text-shadow: 0 0 10px rgba($accent-yellow, 0.5);
+    }
+  }
+}
+
+// Floating decorative elements
+.auth-decoration {
+  position: absolute;
+  pointer-events: none;
+  opacity: 0.6;
+  font-size: 2rem;
+  animation: float 6s ease-in-out infinite;
+
+  &.deco-1 {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+  }
+
+  &.deco-2 {
+    top: 20%;
+    right: 15%;
+    animation-delay: 1s;
+  }
+
+  &.deco-3 {
+    bottom: 15%;
+    left: 8%;
+    animation-delay: 2s;
+  }
+
+  &.deco-4 {
+    bottom: 25%;
+    right: 10%;
+    animation-delay: 3s;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(5deg);
+  }
+}
+
+// Error notification styling
+.auth-form .error_notification,
+.auth-form .alert {
+  background-color: rgba($primary-coral, 0.1);
+  border: 1px solid rgba($primary-coral, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: darken($primary-coral, 15%);
+  font-size: 0.9rem;
+}
+
+// Success notification
+.auth-form .notice {
+  background-color: rgba($secondary-teal, 0.1);
+  border: 1px solid rgba($secondary-teal, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  color: darken($secondary-teal, 15%);
+  font-size: 0.9rem;
+}
+
+// Back to home link
+.auth-home-link {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  z-index: 20;
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    transform: translateX(-3px);
+  }
+
+  i {
+    font-size: 1rem;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 1rem;
+  }
+
+  .auth-card {
+    padding: 1.5rem;
+  }
+
+  .auth-logo {
+    font-size: 3rem;
+  }
+
+  .auth-title {
+    font-size: 1.5rem;
+  }
+
+  .auth-decoration {
+    display: none;
+  }
+
+  .auth-home-link {
+    top: 1rem;
+    left: 1rem;
+  }
+}
