@@ -9,17 +9,12 @@ export default class extends Controller {
   connect() {
     this.currentLogo = 1
     this.totalLogos = 2
-    console.log('Logo switcher connected')
-    console.log('Logo 1:', this.logo1Target)
-    console.log('Logo 2:', this.logo2Target)
 
     // Try to sync with carousel if it exists
     const carousel = document.getElementById('heroCarousel')
     if (carousel) {
-      console.log('Found carousel, syncing with it')
       this.syncWithCarousel(carousel)
     } else {
-      console.log('No carousel found, using own timer')
       this.startSwitching()
     }
   }
@@ -37,7 +32,6 @@ export default class extends Controller {
   syncWithCarousel(carousel) {
     // Listen to carousel slide events
     this.carouselListener = () => {
-      console.log('Carousel sliding, switching logo')
       this.switchLogo()
     }
     carousel.addEventListener('slide.bs.carousel', this.carouselListener)
@@ -77,8 +71,6 @@ export default class extends Controller {
       setTimeout(() => {
         nextLogoTarget.style.opacity = '1'
       }, 50)
-
-      console.log(`Switched to logo ${this.currentLogo}`)
     }, 300)
   }
 }
