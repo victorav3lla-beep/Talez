@@ -11,9 +11,13 @@ class CharactersController < ApplicationController
   before_action :load_selected_profile, only: [:index, :new, :create]
 
   def index
-    @default_characters = Character.where(profile_id: nil)
+    @default_characters = Character.where(profile_id: nil) rescue []
     @custom_characters = current_profile ? current_profile.characters : []
     @all_characters = current_profile&.characters || []
+  rescue StandardError => e
+    Rails.logger.error "FATAL ERROR IN CHARACTERS#INDEX: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    redirect_to profiles_path, alert: "An error occurred while loading characters. Please select a profile again."
   end
 
   def new
