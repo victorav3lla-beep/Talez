@@ -1,0 +1,129 @@
+<%# Login Modal - Slide-in Panel %>
+<div class="login-modal-wrapper" data-controller="login-modal">
+  <%# Login Button - Top Right (positioned absolutely relative to viewport) %>
+  <button class="login-trigger-btn" data-action="click->login-modal#open">
+    <i class="fas fa-user"></i>
+    <span>Login</span>
+  </button>
+
+  <%# Backdrop %>
+  <div class="login-modal-backdrop"
+       data-login-modal-target="backdrop"
+       data-action="click->login-modal#backdropClick">
+  </div>
+
+  <%# Slide-in Panel %>
+  <div class="login-modal-panel" data-login-modal-target="panel">
+    <div class="login-modal-content">
+      <%# Close Button %>
+      <button class="login-modal-close" data-action="click->login-modal#close">
+        &times;
+      </button>
+
+      <%# Header %>
+      <div class="login-modal-header">
+        <div class="login-modal-logo">📚</div>
+        <h1 class="login-modal-title">Welcome to Talez</h1>
+        <p class="login-modal-subtitle">Sign in to explore magical stories</p>
+      </div>
+
+      <%# Login Form %>
+      <div data-login-modal-target="loginForm">
+        <%= simple_form_for(User.new, as: :user, url: user_session_path, html: { class: "login-modal-form" }) do |f| %>
+          <div class="mb-3">
+            <%= f.label :email %>
+            <div class="auth-input-wrapper">
+              <%= f.email_field :email,
+                                autofocus: true,
+                                autocomplete: "email",
+                                placeholder: "Enter your email",
+                                class: "form-control" %>
+              <i class="fas fa-envelope auth-input-icon"></i>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password %>
+            <div class="auth-input-wrapper">
+              <%= f.password_field :password,
+                                   autocomplete: "current-password",
+                                   placeholder: "Enter your password",
+                                   class: "form-control" %>
+              <i class="fas fa-lock auth-input-icon"></i>
+            </div>
+          </div>
+
+          <div class="form-check">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me, "Remember me" %>
+          </div>
+
+          <button type="submit" class="login-modal-submit">
+            Sign In ✨
+          </button>
+        <% end %>
+
+        <div class="login-modal-links">
+          <%= link_to "Forgot your password?", new_user_password_path %>
+        </div>
+
+        <div class="login-modal-toggle">
+          <p>Don't have an account?
+            <button type="button" data-action="click->login-modal#showSignup">Create one</button>
+          </p>
+        </div>
+      </div>
+
+      <%# Sign Up Form (hidden by default) %>
+      <div data-login-modal-target="signupForm" class="hidden">
+        <%= simple_form_for(User.new, as: :user, url: user_registration_path, html: { class: "login-modal-form" }) do |f| %>
+          <div class="mb-3">
+            <%= f.label :email %>
+            <div class="auth-input-wrapper">
+              <%= f.email_field :email,
+                                required: true,
+                                autocomplete: "email",
+                                placeholder: "Enter your email",
+                                class: "form-control" %>
+              <i class="fas fa-envelope auth-input-icon"></i>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password %>
+            <div class="auth-input-wrapper">
+              <%= f.password_field :password,
+                                   required: true,
+                                   autocomplete: "new-password",
+                                   placeholder: "Create a password (min 6 chars)",
+                                   class: "form-control" %>
+              <i class="fas fa-lock auth-input-icon"></i>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :password_confirmation %>
+            <div class="auth-input-wrapper">
+              <%= f.password_field :password_confirmation,
+                                   required: true,
+                                   autocomplete: "new-password",
+                                   placeholder: "Confirm your password",
+                                   class: "form-control" %>
+              <i class="fas fa-shield-alt auth-input-icon"></i>
+            </div>
+          </div>
+
+          <button type="submit" class="login-modal-submit secondary">
+            Create Account ✨
+          </button>
+        <% end %>
+
+        <div class="login-modal-toggle">
+          <p>Already have an account?
+            <button type="button" data-action="click->login-modal#showLogin">Sign in</button>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

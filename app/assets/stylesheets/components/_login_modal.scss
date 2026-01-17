@@ -1,0 +1,397 @@
+// ==========================================================
+// Login Modal - Slide-in Panel Styles
+// ==========================================================
+
+@import '../config/colors';
+
+// Login button in top right (fixed to viewport)
+.login-trigger-btn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 100;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 12px 24px;
+
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    color: white;
+  }
+
+  i {
+    font-size: 1.1rem;
+  }
+}
+
+// Backdrop overlay
+.login-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  z-index: 999;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// Slide-in panel
+.login-modal-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  z-index: 1000;
+
+  background: linear-gradient(180deg,
+      #1a1a2e 0%,
+      #16213e 100%);
+
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+
+  overflow-y: auto;
+
+  box-shadow: -10px 0 40px rgba(0, 0, 0, 0.5);
+
+  &.open {
+    transform: translateX(0);
+  }
+}
+
+// Panel content
+.login-modal-content {
+  padding: 2rem;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Close button
+.login-modal-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+
+  width: 40px;
+  height: 40px;
+
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 50%;
+
+  color: white;
+  font-size: 1.5rem;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(90deg);
+  }
+}
+
+// Modal header
+.login-modal-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-top: 1rem;
+}
+
+.login-modal-logo {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  animation: logo-bounce 2s ease-in-out infinite;
+}
+
+@keyframes logo-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.login-modal-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 0.25rem 0;
+}
+
+.login-modal-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+// Form styling in modal
+.login-modal-form {
+  flex: 1;
+
+  .form-group,
+  .mb-3 {
+    margin-bottom: 1.25rem;
+  }
+
+  label,
+  .form-label {
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  .form-control,
+  input[type="email"],
+  input[type="password"],
+  input[type="text"] {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    padding-left: 2.75rem;
+    font-size: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: $secondary-teal;
+      background-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 0 4px rgba($secondary-teal, 0.2);
+    }
+
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  .auth-input-wrapper {
+    position: relative;
+
+    .auth-input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 1rem;
+      pointer-events: none;
+      transition: color 0.3s ease;
+    }
+
+    input:focus+.auth-input-icon,
+    input:focus~.auth-input-icon {
+      color: $secondary-teal;
+    }
+  }
+
+  .form-check,
+  .boolean {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: $secondary-teal;
+      cursor: pointer;
+    }
+
+    label {
+      margin: 0;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// Submit button in modal
+.login-modal-submit {
+  width: 100%;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, $primary-coral 0%, darken($primary-coral, 10%) 100%);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba($primary-coral, 0.4);
+  }
+
+  &.secondary {
+    background: linear-gradient(135deg, $secondary-teal 0%, darken($secondary-teal, 10%) 100%);
+
+    &:hover {
+      box-shadow: 0 8px 25px rgba($secondary-teal, 0.4);
+    }
+  }
+}
+
+// Toggle between login/signup
+.login-modal-toggle {
+  text-align: center;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+  p {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+    margin: 0;
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: $accent-yellow;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.25rem;
+    transition: all 0.3s ease;
+
+    &:hover {
+      color: lighten($accent-yellow, 10%);
+      text-shadow: 0 0 10px rgba($accent-yellow, 0.5);
+    }
+  }
+}
+
+// Hidden utility
+.hidden {
+  display: none !important;
+}
+
+// Error messages
+.login-modal-form {
+
+  .invalid-feedback,
+  .error {
+    color: $primary-coral;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .field_with_errors input {
+    border-color: $primary-coral !important;
+  }
+
+  .form-text,
+  .hint {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.5rem;
+  }
+}
+
+// Forgot password link
+.login-modal-links {
+  text-align: center;
+  margin-top: 1rem;
+
+  a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: white;
+    }
+  }
+}
+
+// Welcome message for guests
+.profile-welcome-guest {
+  text-align: center;
+  color: white;
+  margin-top: 80px;
+
+  h2 {
+    font-family: 'Nunito', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  p {
+    font-size: 1.1rem;
+    opacity: 0.8;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .login-trigger-btn {
+    top: 20px;
+    right: 20px;
+    padding: 10px 18px;
+    font-size: 0.9rem;
+  }
+
+  .login-modal-panel {
+    max-width: 100%;
+  }
+
+  .login-modal-content {
+    padding: 1.5rem;
+  }
+}

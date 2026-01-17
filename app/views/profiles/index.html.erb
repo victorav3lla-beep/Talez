@@ -7,6 +7,11 @@
   <!-- Gooey blob effect -->
   <%= render 'gooey_background' %>
 
+  <!-- Login Modal for guests -->
+  <% unless user_signed_in? %>
+    <%= render 'login_modal' %>
+  <% end %>
+
   <!-- 2. Votre contenu Logo -->
   <div class="profile-logo" data-controller="logo-switcher">
     <%= link_to root_path, class: "profile-logo-link" do %>
@@ -15,32 +20,40 @@
     <% end %>
   </div>
 
-  <!-- 3. Votre sélecteur de profils -->
-  <div id="profile-selector">
-    <% @profiles.each do |profile| %>
-      <div class="profile-container">
-        <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
-          <% if profile.avatar_url.present? %>
-            <%= image_tag profile.avatar_url, width: 150, height: 150, class: "avatar-xl" %>
-          <% elsif profile.image.attached? %>
-            <%= cl_image_tag profile.image.key, height: 150, width: 150, crop: :fill, class: "avatar-xl" %>
-          <% else %>
-            <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/Netflix-avatar_z4ahkh.png", width: 150, height: 150, class: "avatar-xl") %>
+  <% if user_signed_in? %>
+    <!-- 3. Votre sélecteur de profils (logged in users) -->
+    <div id="profile-selector">
+      <% @profiles.each do |profile| %>
+        <div class="profile-container">
+          <%= button_to select_profile_path(profile), method: :post, class: "profile-btn" do %>
+            <% if profile.avatar_url.present? %>
+              <%= image_tag profile.avatar_url, width: 150, height: 150, class: "avatar-xl" %>
+            <% elsif profile.image.attached? %>
+              <%= cl_image_tag profile.image.key, height: 150, width: 150, crop: :fill, class: "avatar-xl" %>
+            <% else %>
+              <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286699/Netflix-avatar_z4ahkh.png", width: 150, height: 150, class: "avatar-xl") %>
+            <% end %>
+            <p><%= profile.username %></p>
           <% end %>
-          <p><%= profile.username %></p>
-        <% end %>
-        <%= link_to raw("&times;"), profile_path(profile),
-            data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{profile.username}?" },
-            class: "profile-delete-btn",
-            title: "Delete Profile" %>
-      </div>
-    <% end %>
+          <%= link_to raw("&times;"), profile_path(profile),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure you want to delete #{profile.username}?" },
+              class: "profile-delete-btn",
+              title: "Delete Profile" %>
+        </div>
+      <% end %>
 
-    <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
-      <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286698/new_profile_boxuau.png", width: 150, height: 150, class: "avatar-xl") %>
-      <p>Add profile</p>
-    <% end %>
-  </div>
+      <%= link_to new_user_profile_path(current_user), class: "add-profile-container" do %>
+        <%= image_tag("https://res.cloudinary.com/dyzpce9wi/image/upload/v1765286698/new_profile_boxuau.png", width: 150, height: 150, class: "avatar-xl") %>
+        <p>Add profile</p>
+      <% end %>
+    </div>
+  <% else %>
+    <!-- Welcome message for guests -->
+    <div class="profile-welcome-guest">
+      <h2>Who's watching?</h2>
+      <p>Sign in to start your magical adventure ✨</p>
+    </div>
+  <% end %>
 
 <!-- 4. Je ferme le background tout à la fin -->
 </div>

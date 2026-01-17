@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
-  # 1. Marketing / Public
-  root to: "home#index"
-  get 'home/index'
+  # 1. Landing Page - Profiles as homepage
+  root to: "profiles#index"
 
   # 2. Authentication
   devise_for :users

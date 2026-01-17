@@ -1,8 +1,8 @@
 class ProfilesController < ApplicationController
-  before_action :authenticate_user!
+  before_action :authenticate_user!, except: [:index]
 
   def index
-    @profiles = current_user.profiles
+    @profiles = user_signed_in? ? current_user.profiles : []
   end
 
   def show
